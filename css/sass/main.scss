@@ -1,0 +1,252 @@
+@charset "utf-8";
+
+/*
+ * Notes:
+ * ------
+ * We only need to use the -webkit- and -ms- prefixed for as we are building for iOS, Android and Windows Phone
+ * They might event be needed then, but they cause no problems.
+ *
+*/
+
+//imports
+@import "_normalize.scss";
+@import "defaults/_vars.scss";
+@import "defaults/_mixins.scss";
+
+@import "_typography.scss";
+@import "_animations.scss";
+@import "_topcoat.scss";
+
+/*-----------------------------------------------------------------*/
+
+*,
+*:after,
+*:before {
+	@include box-sizing(border-box);
+	@include reset-box;
+}
+
+@import "partials/_base.scss";
+
+/*-----------------------------------------------------------------*/
+
+.container {
+	width: 100%;
+	max-width: 100%;
+	margin: 0 auto;
+}
+
+.wrapper {
+	min-height: 100%;
+}
+
+.inner-wrap { /*this might need adjusting for our layout*/
+	padding-right: 14px;
+	padding-left: 14px;
+}
+
+.centre {
+	margin: 0 auto;
+}
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+/*-----------------------------------------------------------------*/
+
+@import "partials/_appwrapper.scss";
+
+/*-----------------------------------------------------------------*/
+
+@import "partials/_header.scss";
+
+/*-----------------------------------------------------------------*/
+
+.content { /*this might need to change*/
+	position: absolute;
+	top: 40px;
+}
+
+/*-----------------------------------------------------------------*/
+
+.location-map {
+	width: 100%;
+	position: relative;
+}
+
+#map-container {
+	width: 100%;
+	height: 180px;
+	//padding-bottom: 56.25%; /*this works well as it is equiv to 19.9 aspect ratio - 9 divided by 16*/
+	
+		@include breakpoint(break-tablet) {
+			height: 400px;
+		}
+	
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	
+		.adp-warnbox, .adp-legal, .gmnoprint, .gm-style-cc { /*shouldn't do this - absolutely must remove if released*/
+			display: none;
+		}
+	
+	//border-bottom: 1px solid #cfd1d5;
+}
+
+.search {
+	width: 100%;
+	height: auto;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+/*-----------------------------------------------------------------*/
+
+//some styling for form elements and errors/warnings and such
+label {
+	display: block;
+	font-size: 1.180rem;
+	font-weight: 600;
+}
+
+input, textarea, select {
+	width: 100%;
+	padding: 1.00rem;
+	outline: none;
+	resize: none;
+	line-height: 2.00rem;
+	border: 1px solid hsla(168, 8%, 65%, 1);
+	box-shadow: inset 0 1px rgba(0, 0, 0, 0.1);
+	
+	margin-bottom: 10px;
+	
+	font-size: 1.100rem;
+	@include letter-spacing;
+	
+		&:focus {
+			color: #454545;
+			border: 1px solid hsla(190, 100%, 41%, 1);
+			box-shadow: 0 0 0 2px hsla(208, 82%, 69%, 1);
+		}
+}
+
+.no-geo {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	background: hsla(0,0%,0%,0.85);
+	padding: 0.5rem;
+}
+
+.message {
+	text-align: center;
+}
+
+.warning {
+	@extend .message;
+	color: hsla(22, 88%, 58%, 1);
+}
+
+.saved {
+	@extend .message;
+	color: hsla(70, 48%, 50%, 1);
+}
+
+/*-----------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------*/
+
+/*-----------------------------------------------------------------*/
+
+/* Helper classes
+-------------------------------------------------------------------*/
+/*prevent callout*/
+.nocallout {
+    -webkit-touch-callout: none;
+}
+
+.pressed {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/*specifies that an entire element should be draggable instead of its contents*/
+.nodrag { /*no dragging at all*/
+	-webkit-user-drag: none;
+}
+
+.elementdrag { /*drags entire element, not the text/selection*/
+	-webkit-user-drag: element;
+}
+
+/*hack for HTML5 contenteditable attribute on mobile*/
+textarea[contenteditable] {
+    -webkit-appearance: none;
+}
+
+/*image replacement*/
+.ir {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: 0;
+    direction: ltr;
+    display: block;
+    overflow: hidden;
+    text-align: left;
+    text-indent: -999em;
+}
+
+.ir br {
+    display: none;
+}
+
+/*hide from both screenreaders and browsers*/
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+/*hide only visually, but have it available for screenreaders*/
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/*extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard*/
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+}
+
+/*hide visually and from screenreaders, but maintain layout*/
+.invisible {
+    visibility: hidden;
+}

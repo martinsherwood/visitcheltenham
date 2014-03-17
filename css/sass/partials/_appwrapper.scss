@@ -1,0 +1,35 @@
+//App Wrapper
+
+#app {
+	width: 100%;
+	min-height: 100%;
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	/*z-index: 0;*/
+	overflow-x: hidden;
+	/*flex box - revise*/
+	display: -webkit-box;
+	display: -ms-box;
+	display: box;
+	-webkit-flex-box: 1;
+	-ms-box-flex: 1;
+	flex-box: 1;
+	-webkit-box-orient: vertical;
+	-ms-box-orient: vertical;
+	box-orient: vertical;
+}
+
+/*#app > .current {
+	display: block;
+	z-index: 10;
+}
+
+#app > :not(.current) {
+	display: none;
+}*/
+
+[data-role="page"] {
+	position: relative;
+}
