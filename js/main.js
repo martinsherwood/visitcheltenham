@@ -12,6 +12,9 @@ var app = {
         app.report("deviceready"); //this is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
 		document.addEventListener("offline", offline, false); //we'll use this to detect if the device is offline or not later
 		setStorage();
+		
+			/* All phonegap functionality needs to be in here */
+		
     },
     report: function(id) { 
         console.log("report:" + id);
@@ -71,40 +74,48 @@ $(document).on("deviceready", function() {
 
 /*Pull out menu
 -----------------------------------------------------------------------------------------*/
-
-
 $(function(mainMenu) {
-	var showMenu = function() {
-		$("body").toggleClass("push-active");
-		$(".main-menu").toggleClass("menu-open");
+	var menu = $(".main-menu"), //menu css class
+		body = $("body"),
+		container = $("#container"), //container id
+		push = $(".push"), //used to push content when menu is open
+		overlay = $(".overlay"), //invisible overlay for tap body to close
+		pushOpen = "menu-open", //applied when menu is open
+		pushActiveClass = "push-active", //toggles the overlay visibility for tapping body to close using the body tag
+		containerClass = "container-push", //container open class
+		pushClass = "pushed", //pushed content
+		menuButton = $(".menu-stack"); //menu button
+	
+	var toggleMenu = function() {
+		body.toggleClass(pushActiveClass); //toggle site overlay
+		menu.toggleClass(pushOpen);
+		container.toggleClass(containerClass);
+		push.toggleClass(pushClass); //css class to add pushy capability
 	};
 	
-	var hideMenu = function() {
-		$("body").removeClass("push-active");
-		$(".main-menu").removeClass("menu-open");
-	};
-	
-	$(".menu-stack").hammer().on("tap", function(e) {
-		e.stopPropagation(); e.preventDefault();
-		showMenu();
-	});
-	
-	$("html").hammer().on("swipe", function(e) {
-		if (!$(".main-menu").hasClass("menu-open") && e.gesture.direction === "right") {
-			e.stopPropagation(); e.preventDefault();
+	if (Modernizr.csstransforms3d) {
+		menuButton.hammer().on("tap", function(e) {
 			//console.log(this, e);
-			showMenu();
-		} else if ($(".main-menu").hasClass("menu-open") && e.gesture.direction === "left") {
-			e.stopPropagation(); e.preventDefault();
+			toggleMenu();
+		});
+		
+		overlay.hammer().on("tap", function(e) {
 			//console.log(this, e);
-			hideMenu();
-		}
-	});
-	
-	$("html").hammer().on("tap", function(e) {
-		e.stopPropagation(); e.preventDefault();
-		hideMenu();
-	});
+			toggleMenu();
+		});
+		
+		$("html").hammer().on("swipe", function(e) {
+			if (!$(body).hasClass("push-active") && e.gesture.direction === "right") {
+				e.stopPropagation(); e.preventDefault();
+				//console.log(this, e);
+				toggleMenu();
+			} else if ($(body).hasClass("push-active") && e.gesture.direction === "left") {
+				e.stopPropagation(); e.preventDefault();
+				//console.log(this, e);
+				toggleMenu();
+			};
+		});
+	}; //end of modernizr test
 });
 
 
@@ -132,7 +143,7 @@ $(function(homeMap) {
 	}
 	
 	var map;
-	var cheltenham = "51.902707,-2.073361";
+	var cheltenham = "51.902707,-2.073361"; //lat + long
 	var currentLocation;
 	var mapStyles = 
 	[
@@ -145,7 +156,6 @@ $(function(homeMap) {
 				}
 			]
 		},
-		
 		{
 			"featureType": "poi",
 			"elementType": "labels",
@@ -155,7 +165,6 @@ $(function(homeMap) {
 				}
 			]
 		},
-		
 		{
 			"featureType": "transit",
 			"elementType": "labels.text",
@@ -285,13 +294,15 @@ $(function(homeMap) {
 		styles: mapStyles,
 	});
 	
-	map.addLayer("places", {
+	/*map.addLayer("places", {
 		location : new google.maps.LatLng(51.902707,-2.073361),
-		radius : 500,
-		types : ["store"], //need to see how this works
+		radius : 500, //experiment with the distance
+		query: "coffee",
+		//types : ["store"], //for nearby search using places
 		
 		//I think we need to use text search or both - we need to research these
-		nearbySearch: function (results, status) {
+		//nearbySearch, textSearch, radarSearch
+		textSearch: function (results, status) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
 				for (var i = 0; i < results.length; i++) {
 					var place = results[i];
@@ -299,15 +310,15 @@ $(function(homeMap) {
 					map.addMarker({
 						lat: place.geometry.location.lat(),
 						lng: place.geometry.location.lng(),
-						title : place.name,
-						infoWindow : {
-							content : '<h2>'+place.name+'</h2><p>'+(place.vicinity ? place.vicinity : place.formatted_address)+'</p><img src="'+place.icon+'"" width="100"/>'
+						title: place.name,
+						infoWindow: {
+							content: '<h2>'+place.name+'</h2><p>'+(place.vicinity ? place.vicinity : place.formatted_address)+'</p><img src="'+place.icon+'"" width="100"/>'
 						}
 					});
 				}
 			}
 		}
-	});
+	});*/
 	
 	
 	
@@ -332,7 +343,7 @@ $(function(homeMap) {
 			address: $("#address").val().trim(),
 			callback: function(results, status) {
 				if (status == "OK") {
-					removeMarkers();
+					removeMarkers(); //clear past results
 					var result = results[0].geometry.location;
 					console.log(result);
 					map.setCenter(result.lat(), result.lng());
@@ -340,9 +351,10 @@ $(function(homeMap) {
 					map.addMarker({
 						lat: result.lat(),
 						lng: result.lng(),
-						icon: "img/location-marker-pink.svg",
+						icon: "img/location-marker-pink.png",
 						animation: google.maps.Animation.DROP,
 					});
+					
 				} else {
 					$("#address").focus();
 					console.log("oh no");
@@ -350,10 +362,87 @@ $(function(homeMap) {
 			}
 		});
 		map.setZoom(19);
+	}); 
+	
+	$(".search-button").hammer().on("tap", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		
+		var check = $("#place-query").val();
+		
+		if (check == "") {
+			$("#place-query").focus();
+			$("#place-query").attr("placeholder", "You didn't enter any terms") && $("#place-query").addClass("plc-warning");
+			setTimeout(function() {
+				$("#place-query").attr("placeholder", "Search for places") && $("#place-query").removeClass("plc-warning");;
+			}, 2500);
+			return false;
+		} else {
+			$("#place-search").submit();
+		}
 	});
 	
-	$("#search").submit(function(e){
+	$("#place-search").submit(function(e){
 		e.stopPropagation(); e.preventDefault();
+		
+		var query = $("#place-query").val();
+		
+		map.addLayer("places", {
+			location : new google.maps.LatLng(51.902707,-2.073361),
+			radius : 500, //experiment with the distance
+			query: query,
+			//types : ["store"], //for nearby search using places - we could use a switch or user setting for multiple types of searce, radio buttons or something
+			
+			//I think we need to use text search or both - we need to research these
+			//nearbySearch, textSearch, radarSearch
+			textSearch: function (results, status) {
+				if (status == google.maps.places.PlacesServiceStatus.OK) {
+					
+					$(".results-list").html(""); //remove previous results
+					
+					removeMarkers(); //remove previous markers
+					
+					var bounds = new google.maps.LatLngBounds();
+					//console.log(bounds);
+					
+					//I think if we set i to say 10, it will limit the search results - by default the places api returns 10 result sets
+					for (var i = 0; i < results.length; i++) {
+						//console.log(i);
+						var place = results[i];
+						
+						var image = { //set to better sizes and positions (icons from search results)
+							url: place.icon,
+							size: new google.maps.Size(71, 71),
+							origin: new google.maps.Point(0, 0),
+							anchor: new google.maps.Point(17, 34),
+							scaledSize: new google.maps.Size(25, 25)
+						};
+						
+						map.addMarker({
+							lat: place.geometry.location.lat(),
+							lng: place.geometry.location.lng(),
+							icon: image,
+							animation: google.maps.Animation.DROP,
+							title: place.name,
+							infoWindow: {
+								content: '<h2>'+place.name+'</h2>' + '<p>Rating: '+place.rating+'</p>' +  '<p>'+(place.vicinity ? place.vicinity : place.formatted_address)+'</p><img src="'+place.icon+'"" width="100"/>'
+							}	
+						});
+						
+						bounds.extend(place.geometry.location);
+						
+						$(".results-list").append("<li>" + place.name + "</li>"); //IMPORTANT: this needs to be cleared for new results upon a new search and the html needs better styling (main.scss)
+						
+					}//end for loop
+					map.fitBounds(bounds); //fit to the new bounds
+				}//end if ok
+			}
+		});
+		//bias the search results towards places that are within the bounds of the current maps viewport
+		google.maps.event.addListener(map, "bounds_changed", function() {
+			var bounds = map.getBounds();
+			console.log(bounds);
+			searchBox.setBounds(bounds);
+		});
 	});
 	
 	function locateUser() {
@@ -370,7 +459,7 @@ $(function(homeMap) {
 					map.addMarker({
 						lat: position.coords.latitude,
 						lng: position.coords.longitude,
-						icon: "img/location-marker-blue.svg",
+						icon: "img/location-marker-blue.png",
 						animation: google.maps.Animation.DROP,
 					});
 					map.setZoom(19);
@@ -423,24 +512,6 @@ $(function(homeMap) {
 });
 
 
-/*var resultList = [];
-var service = new google.maps.places.PlacesService(map);
-var query = $("#query").val();
-var request = {
-    location: map.getCenter(),
-    radius: "5000",
-    query: query  
-};
-
-service.textSearch(request, function(results, status, pagination){
-    if (status == google.maps.places.PlacesServiceStatus.OK) {
-        resultList = resultList.concat(results);
-        plotResultList();
-    }
-});*/
-
-
-
 
 
 
@@ -464,7 +535,7 @@ $(function(prefetch) {
 		addPrefetchTags: function() {
 			this.prefetchLinks().each(function(index, Element){
 				$("<link />", { //create a link element and add to head
-					rel: "prefetch", href: Element
+					rel: "dns-prefetch", href: Element
 				}).appendTo("head");            
 			});
 		},

@@ -28,17 +28,19 @@
         <link rel="stylesheet" href="css/fontawesome.css">
         
         <script src="js/libs/modernizr.js"></script>
-
+        
     </head>
-    <body class="push">
+    <body>
+    
+    	<div class="overlay"></div>
         
     	<div id="app" role="main" class="wrapper">
         
             <div id="home" data-role="page">
             
                 <header role="banner" data-role="header" class="app-header container inner-wrap clearfix">
-                	<div role="button" data-role="button" class="menu-stack"></div>
-                    <nav role="navigation" data-role="navbar" class="main-menu">
+                	<div role="button" data-role="button" class="menu-stack push"></div>
+                    <nav role="navigation" data-role="navbar" class="main-menu menu-closed">
                     	<div class="nav-links">
                         	<a href="#" data-pjax="#content" data-push="page"><i class="fa fa-border fa-home"></i>Home</a>
                             <a href="#" data-pjax="#content" data-push="page"><i class="fa fa-border fa-location-arrow"></i>Nearby</a>
@@ -51,7 +53,8 @@
                     
                 </header>
                 
-                <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="content container">
+                <!--all main content inside #container-->
+                <div id="container" role="contentinfo" data-role="content" data-transition="slide-left-in" class="content container">
                     <div class="location-map">
                     
                     	<div id="map-container">
@@ -59,21 +62,29 @@
                     
                     </div>
                     
-                    <div role="search" class="search">
-                    	<form method="post" id="geocode-search">
+                    <div role="search" class="searches">
+                    	<!--<form method="post" id="geocode-search">
                         	<input type="text" id="address" name="address" placeholder="Location or Postcode" required>
-                        </form>
+                        </form>-->
+                        
+                        <form id="place-search" role="search">                    
+                    		<input type="text" id="place-query" name="place-query" placeholder="Search for a place" autocomplete="off" autocorrect="on" autocapitalize="off" required>
+                            <div role="button" data-role="button" data-action="submit-search" class="search-button"></div>
+                    	</form>
+                        
+                        <div class="results">
+                        	<h1>Results</h1>
+                        	
+                            <ul class="results-list">
+                            	
+                            </ul>
+                        </div>
+                        
                     </div>
                     
-                    <form id="search" class="navbar-form form-search">                    
-                        <div class="input-append">
-                            <input id="query" type="text" class="search-query" placeholder="Where to?" >
-                            <button type="submit" class="btn"><i class="icon-search"></i></button>
-                        </div>
-                    </form>
+                    
                     
                 </div><!--/content-->
-                    
             </div><!--/home-->
             
             <!-- other sections will be here -->
@@ -85,7 +96,7 @@
         <!--test top and botttom: could add " &callback=initialiseMap " or whatver function name, the function is called when the map api has completed loading-->
         <!--this won't load if the device is offline which will cause problems and all kinds of hell, so we need to test for the connection-->
         <!--might need these: &libraries=drawing-->
-        <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyC6n-3I8KfH6ReeERae16W5M8B1QtzjPGc&sensor=true&libraries=places&region=GB"></script>
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC6n-3I8KfH6ReeERae16W5M8B1QtzjPGc&sensor=true&libraries=places&region=GB"></script>
         
         <script src="js/min/hammer.min.js"></script>
         <script src="js/min/push.min.js"></script>
