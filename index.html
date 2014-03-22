@@ -12,7 +12,8 @@
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
         
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height"><!--revise if problems-->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, width=device-width"><!--revise if problems-->
+        
         <meta http-equiv="cleartype" content="on">
 		<meta name="format-detection" content="telephone=no">
         
@@ -56,38 +57,30 @@
                 <!--all main content inside #container-->
                 <div id="container" role="contentinfo" data-role="content" data-transition="slide-left-in" class="content container">
                     <div class="location-map">
-                    
                     	<div id="map-container">
                         </div>
-                    
                     </div>
                     
-                    <div role="search" class="searches">
-                    	<!--<form method="post" id="geocode-search">
-                        	<input type="text" id="address" name="address" placeholder="Location or Postcode" required>
-                        </form>-->
-                        
+                    <div role="search" class="searches"> 
                         <form id="place-search" role="search">                    
-                    		<input type="text" id="place-query" name="place-query" placeholder="Search for a place" autocomplete="off" autocorrect="on" autocapitalize="off" required>
+                    		<input type="text" id="place-query" name="place-query" placeholder="Search for a place" autocomplete="off" autocorrect="on" autocapitalize="off">
                             <div role="button" data-role="button" data-action="submit-search" class="search-button"></div>
                     	</form>
                         
                         <div class="results">
-                        	<h1>Results</h1>
-                        	
+                        	<h1 class="inner-wrap">Results</h1>
                             <ul class="results-list">
-                            	
                             </ul>
                         </div>
-                        
                     </div>
-                    
-                    
-                    
                 </div><!--/content-->
             </div><!--/home-->
             
             <!-- other sections will be here -->
+            
+            <div id="settings" data-role="page">
+            	
+            </div>
 
         </div><!--/wrapper-->
         

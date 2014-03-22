@@ -134,7 +134,19 @@ $("[data-push=\"page\"]").hammer().on("tap", function(e) {
 
 
 /*Map on start page, with geolocation
+
+var map - the map on the start page
+var cheltenham - lat and long from centre of cheltenham built into a google maps latlng object
+var mapStyles - json style array for the map
+
+//IMPORTANT
+var position - is used to get the lat and long values from the gps
+var currentLocation - holds the users current location from the values in position
+
 -----------------------------------------------------------------------------------------*/
+
+
+
 $(function(homeMap) {
 	
 	if (!Modernizr.geolocation) {
@@ -143,7 +155,7 @@ $(function(homeMap) {
 	}
 	
 	var map;
-	var cheltenham = "51.902707,-2.073361"; //lat + long
+	var cheltenham = new google.maps.LatLng(51.902707,-2.073361);
 	var currentLocation;
 	var mapStyles = 
 	[
@@ -289,40 +301,71 @@ $(function(homeMap) {
 		div: "#map-container",
 		lat: 51.902707, //these coords are Cheltenham, from the centre
 		lng: -2.073361,
-		zoom: 14, //19 is optimal for our use as it shows POI marker icons but is perhaps too zoomed in, 14 is good for testing
+		zoom: 14, //14 is good, 19 is optimal for our use as it shows POI marker icons but is perhaps too zoomed in, 14 is good for testing
 		disableDefaultUI: true,
 		styles: mapStyles,
 	});
 	
-	/*map.addLayer("places", {
-		location : new google.maps.LatLng(51.902707,-2.073361),
-		radius : 500, //experiment with the distance
-		query: "coffee",
-		//types : ["store"], //for nearby search using places
-		
-		//I think we need to use text search or both - we need to research these
-		//nearbySearch, textSearch, radarSearch
-		textSearch: function (results, status) {
-			if (status == google.maps.places.PlacesServiceStatus.OK) {
-				for (var i = 0; i < results.length; i++) {
-					var place = results[i];
+	$(function(initialLocate) {
+		if (Modernizr.geolocation) {
+			GMaps.geolocate({
+				success: function(position) {
+					//var position = {"lat": position.coords.latitude, "lng": position.coords.longitude}; //might have to move to global var
+					//currentLocation = new google.maps.LatLng(position.lat, position.lng);
 					
-					map.addMarker({
-						lat: place.geometry.location.lat(),
-						lng: place.geometry.location.lng(),
-						title: place.name,
-						infoWindow: {
-							content: '<h2>'+place.name+'</h2><p>'+(place.vicinity ? place.vicinity : place.formatted_address)+'</p><img src="'+place.icon+'"" width="100"/>'
-						}
-					});
+					currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+					
+					console.log(currentLocation);
+				},
+				error: function(error) {
+					$(".location-map").append("<p class=\"no-geo message warning\">Sorry, we failed to get your current location.</p>");
+				},
+				not_supported: function() {
+					noGeo();
 				}
+			});
+		} else {
+			noGeo();
+		}	
+	});
+	
+	
+		
+		/* --------- */
+		
+		//THIS NEEDS MORE WORK TO USE THE CURRENT LOCATION OF THE USER
+		
+		var origin = new google.maps.LatLng(51.902707,-2.073361);
+		var destination = new google.maps.LatLng(51.899464, -2.074641);
+		
+		var service = new google.maps.DistanceMatrixService();
+		service.getDistanceMatrix({
+			origins: [origin],
+			destinations: [destination],
+			travelMode: google.maps.TravelMode.WALKING,
+			unitSystem: google.maps.UnitSystem.IMPERIAL,
+			avoidHighways: false,
+			avoidTolls: false
+		}, callback);
+		
+		function callback(response, status) {
+			if (status == "OK") {
+				//origin.value = response.destinationAddresses[0];
+				destination.value = response.rows[0].elements[0].distance.text;
+				
+				var distanceTxt = response.rows[0].elements[0].distance.text;
+				var distanceVal = response.rows[0].elements[0].distance.value; //the one I need
+				
+				console.log(distanceTxt);
+				
+			} else {
+				return false;
 			}
 		}
-	});*/
-	
-	
-	
-	
+		
+		callback();
+		
+		/* --------- */
 	
 	
 	
@@ -366,7 +409,6 @@ $(function(homeMap) {
 	
 	$(".search-button").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
-		
 		var check = $("#place-query").val();
 		
 		if (check == "") {
@@ -381,14 +423,29 @@ $(function(homeMap) {
 		}
 	});
 	
+	
+	function placeCheck() {
+		var query = $("#place-query").val();
+		
+		if (query == "") {
+			$("#place-query").focus();
+			$("#place-query").attr("placeholder", "You didn't enter any terms") && $("#place-query").addClass("plc-warning");
+			setTimeout(function() {
+				$("#place-query").attr("placeholder", "Search for places") && $("#place-query").removeClass("plc-warning");;
+			}, 2500);
+			return false;
+		} else {
+			$("#place-search").submit();
+		}
+	}
+	
 	$("#place-search").submit(function(e){
 		e.stopPropagation(); e.preventDefault();
-		
 		var query = $("#place-query").val();
 		
 		map.addLayer("places", {
-			location : new google.maps.LatLng(51.902707,-2.073361),
-			radius : 500, //experiment with the distance
+			location: new google.maps.LatLng(51.902707,-2.073361),
+			radius: 500, //experiment with the distance
 			query: query,
 			//types : ["store"], //for nearby search using places - we could use a switch or user setting for multiple types of searce, radio buttons or something
 			
@@ -396,7 +453,6 @@ $(function(homeMap) {
 			//nearbySearch, textSearch, radarSearch
 			textSearch: function (results, status) {
 				if (status == google.maps.places.PlacesServiceStatus.OK) {
-					
 					$(".results-list").html(""); //remove previous results
 					
 					removeMarkers(); //remove previous markers
@@ -429,20 +485,22 @@ $(function(homeMap) {
 						});
 						
 						bounds.extend(place.geometry.location);
-						
 						$(".results-list").append("<li>" + place.name + "</li>"); //IMPORTANT: this needs to be cleared for new results upon a new search and the html needs better styling (main.scss)
 						
 					}//end for loop
 					map.fitBounds(bounds); //fit to the new bounds
 				}//end if ok
-			}
-		});
+			}//end search
+		});//end place layer
+		
 		//bias the search results towards places that are within the bounds of the current maps viewport
 		google.maps.event.addListener(map, "bounds_changed", function() {
 			var bounds = map.getBounds();
 			console.log(bounds);
-			searchBox.setBounds(bounds);
+			//searchBox.setBounds(bounds);
+			$("#place-query").setBounds(bounds);
 		});
+		
 	});
 	
 	function locateUser() {
@@ -452,8 +510,11 @@ $(function(homeMap) {
 					removeMarkers(); //remove markers from the map
 					map.setCenter(position.coords.latitude, position.coords.longitude); //I think smooth panning works if the new location is within a certain radius
 					
-					//update var
-					currentLocation = position.coords.latitude + ", " + position.coords.longitude;
+					//update current location variable
+					//var position = {"lat": position.coords.latitude, "lng": position.coords.longitude};
+					//currentLocation = new google.maps.LatLng(position.lat, position.lng);
+					currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+					console.log(currentLocation);
 					
 					//add marker at user current location
 					map.addMarker({
@@ -462,7 +523,7 @@ $(function(homeMap) {
 						icon: "img/location-marker-blue.png",
 						animation: google.maps.Animation.DROP,
 					});
-					map.setZoom(19);
+					map.setZoom(16);
 				},
 				error: function(error) {
 					geoError();
@@ -472,9 +533,9 @@ $(function(homeMap) {
 					noGeo();
 					console.log("This browser does not support geolocation");
 				},
-				always: function() {
-					console.log(currentLocation);
-				},
+				/*always: function() {
+					
+				},*/
 			});
 		} else {//if no geolocation is supported, replace the content
 			noGeo();
@@ -486,11 +547,11 @@ $(function(homeMap) {
 		setTimeout(function() {
 			$(".no-geo").remove();
 		}, 3500);
-	}
+	};
 	
 	function noGeo() {
 		$(".location-map").append("<p class=\"no-geo message warning\">Sorry, this feature isn't supported on your device.</p>");
-	}
+	};
 	
 	function removeMarkers() {
 		map.removeMarkers();
@@ -510,10 +571,6 @@ $(function(homeMap) {
 		});
 	};
 });
-
-
-
-
 
 
 
