@@ -9,8 +9,8 @@
         <title>Home</title>
         
         <meta name="description" content="Travel &amp; Tourism App for Cheltenham, United Kingdom">
-        <meta name="HandheldFriendly" content="True">
-        <meta name="MobileOptimized" content="320">
+        <!--<meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">-->
         
         <meta name="viewport" content="user-scalable=no, initial-scale=1, width=device-width"><!--revise if problems-->
         
@@ -43,10 +43,10 @@
                 	<div role="button" data-role="button" class="menu-stack push"></div>
                     <nav role="navigation" data-role="navbar" class="main-menu menu-closed">
                     	<div class="nav-links">
-                        	<a href="#" data-pjax="#content" data-push="page"><i class="fa fa-border fa-home"></i>Home</a>
-                            <a href="#" data-pjax="#content" data-push="page"><i class="fa fa-border fa-location-arrow"></i>Nearby</a>
-                            <a href="#" data-pjax="#content" data-push="page"><i class="fa fa-border fa-shopping-cart"></i>Offers</a>
-                            <a href="#" data-pjax="#content" data-push="page"><i class="fa fa-border fa-cog"></i>Settings</a>
+                        	<a href="#" data-push="page"><i class="fa fa-border fa-home"></i>Home</a>
+                            <a href="#" data-push="page"><i class="fa fa-border fa-location-arrow"></i>Nearby</a>
+                            <a href="#" data-push="page"><i class="fa fa-border fa-shopping-cart"></i>Offers</a>
+                            <a href="#" data-push="page"><i class="fa fa-border fa-cog"></i>Settings</a>
                         </div>
                     </nav>
                     
@@ -54,8 +54,8 @@
                     
                 </header>
                 
-                <!--all main content inside #container-->
-                <div id="container" role="contentinfo" data-role="content" data-transition="slide-left-in" class="content container">
+                <!-- id="container"-->
+                <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="content push container">
                     <div class="location-map">
                     	<div id="map-container">
                         </div>
@@ -69,7 +69,10 @@
                         
                         <div class="results">
                         	<h1 class="inner-wrap">Results</h1>
-                            <ul class="results-list">
+                            <ul class="results-names">
+                            </ul>
+                            
+                            <ul class="results-distances">
                             </ul>
                         </div>
                     </div>
@@ -89,6 +92,7 @@
         <!--test top and botttom: could add " &callback=initialiseMap " or whatver function name, the function is called when the map api has completed loading-->
         <!--this won't load if the device is offline which will cause problems and all kinds of hell, so we need to test for the connection-->
         <!--might need these: &libraries=drawing-->
+        <!--we are only loading Great Britain so locations outside will not work, and cause errors-->
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC6n-3I8KfH6ReeERae16W5M8B1QtzjPGc&sensor=true&libraries=places&region=GB"></script>
         
         <script src="js/min/hammer.min.js"></script>

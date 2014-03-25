@@ -3480,9 +3480,9 @@ h4 {
   /*-webkit-transition: all 0.3s ease;
   	-ms-transition: all 0.3s ease;
   		transition: all 0.3s ease;*/
-  /*-webkit-transform-style: preserve-3d;
-  	-ms-transform-style: preserve-3d;
-  		transform-style: preserve-3d;*/
+  -webkit-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d;
   overflow: auto;
   -webkit-box-shadow: inset -10px 0 12px -9px rgba(0, 0, 0, 0.7);
   box-shadow: inset -10px 0 12px -9px rgba(0, 0, 0, 0.7);
@@ -3512,8 +3512,10 @@ h4 {
   -ms-transition: -ms-transform 0.4s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   transition: transform 0.4s cubic-bezier(0.16, 0.68, 0.43, 0.99);
   -webkit-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-perspective: 1000;
+  -ms-perspective: 1000;
   perspective: 1000;
 }
 
@@ -3577,7 +3579,7 @@ h4 {
 
 #map-container {
   width: 100%;
-  height: 180px;
+  height: 200px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -3614,20 +3616,45 @@ h4 {
   border-top: 1px solid #cfd1d5;
   border-bottom: 1px solid #fffffa;
 }
-.searches .results ul.results-list {
+.searches .results ul.results-names, .searches .results ul.results-distances {
+  float: left;
+  position: relative;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.searches .results ul.results-list li {
+.searches .results ul.results-names li, .searches .results ul.results-distances li {
+  height: 80px;
   display: block;
+  position: relative;
   background: #00adef;
   border-bottom: 1px solid #fffffa;
   padding: 1.0rem 14px;
   color: #fffffa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.searches .results ul.results-list li:last-of-type {
+.searches .results ul.results-names li:last-child, .searches .results ul.results-distances li:last-child {
   border: none;
+}
+.searches .results ul.results-names {
+  width: 70%;
+}
+.searches .results ul.results-names li {
+  line-height: 3rem;
+}
+.searches .results ul.results-distances {
+  width: 30%;
+}
+.searches .results ul.results-distances li {
+  text-align: center;
+  background: #0088bc;
+}
+.searches .results ul.results-distances li:after {
+  display: block;
+  font-size: 1.0rem;
+  content: "away";
 }
 
 #place-search {

@@ -77,7 +77,7 @@ $(document).on("deviceready", function() {
 $(function(mainMenu) {
 	var menu = $(".main-menu"), //menu css class
 		body = $("body"),
-		container = $("#container"), //container id
+		container = $("#container"), //container id - NOT USED CURRENTLY AS WOULD CONFLICT WITH OTHER "PAGES" ON THE THE SAME PAGE, MIGHT HAVE TO ADJUST
 		push = $(".push"), //used to push content when menu is open
 		overlay = $(".overlay"), //invisible overlay for tap body to close
 		pushOpen = "menu-open", //applied when menu is open
@@ -154,9 +154,13 @@ $(function(homeMap) {
 		return false;
 	}
 	
+	var nameList = $(".results-names");
+	var distanceList = $(".results-distances");
+	
 	var map;
 	var cheltenham = new google.maps.LatLng(51.902707,-2.073361);
 	var currentLocation;
+	var origin;
 	var mapStyles = 
 	[
 		{
@@ -299,78 +303,68 @@ $(function(homeMap) {
 	
 	map = new GMaps({
 		div: "#map-container",
-		lat: 51.902707, //these coords are Cheltenham, from the centre
-		lng: -2.073361,
+		center: cheltenham,
+		//lat: 51.902707,
+		//lng: -2.073361,
 		zoom: 14, //14 is good, 19 is optimal for our use as it shows POI marker icons but is perhaps too zoomed in, 14 is good for testing
 		disableDefaultUI: true,
 		styles: mapStyles,
 	});
 	
+	//try normal google api geolocation and not gmaps.js
 	$(function(initialLocate) {
 		if (Modernizr.geolocation) {
 			GMaps.geolocate({
 				success: function(position) {
-					//var position = {"lat": position.coords.latitude, "lng": position.coords.longitude}; //might have to move to global var
-					//currentLocation = new google.maps.LatLng(position.lat, position.lng);
+					var position = {"lat": position.coords.latitude, "lng": position.coords.longitude}; //might have to move to global var
+					currentLocation = new google.maps.LatLng(position.lat, position.lng);
+					console.log("currentLocation: " + currentLocation);
 					
-					currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 					
-					console.log(currentLocation);
+					/* DISTANCE CALCULATE ----- */
+					/*var origin = currentLocation; //new google.maps.LatLng(51.902707,-2.073361);
+					var destination = new google.maps.LatLng(51.899464, -2.074641); //this would change depending on the places location, I think it is: place.geometry.location
+					
+					var service = new google.maps.DistanceMatrixService();
+					
+					service.getDistanceMatrix({
+						origins: [origin],
+						destinations: [destination],
+						travelMode: google.maps.TravelMode.WALKING, //this needs to be a choice
+						unitSystem: google.maps.UnitSystem.IMPERIAL,
+						avoidHighways: false,
+						avoidTolls: false
+					}, getDistance);
+							
+					function getDistance(response, status) {
+						if (status == "OK") {
+							//origin.value = response.destinationAddresses[0];
+							destination.value = response.rows[0].elements[0].distance.text;
+							
+							var distanceTxt = response.rows[0].elements[0].distance.text; //the one I need
+							var distanceVal = response.rows[0].elements[0].distance.value; 
+							
+							//console.log(distanceTxt);
+							
+						} else {
+							return false;
+						}
+					}*/
+					
+					//getDistance();
+					/* ----- */
+					
 				},
 				error: function(error) {
 					$(".location-map").append("<p class=\"no-geo message warning\">Sorry, we failed to get your current location.</p>");
-				},
-				not_supported: function() {
-					noGeo();
+					console.log(error.message);
 				}
 			});
 		} else {
 			noGeo();
 		}	
 	});
-	
-	
-		
-		/* --------- */
-		
-		//THIS NEEDS MORE WORK TO USE THE CURRENT LOCATION OF THE USER
-		
-		var origin = new google.maps.LatLng(51.902707,-2.073361);
-		var destination = new google.maps.LatLng(51.899464, -2.074641);
-		
-		var service = new google.maps.DistanceMatrixService();
-		service.getDistanceMatrix({
-			origins: [origin],
-			destinations: [destination],
-			travelMode: google.maps.TravelMode.WALKING,
-			unitSystem: google.maps.UnitSystem.IMPERIAL,
-			avoidHighways: false,
-			avoidTolls: false
-		}, callback);
-		
-		function callback(response, status) {
-			if (status == "OK") {
-				//origin.value = response.destinationAddresses[0];
-				destination.value = response.rows[0].elements[0].distance.text;
-				
-				var distanceTxt = response.rows[0].elements[0].distance.text;
-				var distanceVal = response.rows[0].elements[0].distance.value; //the one I need
-				
-				console.log(distanceTxt);
-				
-			} else {
-				return false;
-			}
-		}
-		
-		callback();
-		
-		/* --------- */
-	
-	
-	
-	
-	
+
 	$(".locate-button").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		if (Modernizr.geolocation) {
@@ -423,7 +417,6 @@ $(function(homeMap) {
 		}
 	});
 	
-	
 	function placeCheck() {
 		var query = $("#place-query").val();
 		
@@ -444,15 +437,17 @@ $(function(homeMap) {
 		var query = $("#place-query").val();
 		
 		map.addLayer("places", {
-			location: new google.maps.LatLng(51.902707,-2.073361),
-			radius: 500, //experiment with the distance
+			location: cheltenham, //new google.maps.LatLng(51.902707,-2.073361),
+			radius: 500, //experiment with the distance (in metres)
 			query: query,
+			opennow: true,
+			sensor: true,
 			//types : ["store"], //for nearby search using places - we could use a switch or user setting for multiple types of searce, radio buttons or something
 			
 			//I think we need to use text search or both - we need to research these
-			//nearbySearch, textSearch, radarSearch
 			textSearch: function (results, status) {
-				if (status == google.maps.places.PlacesServiceStatus.OK) {
+				if (status == google.maps.places.PlacesServiceStatus.OK) { //we need to catch the other status - https://developers.google.com/places/documentation/search, i.e. ZERO_RESULTS
+					
 					$(".results-list").html(""); //remove previous results
 					
 					removeMarkers(); //remove previous markers
@@ -460,7 +455,7 @@ $(function(homeMap) {
 					var bounds = new google.maps.LatLngBounds();
 					//console.log(bounds);
 					
-					//I think if we set i to say 10, it will limit the search results - by default the places api returns 10 result sets
+					//I think if we set i to say 10, it will limit the search results - by default the places api returns 20 result sets
 					for (var i = 0; i < results.length; i++) {
 						//console.log(i);
 						var place = results[i];
@@ -473,25 +468,77 @@ $(function(homeMap) {
 							scaledSize: new google.maps.Size(25, 25)
 						};
 						
+						/* ---------- */
+						
+						var origin = currentLocation;
+						var destination = place.geometry.location;
+						var service = new google.maps.DistanceMatrixService();
+						
+						service.getDistanceMatrix({
+							origins: [origin],
+							destinations: [destination],
+							travelMode: google.maps.TravelMode.WALKING, //this needs to be a choice
+							unitSystem: google.maps.UnitSystem.IMPERIAL,
+							avoidHighways: false,
+							avoidTolls: false
+						}, getDistance);
+						
+						nameList.append("<li class=\"name\">" + place.name + "</li>")
+
+						function getDistance(response, status) {
+							if (status == google.maps.DistanceMatrixStatus.OK) {
+								
+								var origins = response.originAddresses;
+    							var destinations = response.destinationAddresses;
+								
+								/* do some funky stuff */
+								for (var i = 0; i < origins.length; i++) {
+									var results = response.rows[i].elements;
+									
+									for (var j = 0; j < results.length; j++) {
+										var element = results[j];
+										var distance = element.distance.text;
+										var duration = element.duration.text;
+										
+										var from = origins[i];
+										var to = destinations[j];
+										
+										distanceList.append("<li class=\"distance\">" + distance + "</li>");
+									}
+								}
+							} else {
+								return false;
+								console.log(response + status)
+							}
+						}
+						
+						/* ---------- */
+						
 						map.addMarker({
 							lat: place.geometry.location.lat(),
 							lng: place.geometry.location.lng(),
 							icon: image,
 							animation: google.maps.Animation.DROP,
 							title: place.name,
+							
+							//we need to style and build these better - ideas? should be simple I think, Name + Location + Image
 							infoWindow: {
 								content: '<h2>'+place.name+'</h2>' + '<p>Rating: '+place.rating+'</p>' +  '<p>'+(place.vicinity ? place.vicinity : place.formatted_address)+'</p><img src="'+place.icon+'"" width="100"/>'
 							}	
 						});
 						
 						bounds.extend(place.geometry.location);
-						$(".results-list").append("<li>" + place.name + "</li>"); //IMPORTANT: this needs to be cleared for new results upon a new search and the html needs better styling (main.scss)
 						
-					}//end for loop
+						//var name = place.name;
+						//console.log(name)
+						
+						//$(".results-list").append("<li>" + place.name + "<span class=\"distance\"></span></li>"); //" + distance + "
+						
+					}
 					map.fitBounds(bounds); //fit to the new bounds
-				}//end if ok
-			}//end search
-		});//end place layer
+				}//end if search OK, add else here (we need to do this)
+			}
+		});
 		
 		//bias the search results towards places that are within the bounds of the current maps viewport
 		google.maps.event.addListener(map, "bounds_changed", function() {
@@ -507,38 +554,34 @@ $(function(homeMap) {
 		if (Modernizr.geolocation) {
 			GMaps.geolocate({
 				success: function(position) {
-					removeMarkers(); //remove markers from the map
-					map.setCenter(position.coords.latitude, position.coords.longitude); //I think smooth panning works if the new location is within a certain radius
-					
 					//update current location variable
-					//var position = {"lat": position.coords.latitude, "lng": position.coords.longitude};
-					//currentLocation = new google.maps.LatLng(position.lat, position.lng);
-					currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-					console.log(currentLocation);
+					var position = {"lat": position.coords.latitude, "lng": position.coords.longitude}; //might have to move to global var
+					currentLocation = new google.maps.LatLng(position.lat, position.lng); //could be problematic with distance function, as not the same function
+					console.log("locate button, currentLocation: " + currentLocation);
 					
-					//add marker at user current location
-					map.addMarker({
-						lat: position.coords.latitude,
-						lng: position.coords.longitude,
+					removeMarkers(); //remove markers from the map
+					
+					map.addMarker({//add marker at user current location
+						lat: position.lat,
+						lng: position.lng,
 						icon: "img/location-marker-blue.png",
 						animation: google.maps.Animation.DROP,
 					});
+					
+					map.setCenter(position.lat, position.lng); //I think smooth panning works if the new location is within a certain radius
 					map.setZoom(16);
 				},
 				error: function(error) {
 					geoError();
 					console.log("Geolocation failed: " + error.message);
 				},
-				not_supported: function() {
-					noGeo();
-					console.log("This browser does not support geolocation");
-				},
 				/*always: function() {
-					
+					//more here?
 				},*/
 			});
 		} else {//if no geolocation is supported, replace the content
 			noGeo();
+			console.log("This browser does not support geolocation");
 		};
 	};
 	
@@ -563,7 +606,7 @@ $(function(homeMap) {
 			callback: function(results, status) {
 				if (status == "OK") {
 					var result = results[0].geometry.location;
-					//alert(result);
+					console.log(result);
 				} else {
 					return false;
 				}
