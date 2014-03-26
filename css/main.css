@@ -3441,6 +3441,14 @@ h4 {
   background: #fffffa;
   z-index: 9999;
 }
+.app-header:before, .app-header:after {
+  content: "\0020";
+  display: table;
+  /*or block*/
+}
+.app-header:after {
+  clear: both;
+}
 
 .menu-stack {
   width: 34px;
@@ -3579,7 +3587,7 @@ h4 {
 
 #map-container {
   width: 100%;
-  height: 200px;
+  height: 260px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -3587,7 +3595,7 @@ h4 {
 }
 @media screen and (min-width: 48em) {
   #map-container {
-    height: 400px;
+    height: 460px;
   }
 }
 #map-container .adp-warnbox, #map-container .adp-legal, #map-container .gmnoprint, #map-container .gm-style-cc {
@@ -3656,6 +3664,22 @@ h4 {
   font-size: 1.0rem;
   content: "away";
 }
+.searches .results:before, .searches .results:after {
+  content: "\0020";
+  display: table;
+  /*or block*/
+}
+.searches .results:after {
+  clear: both;
+}
+.searches:before, .searches:after {
+  content: "\0020";
+  display: table;
+  /*or block*/
+}
+.searches:after {
+  clear: both;
+}
 
 #place-search {
   width: 100%;
@@ -3715,6 +3739,26 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 2px #6fb4f1;
 }
 
+.message, .warning, .success {
+  text-align: center;
+}
+
+.warning {
+  color: #f27b36;
+}
+
+.success {
+  color: #a8bd42;
+}
+
+.no-results {
+  padding-top: 10px;
+}
+
+.plc-warning::-webkit-input-placeholder {
+  color: #f27b36;
+}
+
 .no-geo {
   width: 100%;
   position: absolute;
@@ -3726,27 +3770,6 @@ input:focus, textarea:focus, select:focus {
   padding: 0.5rem;
 }
 
-.message, .warning, .success {
-  text-align: center;
-}
-
-.warning {
-  color: #f27b36;
-}
-
-.plc-warning::-webkit-input-placeholder {
-  color: #f27b36;
-}
-
-.success {
-  color: #a8bd42;
-}
-
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
-/*-----------------------------------------------------------------*/
 /*-----------------------------------------------------------------*/
 /* Helper classes
 -------------------------------------------------------------------*/

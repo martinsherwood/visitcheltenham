@@ -72,7 +72,8 @@ $(document).on("deviceready", function() {
 
 });
 
-/*Pull out menu
+
+/*Pull out menu, using 3dtransforms
 -----------------------------------------------------------------------------------------*/
 $(function(mainMenu) {
 	var menu = $(".main-menu"), //menu css class
@@ -115,11 +116,11 @@ $(function(mainMenu) {
 				toggleMenu();
 			};
 		});
-	}; //end of modernizr test
+	}; //end of modernizr test - not needed for this app, but a jquery or other fallback technique should be here
 });
 
 
-/*Page swapping
+/*Page swapping - NEEDS A LOT OF WORK
 -----------------------------------------------------------------------------------------*/
 
 //$(document).pjax("a", "#content")
@@ -144,216 +145,44 @@ var position - is used to get the lat and long values from the gps
 var currentLocation - holds the users current location from the values in position
 
 -----------------------------------------------------------------------------------------*/
-
-
-
 $(function(homeMap) {
 	
+	//if not available, then fallover
 	if (!Modernizr.geolocation) {
-		$(".location-map").html("<p class=\"no-geo message warning\">Sorry, this feature isn't supported on your device.</p>");
+		noGeo();
 		return false;
 	}
 	
-	var nameList = $(".results-names");
-	var distanceList = $(".results-distances");
+	//variables to cache the result lists for faster performance
+	var nameList = $(".results-names"),
+		distanceList = $(".results-distances");
+		noResults = $(".results h1");
+		
+	var locationMark, locationCircle;
 	
+	//vars to the control and store various aspects of the app
 	var map;
 	var cheltenham = new google.maps.LatLng(51.902707,-2.073361);
 	var currentLocation;
-	var origin;
-	var mapStyles = 
-	[
-		{
-			"featureType": "road",
-			"elementType": "labels",
-			"stylers": [
-				{
-					"visibility": "off"
-				}
-			]
-		},
-		{
-			"featureType": "poi",
-			"elementType": "labels",
-			"stylers": [
-				{
-					"visibility": "simplified"
-				}
-			]
-		},
-		{
-			"featureType": "transit",
-			"elementType": "labels.text",
-			"stylers": [
-				{
-					"visibility": "off"
-				}
-			]
-		},
-		//styles for colours
-		{
-			"featureType": "water",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"color": "#a2daf2"
-				}
-			]
-		},
-		{
-			"featureType": "landscape.man_made",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"color": "#f7f1df"
-				}
-			]
-		},
-		{
-			"featureType": "landscape.natural",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"color": "#d0e3b4"
-				}
-			]
-		},
-		{
-			"featureType": "landscape.natural.terrain",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"visibility": "off"
-				}
-			]
-		},
-		{
-			"featureType": "poi.park",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"color": "#bde6ab"
-				}
-			]
-		},
-		{
-			"featureType": "poi.medical",
-			"elementType": "geometry",
-			"stylers": [
-				{
-					"color": "#fbd3da"
-				}
-			]
-		},
-		{
-			"featureType": "road",
-			"elementType": "geometry.stroke",
-			"stylers": [
-				{
-					"visibility": "off"
-				}
-			]
-		},
-		{
-			"featureType": "road.highway",
-			"elementType": "geometry.fill",
-			"stylers": [
-				{
-					"color": "#ffe15f"
-				}
-			]
-		},
-		{
-			"featureType": "road.highway",
-			"elementType": "geometry.stroke",
-			"stylers": [
-				{
-					"color": "#efd151"
-				}
-			]
-		},
-		{
-			"featureType": "road.arterial",
-			"elementType": "geometry.fill",
-			"stylers": [
-				{
-					"color": "#ffffff"
-				}
-			]
-		},
-		{
-			"featureType": "road.local",
-			"elementType": "geometry.fill",
-			"stylers": [
-				{
-					"color": "black"
-				}
-			]
-		},
-		{
-			"featureType": "transit.station.airport",
-			"elementType": "geometry.fill",
-			"stylers": [
-				{
-					"color": "#cfb2db"
-				}
-			]
-		}
-	]
+	var origin; //this is used for the distance matrix function (declared globally in case access is needed out of scope)
+	var mapStyles = [{featureType:"road",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"poi",elementType:"labels",stylers:[{visibility:"simplified"}]},{featureType:"transit",elementType:"labels.text",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#a2daf2"}]},{featureType:"landscape.man_made",elementType:"geometry",stylers:[{color:"#f7f1df"}]},{featureType:"landscape.natural",elementType:"geometry",stylers:[{color:"#d0e3b4"}]},{featureType:"landscape.natural.terrain",elementType:"geometry",stylers:[{visibility:"off"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#bde6ab"}]},{featureType:"poi.medical",elementType:"geometry",stylers:[{color:"#fbd3da"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{color:"#ffe15f"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#efd151"}]},{featureType:"road.arterial",elementType:"geometry.fill",stylers:[{color:"#ffffff"}]},{featureType:"road.local",elementType:"geometry.fill",stylers:[{color:"black"}]},{featureType:"transit.station.airport",elementType:"geometry.fill",stylers:[{color:"#cfb2db"}]}];
 	
 	map = new GMaps({
 		div: "#map-container",
-		center: cheltenham,
-		//lat: 51.902707,
-		//lng: -2.073361,
-		zoom: 14, //14 is good, 19 is optimal for our use as it shows POI marker icons but is perhaps too zoomed in, 14 is good for testing
+		center: cheltenham, //also accets seperate lat and lng values, e.g. lat: 51.902707, lng: -2.073361
+		zoom: 14, //14 is good, 19 is optimal for our use as it shows POI marker icons but is perhaps too zoomed in
 		disableDefaultUI: true,
 		styles: mapStyles,
 	});
 	
-	//try normal google api geolocation and not gmaps.js
+	//get the location of the user and store in currentLocation var
 	$(function(initialLocate) {
 		if (Modernizr.geolocation) {
 			GMaps.geolocate({
 				success: function(position) {
-					var position = {"lat": position.coords.latitude, "lng": position.coords.longitude}; //might have to move to global var
+					var position = {"lat": position.coords.latitude, "lng": position.coords.longitude};
 					currentLocation = new google.maps.LatLng(position.lat, position.lng);
 					console.log("currentLocation: " + currentLocation);
-					
-					
-					/* DISTANCE CALCULATE ----- */
-					/*var origin = currentLocation; //new google.maps.LatLng(51.902707,-2.073361);
-					var destination = new google.maps.LatLng(51.899464, -2.074641); //this would change depending on the places location, I think it is: place.geometry.location
-					
-					var service = new google.maps.DistanceMatrixService();
-					
-					service.getDistanceMatrix({
-						origins: [origin],
-						destinations: [destination],
-						travelMode: google.maps.TravelMode.WALKING, //this needs to be a choice
-						unitSystem: google.maps.UnitSystem.IMPERIAL,
-						avoidHighways: false,
-						avoidTolls: false
-					}, getDistance);
-							
-					function getDistance(response, status) {
-						if (status == "OK") {
-							//origin.value = response.destinationAddresses[0];
-							destination.value = response.rows[0].elements[0].distance.text;
-							
-							var distanceTxt = response.rows[0].elements[0].distance.text; //the one I need
-							var distanceVal = response.rows[0].elements[0].distance.value; 
-							
-							//console.log(distanceTxt);
-							
-						} else {
-							return false;
-						}
-					}*/
-					
-					//getDistance();
-					/* ----- */
-					
 				},
 				error: function(error) {
 					$(".location-map").append("<p class=\"no-geo message warning\">Sorry, we failed to get your current location.</p>");
@@ -403,153 +232,193 @@ $(function(homeMap) {
 	
 	$(".search-button").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
-		var check = $("#place-query").val();
-		
-		if (check == "") {
+		var query = $("#place-query").val();
+		if (query == "") {
 			$("#place-query").focus();
-			$("#place-query").attr("placeholder", "You didn't enter any terms") && $("#place-query").addClass("plc-warning");
+			$("#place-query").attr("placeholder", "You didn't enter any terms") && $("#place-query").addClass("plc-warning"); //jazzy
 			setTimeout(function() {
 				$("#place-query").attr("placeholder", "Search for places") && $("#place-query").removeClass("plc-warning");;
-			}, 2500);
+			}, 2800);
 			return false;
 		} else {
 			$("#place-search").submit();
 		}
 	});
 	
-	function placeCheck() {
-		var query = $("#place-query").val();
-		
-		if (query == "") {
-			$("#place-query").focus();
-			$("#place-query").attr("placeholder", "You didn't enter any terms") && $("#place-query").addClass("plc-warning");
-			setTimeout(function() {
-				$("#place-query").attr("placeholder", "Search for places") && $("#place-query").removeClass("plc-warning");;
-			}, 2500);
-			return false;
-		} else {
-			$("#place-search").submit();
-		}
-	}
-	
 	$("#place-search").submit(function(e){
 		e.stopPropagation(); e.preventDefault();
 		var query = $("#place-query").val();
 		
-		map.addLayer("places", {
-			location: cheltenham, //new google.maps.LatLng(51.902707,-2.073361),
-			radius: 500, //experiment with the distance (in metres)
-			query: query,
-			opennow: true,
-			sensor: true,
-			//types : ["store"], //for nearby search using places - we could use a switch or user setting for multiple types of searce, radio buttons or something
-			
-			//I think we need to use text search or both - we need to research these
-			textSearch: function (results, status) {
-				if (status == google.maps.places.PlacesServiceStatus.OK) { //we need to catch the other status - https://developers.google.com/places/documentation/search, i.e. ZERO_RESULTS
-					
-					$(".results-list").html(""); //remove previous results
-					
-					removeMarkers(); //remove previous markers
-					
-					var bounds = new google.maps.LatLngBounds();
-					//console.log(bounds);
-					
-					//I think if we set i to say 10, it will limit the search results - by default the places api returns 20 result sets
-					for (var i = 0; i < results.length; i++) {
-						//console.log(i);
-						var place = results[i];
+		if (query == "") { //this check should be a function, but since its calling the submit() function on success, it got all confused (will write better if time permits)
+			$("#place-query").focus();
+			$("#place-query").attr("placeholder", "You didn't enter any terms") && $("#place-query").addClass("plc-warning");
+			setTimeout(function() {
+				$("#place-query").attr("placeholder", "Search for places") && $("#place-query").removeClass("plc-warning");;
+			}, 2800);
+			return false;
+		} else {
+			map.addLayer("places", {
+				//base search results around here - we aren't using currentLocation, as we want results tailored to Cheltenham as a whole
+				//not just around the current location (could be an option) or maybe I'm wrong, I don't know :(
+				location: cheltenham, 
+				radius: 500, //distance (in metres) - if they are no or little results in this area, it will expand to get more, but keeping within sensible distance - make user setting - IMPORTANT
+				query: query,
+				//opennow: true, //removed as it was causing problems
+				sensor: true, //check for this and set accordingly
+				language: "en-GB",
+				
+				//text search function, accepts terms like "coffee", "hotels", and returns 20 results in the area
+				textSearch: function (results, status) {
+					if (status == google.maps.places.PlacesServiceStatus.OK) {
 						
-						var image = { //set to better sizes and positions (icons from search results)
-							url: place.icon,
-							size: new google.maps.Size(71, 71),
-							origin: new google.maps.Point(0, 0),
-							anchor: new google.maps.Point(17, 34),
-							scaledSize: new google.maps.Size(25, 25)
-						};
+						//remove previous results and markers
+						clearResults();
 						
-						/* ---------- */
+						var bounds = new google.maps.LatLngBounds();
+						//console.log(bounds);
 						
-						var origin = currentLocation;
-						var destination = place.geometry.location;
-						var service = new google.maps.DistanceMatrixService();
-						
-						service.getDistanceMatrix({
-							origins: [origin],
-							destinations: [destination],
-							travelMode: google.maps.TravelMode.WALKING, //this needs to be a choice
-							unitSystem: google.maps.UnitSystem.IMPERIAL,
-							avoidHighways: false,
-							avoidTolls: false
-						}, getDistance);
-						
-						nameList.append("<li class=\"name\">" + place.name + "</li>")
-
-						function getDistance(response, status) {
-							if (status == google.maps.DistanceMatrixStatus.OK) {
-								
-								var origins = response.originAddresses;
-    							var destinations = response.destinationAddresses;
-								
-								/* do some funky stuff */
-								for (var i = 0; i < origins.length; i++) {
-									var results = response.rows[i].elements;
+						//by default the places api returns 20 result sets (I think it is actually a limit imposed by Google unless you're a business customer - Martin)
+						for (var i = 0; i < results.length; i++) {
+							var place = results[i];
+							//console.log(i);
+							
+							var image = { //set to better sizes and positions (icons from search results)
+								url: place.icon,
+								size: new google.maps.Size(71, 71),
+								origin: new google.maps.Point(0, 0),
+								anchor: new google.maps.Point(17, 34),
+								scaledSize: new google.maps.Size(20, 20)
+							};
+							
+							nameList.append("<li class=\"name\">" + place.name + "</li>")
+							
+							/* ---------- */
+							
+							/*The next section works out the distances and estimated durations to each place from the search results*/
+							
+							origin = currentLocation;
+							var destination = place.geometry.location;
+							var service = new google.maps.DistanceMatrixService();
+							
+							//console.log(origin);
+							//console.log(destination);
+							
+							service.getDistanceMatrix({
+								origins: [origin], //aray containing the current location, DistanceMatrix service only accepts an array so it needs to be done
+								destinations: [destination], //array of destinations, built from the search results lat + lngs
+								travelMode: google.maps.TravelMode.WALKING, //this needs to be a choice
+								unitSystem: google.maps.UnitSystem.IMPERIAL, //make this an option
+								avoidHighways: false,
+								avoidTolls: false
+							}, getDistance);
+							
+							function getDistance(response, status) {
+								if (status == google.maps.DistanceMatrixStatus.OK) {
 									
-									for (var j = 0; j < results.length; j++) {
-										var element = results[j];
-										var distance = element.distance.text;
-										var duration = element.duration.text;
+									var origins = response.originAddresses;
+									var destinations = response.destinationAddresses;
+									
+									/* do some funky stuff with loops.
+									   it is actually looping through each of the search results lat and longs and working out the
+									   distance and duration to each places location (using the currentLocation var), then getting
+									   data from the results of the calculations, e.g. distance and time
+									*/
+									
+									//note the i and x for counters, i = origins and x = destinations
+									for (var i = 0; i < origins.length; i++) {
+										var results = response.rows[i].elements;
 										
-										var from = origins[i];
-										var to = destinations[j];
-										
-										distanceList.append("<li class=\"distance\">" + distance + "</li>");
+										for (var x = 0; x < results.length; x++) {
+											var element = results[x];
+											var distance = element.distance.text;
+											var duration = element.duration.text;
+											
+											var from = origins[i];
+											var to = destinations[x];
+											
+											distanceList.append("<li class=\"distance\">" + distance + "</li>"); //put the resuls into the list as items
+										}
 									}
+								} else { //catch errors here
+									return false;
+									console.log(response + status)
 								}
-							} else {
-								return false;
-								console.log(response + status)
 							}
+							
+							/* ---------- */
+							
+							map.addMarker({
+								lat: place.geometry.location.lat(),
+								lng: place.geometry.location.lng(),
+								icon: image,
+								animation: google.maps.Animation.DROP,
+								title: place.name,
+								
+								//we need to style and build these better - ideas? should be simple I think, Name + Location + Image"<p>Rating: '+place.rating+'</p>'
+								infoWindow: {
+									content: "<h2>" + place.name + "</h2>" +
+											 "<p>" + (place.vicinity ? place.vicinity : place.formatted_address) + "</p>"
+								}
+							});
+							
+							bounds.extend(place.geometry.location);
+							
 						}
 						
-						/* ---------- */
+						map.fitBounds(bounds); //fit to the new bounds
 						
-						map.addMarker({
-							lat: place.geometry.location.lat(),
-							lng: place.geometry.location.lng(),
-							icon: image,
-							animation: google.maps.Animation.DROP,
-							title: place.name,
-							
-							//we need to style and build these better - ideas? should be simple I think, Name + Location + Image
-							infoWindow: {
-								content: '<h2>'+place.name+'</h2>' + '<p>Rating: '+place.rating+'</p>' +  '<p>'+(place.vicinity ? place.vicinity : place.formatted_address)+'</p><img src="'+place.icon+'"" width="100"/>'
-							}	
+						/* now we draw two circles around currentLocation
+						   locationCircle has a radius of 500 metres, matching the search result radius
+						   locationMark is styled to be a solid dot
+						   both are centred on currentLocation meaning to show which places (if any) are - OR TEST WITH 'cheltenham' var
+						   in the immediate location of the user.
+						*/
+						
+						//location dot - might remove, what do you think?
+						locationMark = map.drawCircle({
+							//center: currentLocation,
+							center: cheltenham,
+							radius: 4, 
+							strokeColor: "#00adef",
+							strokeOpacity: 1,
+							strokeWeight: 8,
+							fillColor: "#00adef",
+							fillOpacity: 1
 						});
 						
-						bounds.extend(place.geometry.location);
-						
-						//var name = place.name;
-						//console.log(name)
-						
-						//$(".results-list").append("<li>" + place.name + "<span class=\"distance\"></span></li>"); //" + distance + "
-						
+						//current location circle radius
+						locationCircle = map.drawCircle({
+							//center: currentLocation,
+							center: cheltenham,
+							radius: 500,  //metres
+							strokeColor: "#00adef",
+							strokeOpacity: 1,
+							strokeWeight: 1,
+							fillColor: "#808080",
+							fillOpacity: 0.28
+						});
+					} else if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+						console.log(status);
+						clearResults();
+						noResults.after("<p class=\"warning no-results\">Sorry, no places were found matching your search.</p>")
+					} else if (status == google.maps.places.PlacesServiceStatus.INVALID_REQUEST) {
+						console.log(status);
 					}
-					map.fitBounds(bounds); //fit to the new bounds
-				}//end if search OK, add else here (we need to do this)
-			}
-		});
+				}
+			});
+		}
 		
 		//bias the search results towards places that are within the bounds of the current maps viewport
 		google.maps.event.addListener(map, "bounds_changed", function() {
 			var bounds = map.getBounds();
-			console.log(bounds);
+			//console.log(bounds);
 			//searchBox.setBounds(bounds);
 			$("#place-query").setBounds(bounds);
 		});
 		
 	});
 	
+	//function to locate the user and update the currentLocation variable (could be made cleaner into same function as initialLocate - later if time)
 	function locateUser() {
 		if (Modernizr.geolocation) {
 			GMaps.geolocate({
@@ -567,9 +436,9 @@ $(function(homeMap) {
 						icon: "img/location-marker-blue.png",
 						animation: google.maps.Animation.DROP,
 					});
-					
 					map.setCenter(position.lat, position.lng); //I think smooth panning works if the new location is within a certain radius
 					map.setZoom(16);
+					$(".no-results").remove();
 				},
 				error: function(error) {
 					geoError();
@@ -585,6 +454,7 @@ $(function(homeMap) {
 		};
 	};
 	
+	//function to show error message if a problem occurs
 	function geoError() {
 		$(".location-map").append("<p class=\"no-geo message warning\">Sorry, this feature isn't available right now.</p>");
 		setTimeout(function() {
@@ -592,14 +462,32 @@ $(function(homeMap) {
 		}, 3500);
 	};
 	
+	//function if geolocation is not supported on the device (unlikely to occur)
 	function noGeo() {
 		$(".location-map").append("<p class=\"no-geo message warning\">Sorry, this feature isn't supported on your device.</p>");
 	};
 	
+	//function remove markers off the map
 	function removeMarkers() {
 		map.removeMarkers();
 	};
 	
+	//function to remove previous search results
+	function clearResults() {
+		nameList.html(""); 
+		distanceList.html("");
+		removeMarkers();
+		$(".no-results").remove();
+		map.setZoom(14);
+					
+		//circles are checked for being present, or setMap errors occur
+		if (locationCircle && locationMark) {
+			locationCircle.setMap(null);
+			locationMark.setMap(null);
+		};
+	};
+	
+	//function to geocode the current location of the user
 	function geocodeCurrent() {
 		GMaps.geocode({
 			address: currentLocation,
@@ -609,14 +497,12 @@ $(function(homeMap) {
 					console.log(result);
 				} else {
 					return false;
+					console.log(status);
 				}
 			}
 		});
 	};
 });
-
-
-
 
 
 /*Prefetch facility - add class "prefetch" to any links

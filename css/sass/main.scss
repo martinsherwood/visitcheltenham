@@ -81,11 +81,11 @@
 
 #map-container {
 	width: 100%;
-	height: 200px;
+	height: 260px;
 	//padding-bottom: 56.25%; /*this works well as it is equiv to 19.9 aspect ratio - 9 divided by 16*/
 	
 		@include breakpoint(break-tablet) {
-			height: 400px;
+			height: 460px;
 		}
 	
 	flex: 1;
@@ -96,8 +96,6 @@
 		.adp-warnbox, .adp-legal, .gmnoprint, .gm-style-cc { /*shouldn't do this - absolutely must remove if released*/
 			display: none;
 		}
-	
-	//border-bottom: 1px solid #cfd1d5;
 }
 
 .searches {
@@ -170,15 +168,15 @@
 								}
 						}
 				}
-				
+			@include clearfix;
 		}
+	@include clearfix;
 }
 
 #place-search {
 	width: 100%;
 	height: 65px;
 	position: relative;
-	//border-bottom: 1px solid #cfd1d5;
 	
 		#place-query {
 			width: 82%;
@@ -186,7 +184,6 @@
 			border: none;
 			color: #333;
 			background: transparent;
-			//border-bottom: 1px solid #cfd1d5;
 			
 				&:focus {
 					outline: none;
@@ -244,6 +241,28 @@ input, textarea, select {
 }
 
 //error and user messages
+.message {
+	text-align: center;
+}
+
+.warning {
+	@extend .message;
+	color: $errorOrange
+}
+
+.success {
+	@extend .message;
+	color: hsla(70, 48%, 50%, 1);
+}
+
+.no-results {
+	padding-top: 10px;
+}
+
+.plc-warning::-webkit-input-placeholder {
+	color: $errorOrange;
+}
+
 .no-geo {
 	width: 100%;
 	position: absolute;
@@ -255,35 +274,9 @@ input, textarea, select {
 	padding: 0.5rem;
 }
 
-.message {
-	text-align: center;
-}
-
-.warning {
-	@extend .message;
-	color: hsla(22, 88%, 58%, 1);
-}
-
-.plc-warning::-webkit-input-placeholder {
-	color: hsla(22, 88%, 58%, 1);
-}
-
-.success {
-	@extend .message;
-	color: hsla(70, 48%, 50%, 1);
-}
 
 /*-----------------------------------------------------------------*/
 
-/*-----------------------------------------------------------------*/
-
-/*-----------------------------------------------------------------*/
-
-/*-----------------------------------------------------------------*/
-
-/*-----------------------------------------------------------------*/
-
-/*-----------------------------------------------------------------*/
 
 /* Helper classes
 -------------------------------------------------------------------*/

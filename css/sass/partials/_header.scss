@@ -9,6 +9,7 @@
 	padding-top: 4px;
 	background: $white;
 	z-index: 9999;
+	@include clearfix;
 }
 
 //-----

@@ -39,7 +39,7 @@
         
             <div id="home" data-role="page">
             
-                <header role="banner" data-role="header" class="app-header container inner-wrap clearfix">
+                <header role="banner" data-role="header" class="app-header container inner-wrap">
                 	<div role="button" data-role="button" class="menu-stack push"></div>
                     <nav role="navigation" data-role="navbar" class="main-menu menu-closed">
                     	<div class="nav-links">
@@ -61,8 +61,8 @@
                         </div>
                     </div>
                     
-                    <div role="search" class="searches"> 
-                        <form id="place-search" role="search">                    
+                    <div role="search" class="searches">
+                        <form id="place-search" role="search">               
                     		<input type="text" id="place-query" name="place-query" placeholder="Search for a place" autocomplete="off" autocorrect="on" autocapitalize="off">
                             <div role="button" data-role="button" data-action="submit-search" class="search-button"></div>
                     	</form>
@@ -74,8 +74,8 @@
                             
                             <ul class="results-distances">
                             </ul>
-                        </div>
-                    </div>
+                        </div><!--/results-->
+                    </div><!--/searches-->
                 </div><!--/content-->
             </div><!--/home-->
             
@@ -89,7 +89,6 @@
         
         <script src="js/libs/jquery-2.1.0.min.js"></script>
         
-        <!--test top and botttom: could add " &callback=initialiseMap " or whatver function name, the function is called when the map api has completed loading-->
         <!--this won't load if the device is offline which will cause problems and all kinds of hell, so we need to test for the connection-->
         <!--might need these: &libraries=drawing-->
         <!--we are only loading Great Britain so locations outside will not work, and cause errors-->
