@@ -2,18 +2,14 @@
 <html class="no-js" prefix="og: http://ogp.me/ns#"><!--manifest="manifest.appcache"-->
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         
         <link rel="dns-prefetch" href="//ajax.googleapis.com">
         <link rel="dns-prefetch" href="//maps.googleapis.com">
         
-        <title>Home</title>
-        
+        <title>Visit Cheltenham</title>
         <meta name="description" content="Travel &amp; Tourism App for Cheltenham, United Kingdom">
-        <!--<meta name="HandheldFriendly" content="True">
-        <meta name="MobileOptimized" content="320">-->
-        
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, width=device-width"><!--revise if problems-->
-        
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, width=device-width">
         <meta http-equiv="cleartype" content="on">
 		<meta name="format-detection" content="telephone=no">
         
@@ -35,27 +31,23 @@
     
     	<div class="overlay"></div>
         
+        <!--<header role="banner" data-role="header" class="app-header container inner-wrap">
+            <div role="button" data-role="button" class="menu-stack push"></div>
+            <nav role="navigation" data-role="navbar" class="main-menu menu-closed">
+                <div class="nav-links">
+                    <a data-goto="#home" data-push="page" class="prefetch page"><i class="fa fa-border fa-home"></i>Home</a>
+                    <a href="#" data-push="page" class="prefetch page"><i class="fa fa-border fa-location-arrow"></i>Nearby</a>
+                    <a href="#" data-push="page" class="prefetch page"><i class="fa fa-border fa-shopping-cart"></i>Offers</a>
+                    <a data-goto="#settings" data-push="page" class="prefetch page"><i class="fa fa-border fa-cog"></i>Settings</a>
+                </div>
+            </nav>
+            <div role="button" data-role="button" class="locate-button"></div>
+        </header>-->
+        
     	<div id="app" role="main" class="wrapper">
         
             <div id="home" data-role="page">
-            
-                <header role="banner" data-role="header" class="app-header container inner-wrap">
-                	<div role="button" data-role="button" class="menu-stack push"></div>
-                    <nav role="navigation" data-role="navbar" class="main-menu menu-closed">
-                    	<div class="nav-links">
-                        	<a href="#" data-push="page"><i class="fa fa-border fa-home"></i>Home</a>
-                            <a href="#" data-push="page"><i class="fa fa-border fa-location-arrow"></i>Nearby</a>
-                            <a href="#" data-push="page"><i class="fa fa-border fa-shopping-cart"></i>Offers</a>
-                            <a href="#" data-push="page"><i class="fa fa-border fa-cog"></i>Settings</a>
-                        </div>
-                    </nav>
-                    
-                    <div role="button" data-role="button" class="locate-button"></div>
-                    
-                </header>
-                
-                <!-- id="container"-->
-                <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="content push container">
+                <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
                     <div class="location-map">
                     	<div id="map-container">
                         </div>
@@ -74,33 +66,61 @@
                             
                             <ul class="results-distances">
                             </ul>
-                        </div><!--/results-->
-                    </div><!--/searches-->
-                </div><!--/content-->
+                        </div>
+                    </div>
+                </div><!--/container - content-->
             </div><!--/home-->
+            
             
             <!-- other sections will be here -->
             
+            
             <div id="settings" data-role="page">
-            	
-            </div>
+                <div role="contentinfo" data-role="content" data-transition="slide-down-in" class="push content container">
+                
+                    <div class="settings-block">
+                        <h1 class="inner-wrap">Search Settings</h1>
+                        
+                        <form id="search-settings">
+                            <label for="search-radius" class="inner-wrap">Search Radius <span>(metres)</span></label>
+                            <input type="text" id="search-radius" name="search-radius" value="300" placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off">
+                            
+                            <label for="travel-mode" class="inner-wrap">Travel Mode <span>(tell us if you have a car)</span></label>
+                            <select id="travel-mode" name="travel-mode">
+                                <option value="walking">Walking</option> 
+                                <option value="bicycling">Bicycling</option>
+                                <option value="driving">Driving</option>
+                            </select>
+                            
+                            <label for="unit-system" class="inner-wrap">Unit System <span>(distances and durations)</span></label>
+                            <select id="unit-system" name="unit-system">
+                                <option value="walking">Imperial</option> 
+                                <option value="bicycling">Metric</option>
+                            </select>
+                            <div role="button" data-role="button" data-action="save-settings" class="save-settings inner-wrap">Save<div class="save-icon"></div></div>
+                        </form>
+                    </div>
+                    
+                    <div class="settings-block">
+                    	<h1 class="inner-wrap">User Profile</h1>
+                    </div>
+                
+                </div><!--/container - content-->
+            </div><!--/settings-->
+            
 
-        </div><!--/wrapper-->
+        </div><!--/app - wrapper-->
         
         <script src="js/libs/jquery-2.1.0.min.js"></script>
         
         <!--this won't load if the device is offline which will cause problems and all kinds of hell, so we need to test for the connection-->
-        <!--might need these: &libraries=drawing-->
-        <!--we are only loading Great Britain so locations outside will not work, and cause errors-->
+        <!--we are only loading Great Britain (better on mobile) so locations outside will not work, and probably cause errors-->
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC6n-3I8KfH6ReeERae16W5M8B1QtzjPGc&sensor=true&libraries=places&region=GB"></script>
-        
         <script src="js/min/hammer.min.js"></script>
         <script src="js/min/push.min.js"></script>
         <script src="js/min/storage.min.js"></script>
         <script src="js/min/maps.min.js"></script>
-        
         <script src="js/main.js"></script>
-        
 		<script>app.initialize();</script>
     </body>
 </html>

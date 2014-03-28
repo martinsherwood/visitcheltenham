@@ -1,6 +1,6 @@
 /* All main JavaScript */
 
-//Define architecture
+//define
 var app = {
     initialize: function() {
         this.bind();
@@ -9,8 +9,8 @@ var app = {
         document.addEventListener("deviceready", this.deviceready, false);
     },
     deviceready: function() {
-        app.report("deviceready"); //this is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
-		document.addEventListener("offline", offline, false); //we'll use this to detect if the device is offline or not later
+		//app.report("deviceready"); //this is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
+		addEventListeners();
 		setStorage();
 		
 			/* All phonegap functionality needs to be in here */
@@ -22,7 +22,7 @@ var app = {
 };
 
 /*Sets up the device storage environment to use, automatically selects the best library
-/*depending what is supported by the device
+/*depending what is supported by the device. Uses store.js, based on Mozilla LocalStorage.
 -----------------------------------------------------------------------------------------*/
 function setStorage() {
 	if (indexedDB) {
@@ -53,20 +53,71 @@ store.setItem("key", "value").then(doSomething);
 */
 
 //for later
-function offline() {
+function online() {
 	//here
 }
 
+//for later
+function offline() {
+	//here
+};
 
-//event listeners to help with functions and touchscreens
-document.addEventListener("touchstart", this, false);
-document.addEventListener("touchmove", this, false);
-document.addEventListener("touchend", this, false);
-document.addEventListener("touchcancel", this, false);
+//for later
+function paused() {
+	//here	
+};
+
+//for later
+function resumed() {
+	//here
+};
+
+function addEventListeners() {
+	//touch
+	document.addEventListener("touchstart", this, false);
+	document.addEventListener("touchmove", this, false);
+	document.addEventListener("touchend", this, false);
+	document.addEventListener("touchcancel", this, false);
+	//phonegap
+	document.addEventListener("online", online, false); //device is online
+	document.addEventListener("offline", offline, false); //we'll use this to detect if the device is offline or not later
+	document.addEventListener("pause", paused, false); //when the app is backgrounded this event is fired
+	document.addEventListener("resume", resumed, false); //when the app is resumed from being backgrounded
+}
+
+/*-----------------------------------------------------------------------------------------*/
+
+var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header container inner-wrap\">" +
+                	"<div role=\"button\" data-role=\"button\" class=\"menu-stack push\"></div>" +
+                    "<nav role=\"navigation\" data-role=\"navbar\" class=\"main-menu menu-closed\">" +
+                    	"<div class=\"nav-links\">" +
+                        	"<a data-goto=\"#home\" data-push=\"page\" class=\"prefetch page\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
+                            "<a data-push=\"page\" class=\"prefetch page\"><i class=\"fa fa-border fa-location-arrow\"></i>Nearby</a>" +
+                            "<a data-push=\"page\" class=\"prefetch page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers</a>" +
+                            "<a data-goto=\"#settings\" data-push=\"page\" class=\"prefetch page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
+                        "</div>" +
+                    "</nav>" +
+                    "<div role=\"button\" data-role=\"button\" class=\"locate-button\"></div>" +
+                "</header>";
+				
+$("body").prepend(header);
 
 /*-----------------------------------------------------------------------------------------*/
 
 $(document).on("deviceready", function() {
+	//backbutton detection for exiting the application
+	document.addEventListener("backbutton", function() {
+		exitApp();
+		
+		function exitApp() {
+			navigator.notification.confirm("Exit Visit Cheltenham " + device.cordova + " App?", function(button) {
+				if (button == 1) {
+					navigator.app.exitApp();
+				} 
+			}, "Exit", "Yes, No");  
+			return false;
+		}
+	}, false);
 	
 	//here
 
@@ -75,7 +126,7 @@ $(document).on("deviceready", function() {
 
 /*Pull out menu, using 3dtransforms
 -----------------------------------------------------------------------------------------*/
-$(function(mainMenu) {
+$(function(navigationalHandles) {
 	var menu = $(".main-menu"), //menu css class
 		body = $("body"),
 		container = $("#container"), //container id - NOT USED CURRENTLY AS WOULD CONFLICT WITH OTHER "PAGES" ON THE THE SAME PAGE, MIGHT HAVE TO ADJUST
@@ -86,6 +137,10 @@ $(function(mainMenu) {
 		containerClass = "container-push", //container open class
 		pushClass = "pushed", //pushed content
 		menuButton = $(".menu-stack"); //menu button
+		
+		//view and page swaps
+		app = $("#app");
+		handle = "data-goto";
 	
 	var toggleMenu = function() {
 		body.toggleClass(pushActiveClass); //toggle site overlay
@@ -117,17 +172,47 @@ $(function(mainMenu) {
 			};
 		});
 	}; //end of modernizr test - not needed for this app, but a jquery or other fallback technique should be here
+	
+	/*$(document).push("a.page", "#container");
+	
+	$("[data-push=\"page\"]").hammer().on("tap", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		
+		toggleMenu();
+		
+	});*/
+		
+	//determine what the initial view should be
+	if ($("#app > .current").length === 0) {
+		//$currentPage = $("#app > *:first-child").addClass("current");
+		$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
+	} else {
+		$currentPage = $("#app > .current");
+	}
+	
+	$("[data-push=\"page\"]").hammer().on("tap", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		//console.log(this, e);
+		
+		toggleMenu();
+		
+		var current = $(app).find(".current"); //this won't work more globally as the class current changes
+		var newPage = $(this).attr(handle);
+		
+		//hide current and show new page
+		$(current).removeClass("current");
+		$(newPage).addClass("current");
+		
+		return false;
+	});
 });
 
 
-/*Page swapping - NEEDS A LOT OF WORK
------------------------------------------------------------------------------------------*/
 
-//$(document).pjax("a", "#content")
 
-$("[data-push=\"page\"]").hammer().on("tap", function(e) {
-	e.stopPropagation(); e.preventDefault();
-});
+
+
+
 
 
 
@@ -173,6 +258,11 @@ $(function(homeMap) {
 		zoom: 14, //14 is good, 19 is optimal for our use as it shows POI marker icons but is perhaps too zoomed in
 		disableDefaultUI: true,
 		styles: mapStyles,
+		
+		dragend: function(e) {
+			//do stuff here, update vars or whatever
+			console.log("dragend detected");
+		}
 	});
 	
 	//get the location of the user and store in currentLocation var
@@ -502,6 +592,25 @@ $(function(homeMap) {
 			}
 		});
 	};
+});
+
+/*Settings and options functionality
+-----------------------------------------------------------------------------------------*/
+$(function(userSettings) {
+	
+	var searchRadius,
+		travelMode,
+		unitSystem;
+		
+	console.log(searchRadius + travelMode + unitSystem)
+	
+	
+	$(".save-settings").hammer().on("tap", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		console.log(this, e + "saved");
+	});
+	
+	//$("#ID-HERE").submit();
 });
 
 
