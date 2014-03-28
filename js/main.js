@@ -13,7 +13,9 @@ var app = {
 		addEventListeners();
 		setStorage();
 		
-			/* All phonegap functionality needs to be in here */
+			/* EVERYTHING BAR HELPER FUNCTIONS SHOULD BE IN HERE FOR PHONEGAP FUNCTIONS TO WORK.
+			 * All phonegap functionality needs to be in here - a copy and paste should work, but we need to test everything.
+			 */
 		
     },
     report: function(id) { 
@@ -25,18 +27,28 @@ var app = {
 /*depending what is supported by the device. Uses store.js, based on Mozilla LocalStorage.
 -----------------------------------------------------------------------------------------*/
 function setStorage() {
+	var db = indexedDB || window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB;
+	
 	if (indexedDB) {
 		store.setDriver("IndexedDBWrapper").then(function() {
-			console.log(store.driver + " IndexedDB");
+			//console.log(store.driver + " IndexedDB");
 		});
 	} else if (window.openDatabase) { // WebSQL is available, so we'll use that.
 		store.setDriver("WebSQLWrapper").then(function() {
-			console.log(store.driver + " WebSQL");
+			//console.log(store.driver + " WebSQL");
 		});
 	} else { // If nothing else is available, we use localStorage.
 		store.setDriver("localStorageWrapper").then(function() {
-			console.log(store.driver + " LocalStorage");
+			//console.log(store.driver + " LocalStorage");
 		});
+	};
+	
+	window.storeConfig = {
+		name        : "visit_cheltenham_app",
+		version     : 1.0,
+		size        : 4980736, // Size of database, in bytes. WebSQL-only for now.
+		storeName   : "vc_storage",
+		description : "Config settings and other application data"
 	};
 };
 
@@ -104,13 +116,13 @@ $("body").prepend(header);
 
 /*-----------------------------------------------------------------------------------------*/
 
-$(document).on("deviceready", function() {
+/*$(document).on("deviceready", function() {
 	//backbutton detection for exiting the application
 	document.addEventListener("backbutton", function() {
 		exitApp();
 		
 		function exitApp() {
-			navigator.notification.confirm("Exit Visit Cheltenham " + device.cordova + " App?", function(button) {
+			navigator.notification.confirm("Exit?", function(button) {
 				if (button == 1) {
 					navigator.app.exitApp();
 				} 
@@ -121,8 +133,9 @@ $(document).on("deviceready", function() {
 	
 	//here
 
-});
+});*/
 
+//$(document).on("deviceready", function() {
 
 /*Pull out menu, using 3dtransforms
 -----------------------------------------------------------------------------------------*/
@@ -137,8 +150,7 @@ $(function(navigationalHandles) {
 		containerClass = "container-push", //container open class
 		pushClass = "pushed", //pushed content
 		menuButton = $(".menu-stack"); //menu button
-		
-		//view and page swaps
+		//view and page handles
 		app = $("#app");
 		handle = "data-goto";
 	
@@ -172,20 +184,11 @@ $(function(navigationalHandles) {
 			};
 		});
 	}; //end of modernizr test - not needed for this app, but a jquery or other fallback technique should be here
-	
-	/*$(document).push("a.page", "#container");
-	
-	$("[data-push=\"page\"]").hammer().on("tap", function(e) {
-		e.stopPropagation(); e.preventDefault();
-		
-		toggleMenu();
-		
-	});*/
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		//$currentPage = $("#app > *:first-child").addClass("current");
-		$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
+		$currentPage = $("#app > *:first-child").addClass("current");
+		//$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	}
@@ -193,7 +196,6 @@ $(function(navigationalHandles) {
 	$("[data-push=\"page\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		//console.log(this, e);
-		
 		toggleMenu();
 		
 		var current = $(app).find(".current"); //this won't work more globally as the class current changes
@@ -231,17 +233,16 @@ var currentLocation - holds the users current location from the values in positi
 
 -----------------------------------------------------------------------------------------*/
 $(function(homeMap) {
-	
 	//if not available, then fallover
 	if (!Modernizr.geolocation) {
 		noGeo();
 		return false;
 	}
-	
+		
 	//variables to cache the result lists for faster performance
 	var nameList = $(".results-names"),
-		distanceList = $(".results-distances");
-		noResults = $(".results h1");
+		distanceList = $(".results-distances"),
+		noResults = $(".results h1")
 		
 	var locationMark, locationCircle;
 	
@@ -249,8 +250,34 @@ $(function(homeMap) {
 	var map;
 	var cheltenham = new google.maps.LatLng(51.902707,-2.073361);
 	var currentLocation;
-	var origin; //this is used for the distance matrix function (declared globally in case access is needed out of scope)
+	var origin; //this is used for the distance matrix function
 	var mapStyles = [{featureType:"road",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"poi",elementType:"labels",stylers:[{visibility:"simplified"}]},{featureType:"transit",elementType:"labels.text",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#a2daf2"}]},{featureType:"landscape.man_made",elementType:"geometry",stylers:[{color:"#f7f1df"}]},{featureType:"landscape.natural",elementType:"geometry",stylers:[{color:"#d0e3b4"}]},{featureType:"landscape.natural.terrain",elementType:"geometry",stylers:[{visibility:"off"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#bde6ab"}]},{featureType:"poi.medical",elementType:"geometry",stylers:[{color:"#fbd3da"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{color:"#ffe15f"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#efd151"}]},{featureType:"road.arterial",elementType:"geometry.fill",stylers:[{color:"#ffffff"}]},{featureType:"road.local",elementType:"geometry.fill",stylers:[{color:"black"}]},{featureType:"transit.station.airport",elementType:"geometry.fill",stylers:[{color:"#cfb2db"}]}];
+	
+	var searchRadius,
+		travelMode,
+		unitSystem
+	
+	store.getItem("searchRadius").then(function(value) {
+		searchRadius = parseInt(value);
+	});
+	
+	store.getItem("travelMode").then(function(value) {
+		if (value == "walking") {
+			travelMode = google.maps.TravelMode.WALKING;
+		} else if (value == "bicycling") {
+			travelMode = google.maps.TravelMode.BICYCLING;
+		} else if (value == "driving") {
+			travelMode = google.maps.TravelMode.DRIVING;
+		};
+	});
+	
+	store.getItem("unitSystem").then(function(value) {
+		if (value == "imperial") {
+			unitSystem = google.maps.UnitSystem.IMPERIAL;
+		} else if (value == "metric") {
+			unitSystem = google.maps.UnitSystem.METRIC;
+		};
+	});
 	
 	map = new GMaps({
 		div: "#map-container",
@@ -348,21 +375,16 @@ $(function(homeMap) {
 			return false;
 		} else {
 			map.addLayer("places", {
-				//base search results around here - we aren't using currentLocation, as we want results tailored to Cheltenham as a whole
-				//not just around the current location (could be an option) or maybe I'm wrong, I don't know :(
 				location: cheltenham, 
-				radius: 500, //distance (in metres) - if they are no or little results in this area, it will expand to get more, but keeping within sensible distance - make user setting - IMPORTANT
+				radius: searchRadius, //distance (in metres) - if they are no or little results in this area, it will expand to get more, but keeping within sensible distance
 				query: query,
-				//opennow: true, //removed as it was causing problems
-				sensor: true, //check for this and set accordingly
+				sensor: true,
 				language: "en-GB",
 				
-				//text search function, accepts terms like "coffee", "hotels", and returns 20 results in the area
+				//text search function, accepts terms like "coffee", "hotels", and returns 20 results in the area or expanded area (see above re searchRadius)
 				textSearch: function (results, status) {
 					if (status == google.maps.places.PlacesServiceStatus.OK) {
-						
-						//remove previous results and markers
-						clearResults();
+						clearResults(); //remove previous results and markers
 						
 						var bounds = new google.maps.LatLngBounds();
 						//console.log(bounds);
@@ -396,8 +418,8 @@ $(function(homeMap) {
 							service.getDistanceMatrix({
 								origins: [origin], //aray containing the current location, DistanceMatrix service only accepts an array so it needs to be done
 								destinations: [destination], //array of destinations, built from the search results lat + lngs
-								travelMode: google.maps.TravelMode.WALKING, //this needs to be a choice
-								unitSystem: google.maps.UnitSystem.IMPERIAL, //make this an option
+								travelMode: travelMode,
+								unitSystem: unitSystem,
 								avoidHighways: false,
 								avoidTolls: false
 							}, getDistance);
@@ -446,8 +468,7 @@ $(function(homeMap) {
 								
 								//we need to style and build these better - ideas? should be simple I think, Name + Location + Image"<p>Rating: '+place.rating+'</p>'
 								infoWindow: {
-									content: "<h2>" + place.name + "</h2>" +
-											 "<p>" + (place.vicinity ? place.vicinity : place.formatted_address) + "</p>"
+									content: "<h2>" + place.name + "</h2>" + "<p>" + (place.vicinity ? place.vicinity : place.formatted_address) + "</p>"
 								}
 							});
 							
@@ -480,7 +501,7 @@ $(function(homeMap) {
 						locationCircle = map.drawCircle({
 							//center: currentLocation,
 							center: cheltenham,
-							radius: 500,  //metres
+							radius: searchRadius,
 							strokeColor: "#00adef",
 							strokeOpacity: 1,
 							strokeWeight: 1,
@@ -598,21 +619,54 @@ $(function(homeMap) {
 -----------------------------------------------------------------------------------------*/
 $(function(userSettings) {
 	
-	var searchRadius,
-		travelMode,
-		unitSystem;
-		
-	console.log(searchRadius + travelMode + unitSystem)
+	store.getItem("searchRadius").then(function(value) {
+		//console.log(value)
+		$("#search-radius").val(value);
+	});
 	
+	store.getItem("travelMode").then(function(value) {
+		//console.log(value)
+		$("#travel-mode option[value=\"" + value + "\"]").attr("selected", "selected");
+	});
+	
+	store.getItem("unitSystem").then(function(value) {
+		//console.log(value)
+		$("#unit-system option[value=\"" + value + "\"]").attr("selected", "selected");
+	});
 	
 	$(".save-settings").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		console.log(this, e + "saved");
+		
+		var searchRadius = $("#search-radius").val(),
+			travelMode   = $("#travel-mode").val(),
+			unitSystem   = $("#unit-system").val()
+			
+		store.setItem("searchRadius", searchRadius);
+		store.setItem("travelMode", travelMode);
+		store.setItem("unitSystem", unitSystem);
+		
+		//$("#search-settings").append("<p class=\"message success\">Settings have been saved, restart required</p>");
+		
+		navigator.notification.confirm(
+			"Settings Saved",
+			confirmRestart,
+			"Restart Now",
+			"Yes,No"
+		);
+		
+		function confirmRestart() {
+			if (button == 1) {
+				location.reload();
+			} else {
+				return false;
+			}
+		};
+		
 	});
-	
-	//$("#ID-HERE").submit();
 });
 
+//});//end phonegap device ready
 
 /*Prefetch facility - add class "prefetch" to any links
 -----------------------------------------------------------------------------------------*/

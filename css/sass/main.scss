@@ -82,7 +82,7 @@
 
 #map-container {
 	width: 100%;
-	height: 260px;
+	height: 220px;
 	/*display: flex;
 	flex: 1;
 	flex-direction: column;
@@ -90,7 +90,7 @@
 	//padding-bottom: 56.25%; /*this works well as it is equiv to 19.9 aspect ratio - 9 divided by 16*/
 	
 		@include breakpoint(break-tablet) {
-			height: 460px;
+			height: 440px;
 		}
 		
 		.adp-warnbox, .adp-legal, .gmnoprint, .gm-style-cc { /*shouldn't do this - absolutely must remove if released*/
@@ -250,6 +250,10 @@
 			background: $black;
 			color: $white;
 			
+				&:active, &:hover, &:focus {
+					opacity: .85;
+				}
+			
 				div.save-icon {
 					width: 36px;
 					height: 36px;
@@ -261,6 +265,7 @@
 					@include no-select;
 					cursor: pointer;
 				}
+				
 			@include clearfix;
 		}
 }
@@ -344,6 +349,7 @@ textarea {
 
 .pressed {
     background-color: rgba(0, 0, 0, 0.7);
+	//opacity: .9;
 }
 
 /*specifies that an entire element should be draggable instead of its contents*/

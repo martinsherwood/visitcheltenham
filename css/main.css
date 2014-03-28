@@ -3276,7 +3276,6 @@ html {
   -webkit-tap-highlight-color: transparent;
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
-  -webkit-overflow-scrolling: touch;
   -webkit-perspective: 1000;
   perspective: 1000;
 }
@@ -3286,7 +3285,6 @@ body {
   min-height: 100%;
   background: #fffffa;
   color: #454545;
-  /*CHANGE THIS - DIFF VALUES AS BACKGROUND COLOURS*/
   font-family: "Roboto Light", sans-serif;
   font-size: 1.3rem;
   font-style: normal;
@@ -3302,7 +3300,6 @@ body {
 
 p, ul, li {
   color: #454545;
-  /*CHANGE THIS - DIFF VALUES AS BACKGROUND COLOURS*/
   font-size: 1.3rem;
 }
 
@@ -3312,7 +3309,6 @@ audio, canvas, img, video {
 
 h1, h2, h3, h4 {
   color: #454545;
-  /*CHANGE THIS - DIFF VALUES AS BACKGROUND COLOURS*/
   font-weight: 300;
   line-height: 1.2;
 }
@@ -3375,7 +3371,7 @@ h4 {
   min-height: 100%;
   display: block;
   /*fallback*/
-  position: absolute;
+  position: relative;
   left: 0;
   top: 0;
   z-index: 0;
@@ -3472,12 +3468,9 @@ h4 {
   left: 0;
   z-index: 9999;
   background: #454545;
-  -webkit-transform-style: preserve-3d;
-  -ms-transform-style: preserve-3d;
-  transform-style: preserve-3d;
-  overflow: auto;
   -webkit-box-shadow: inset -10px 0 12px -9px rgba(0, 0, 0, 0.7);
   box-shadow: inset -10px 0 12px -9px rgba(0, 0, 0, 0.7);
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -3507,7 +3500,6 @@ h4 {
   -ms-backface-visibility: hidden;
   backface-visibility: hidden;
   -webkit-perspective: 1000;
-  -ms-perspective: 1000;
   perspective: 1000;
 }
 
@@ -3525,14 +3517,7 @@ h4 {
   z-index: 9999;
 }
 
-/*.push {
-	overflow-x: hidden;
-	position: relative;
-	left: 0;
-	-webkit-transition: all 0.3s ease;
-		-ms-transition: all 0.3s ease;
-			transition: all 0.3s ease;
-}*/
+/* ----------- */
 .nav-links {
   padding: 1.00rem;
 }
@@ -3571,7 +3556,7 @@ h4 {
 
 #map-container {
   width: 100%;
-  height: 260px;
+  height: 220px;
   /*display: flex;
   flex: 1;
   flex-direction: column;
@@ -3579,7 +3564,7 @@ h4 {
 }
 @media screen and (min-width: 48em) {
   #map-container {
-    height: 460px;
+    height: 440px;
   }
 }
 #map-container .adp-warnbox, #map-container .adp-legal, #map-container .gmnoprint, #map-container .gm-style-cc {
@@ -3730,6 +3715,9 @@ h4 {
   line-height: 50px;
   background: #454545;
   color: #fffffa;
+}
+#settings .save-settings:active, #settings .save-settings:hover, #settings .save-settings:focus {
+  opacity: .85;
 }
 #settings .save-settings div.save-icon {
   width: 36px;
