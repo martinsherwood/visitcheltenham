@@ -637,17 +637,34 @@ $(function(userSettings) {
 	
 	//sign in
 	
-	/*(function() { //GOOGLE CODE
-		var po = document.createElement("script");
-		po.type = "text/javascript"; po.async = true;
-		po.src = "https://plus.google.com/js/client:plusone.js";
-		var s = document.getElementsByTagName("script")[0];
-		s.parentNode.insertBefore(po, s);
-	})();*/
-	
 	/**/
+	$("#logout").click(function() {
+		FB.logout(
+			function (response) {
+				window.location.reload();
+			}
+		);
+		return false;
+	});
 	
-	//here
+	function promptLogin() {
+		FB.login(null, {scope: 'email'});
+	}
+	
+	function updateUserInfo(response) {
+		FB.api('/me', {fields:"name,first_name,picture"}, function(response) {
+			console.log(response);
+			var output = '';
+			output += '<img src="' + response.picture.data.url + '" width="25" height="25"></img>';
+			output += ' ' + response.first_name;
+			//$('#user-identity').html(output);
+			console.log(output); //should be in html somewhere
+		});
+	};
+	
+	function handleOGSuccess() {
+		console.log("[handleOGSuccess] done.");
+	};
 	
 	/**/
 });
