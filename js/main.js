@@ -93,7 +93,7 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                     	"<div class=\"nav-links\">" +
                         	"<a data-goto=\"#home\" data-push=\"page\" data-settings=\"update\" class=\"page\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
                             "<a data-goto=\"#places\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-location-arrow\"></i>My Places</a>" +
-                            "<a data-goto=\"#offers\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers</a>" +
+                            "<a data-goto=\"#offers\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span class=\"offer-count\">0</span></a>" +
                             "<a data-goto=\"#settings\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
                         "</div>" +
                     "</nav>" +
@@ -183,13 +183,12 @@ $(function(navigationalHandles) {
 	
 	$("[data-push=\"page\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
-		//console.log(this, e);
 		toggleMenu();
 		
 		var current = $(app).find(".current"); //this won't work more globally as the class current changes
 		var newPage = $(this).attr(handle);
 		
-		//hide current and show new page
+		//hide current and show new
 		$(current).removeClass("current");
 		$(newPage).addClass("current");
 		
@@ -199,18 +198,12 @@ $(function(navigationalHandles) {
 	$("[data-settings=\"update\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		console.log("update fired");
-		//updateSettings();
+		//updateSettings(); - for later instead of asking for app restart, if time allows
 	});
-	
-	/*$(document).push("a.page", "#app")
-	$("[data-push=\"page\"]").hammer().on("tap", function(e) {
-		e.stopPropagation(); e.preventDefault();
-		toggleMenu();
-	});*/
 });
 
 
-(function() { //begin main
+(function() { //begin main scope
 	//variables to cache the result lists for faster performance
 	var nameList = $(".results-names"),
 		distanceList = $(".results-distances"),
@@ -576,98 +569,245 @@ var currentLocation - holds the users current location from the values in positi
 /*Settings and options functionality
 -----------------------------------------------------------------------------------------*/
 $(function(userSettings) {
-	store.getItem("searchSettings").then(function(value) {
-		//console.log(value);
-		$("#search-radius").val(value[0].searchRadius);
-		$("#travel-mode option[value=\"" + value[1].travelMode + "\"]").attr("selected", "selected");
-		$("#unit-system option[value=\"" + value[2].unitSystem + "\"]").attr("selected", "selected");
-	});
 	
-	$("[data-action=\"save-search-settings\"]").hammer().on("tap", function(e) {
-		e.stopPropagation(); e.preventDefault();
-		console.log(this, e + "saved");
+	//search settings
+	$(function(searchSettings) {
+		store.getItem("searchSettings").then(function(value) {
+			//console.log(value);
+			$("#search-radius").val(value[0].searchRadius);
+			$("#travel-mode option[value=\"" + value[1].travelMode + "\"]").attr("selected", "selected");
+			$("#unit-system option[value=\"" + value[2].unitSystem + "\"]").attr("selected", "selected");
+		});
 		
-		var searchRadius = $("#search-radius").val(),
-			travelMode   = $("#travel-mode").val(),
-			unitSystem   = $("#unit-system").val()
+		$("[data-action=\"save-search-settings\"]").hammer().on("tap", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			console.log(this, e + "saved");
 			
-		var searchSettings = [{searchRadius: searchRadius}, {travelMode: travelMode}, {unitSystem: unitSystem}];
-		
-		store.setItem("searchSettings", searchSettings).then(function(value) {
-			console.log(value);
+			var searchRadius = $("#search-radius").val(),
+				travelMode   = $("#travel-mode").val(),
+				unitSystem   = $("#unit-system").val()
+				
+			var searchSettings = [{searchRadius: searchRadius}, {travelMode: travelMode}, {unitSystem: unitSystem}];
+			
+			store.setItem("searchSettings", searchSettings).then(function(value) {
+				console.log(value);
+			});
+			
+			//MAKE PHONEGAP ALERT LIKE THE BACKBUTTON
+			$("#search-settings").append("<p class=\"message success saved ss-set\">Settings have been saved, but a restart is required.</p>");
+			setTimeout(function() {
+				$(".ss-set").remove();
+			}, 3500);
 		});
-		
-		//$("#search-settings").append("<p class=\"message success\">Settings have been saved.</p>");
 	});
 	
 	/* ----- */
 	
-	$("[data-action=\"submit-geocode-search\"]").hammer().on("tap", function(e) {
-		$("#geocode-search").submit();
+	//postcode lookup
+	
+	$(function(postcodeLookup) {
+		$("[data-action=\"submit-geocode-search\"]").hammer().on("tap", function(e) {
+			$("#geocode-search").submit();
+		});
+		
+		$("#geocode-search").submit(function(e) {
+			e.stopPropagation(); e.preventDefault();
+			GMaps.geocode({
+				address: $("#address").val().trim(),
+				callback: function(results, status) {
+					if (status == "OK") {
+						//var result = results[0].geometry.location;
+						
+						var addr = results[0].formatted_address;
+						console.log(addr);
+						
+						$("#address").val(addr);
+						
+						//save the items in indexeddb too? some sort of history list or whatever?
+						
+						//$(".geocode-result").append("<p>" + addr + "</p>");
+						
+					} else {
+						$("#address").attr("placeholder", "No results") && $("#address").addClass("plc-warning");
+						setTimeout(function() {
+							$("#address").attr("placeholder", "Enter a postcode") && $("#address").removeClass("plc-warning");;
+						}, 2800);
+					};
+				}
+			});
+		});
 	});
 	
-	$("#geocode-search").submit(function(e) {
-		e.stopPropagation(); e.preventDefault();
-		GMaps.geocode({
-			address: $("#address").val().trim(),
-			callback: function(results, status) {
-				if (status == "OK") {
-					//var result = results[0].geometry.location;
-					
-					var addr = results[0].formatted_address;
-					console.log(addr);
-					
-					$("#address").val(addr);
-					
-					//save the items in indexeddb too? some sort of history list or whatever?
-					
-					//$(".geocode-result").append("<p>" + addr + "</p>");
-					
+	/* ----- */
+	
+	//sign in via google (alpha'ish / beta) - TEST
+	
+	/*start*/
+	$(function(googleSignin) {
+		var googleAPI = {
+			setToken: function(data) {
+				localStorage.access_token = data.access_token; //cache token
+				localStorage.refresh_token = data.refresh_token || localStorage.refresh_token; //cache the refresh token, if there is one
+				var expiresAt = new Date().getTime() + parseInt(data.expires_in, 10) * 1000 - 60000; //figure out when the token will expire by using the current time, plus the valid time, minus a 1min buffer
+				localStorage.expires_at = expiresAt;
+			},
+			authorize: function(options) {
+				var deferred = $.Deferred();
+		
+				//build the OAuth consent page URL
+				var authUrl = "https://accounts.google.com/o/oauth2/auth?" + $.param({
+					client_id: options.client_id,
+					redirect_uri: options.redirect_uri,
+					response_type: "code",
+					scope: options.scope
+				});
+		
+				//open the OAuth consent page in the InAppBrowser
+				var authWindow = window.open(authUrl, "_blank", "location=no,toolbar=no"); //use inappbrowser for auth
+		
+				//should actually use the redirect_uri "urn:ietf:wg:oauth:2.0:oob" which sets the authorization code in the title
+				//you can't access the title of the InAppBrowser, so I'm passing a bogus redirect_uri of "http://localhost", which means the
+				//authorization code will get set in the url (which I can access), find the authorization code and close the InAppBrowser after the user has granted us access to their data
+				authWindow.addEventListener("loadstart", googleCallback);
+				function googleCallback(e){
+					var url = (typeof e.url !== "undefined" ? e.url : e.originalEvent.url);
+					var code = /\?code=(.+)$/.exec(url);
+					var error = /\?error=(.+)$/.exec(url);
+		
+					if (code || error) {
+						authWindow.close(); //always close the browser when match is found
+					}
+		
+					if (code) {
+						//exchange the authorization code for an access token
+						$.post("https://accounts.google.com/o/oauth2/token", {
+							code: code[1],
+							client_id: options.client_id,
+							client_secret: options.client_secret,
+							redirect_uri: options.redirect_uri,
+							grant_type: "authorization_code"
+						}).done(function(data) {
+							googleapi.setToken(data);
+							deferred.resolve(data);
+						}).fail(function(response) {
+							deferred.reject(response.responseJSON);
+						});
+					} else if (error) {
+						//the user denied access to the app
+						deferred.reject({
+							error: error[1]
+						});
+					}
+				}
+				return deferred.promise();
+			},
+			getToken: function(options) {
+				var deferred = $.Deferred();
+		
+				if (new Date().getTime() < localStorage.expires_at) {
+					deferred.resolve({
+						access_token: localStorage.access_token
+					});
+				} else if (localStorage.refresh_token) {
+					$.post("https://accounts.google.com/o/oauth2/token", {
+						refresh_token: localStorage.refresh_token,
+						client_id: options.client_id,
+						client_secret: options.client_secret,
+						grant_type: "refresh_token"
+					}).done(function(data) {
+						googleapi.setToken(data);
+						deferred.resolve(data);
+					}).fail(function(response) {
+						deferred.reject(response.responseJSON);
+					});
 				} else {
-					$("#address").attr("placeholder", "No results") && $("#address").addClass("plc-warning");
-					setTimeout(function() {
-						$("#address").attr("placeholder", "Enter a postcode") && $("#address").removeClass("plc-warning");;
-					}, 2800);
-				};
+					deferred.reject();
+				}
+		
+				return deferred.promise();
+			},
+			userInfo: function(options) {
+				return $.getJSON("https://www.googleapis.com/oauth2/v1/userinfo", options);
 			}
-		});
+		};
+		
+		var signIn = {
+			client_id: "576726549275.apps.googleusercontent.com",
+			client_secret: "7cELIkyAkF1a5ve-Z_6YoAhX",
+			redirect_uri: "http://localhost",
+			scope: "https://www.googleapis.com/auth/userinfo.profile", //what we want/need access to (we basically need name and email, maybe gender and age)
+		
+			init: function() {
+				$("[data-action=\"google-signin\"]").hammer().on("tap", function(e) {
+					signIn.LoginButton();
+				});
+				
+				//check if a valid token exists or get new
+				googleAPI.getToken({
+					client_id: app.client_id,
+					client_secret: app.client_secret
+				}).done(function() {
+					signIn.showSuccessView(); //show the greet view if we get a valid token
+				}).fail(function() {
+					signIn.showLoginView(); //show the login view if we have no valid token
+				});
+			},
+			
+			showLoginView: function() {
+				$("#google-login").show();
+				$("#google-login-success").hide();
+			},
+			
+			showSuccessView: function() {
+				$("#google-login").hide();
+				$("#google-login-success").show();
+		
+				//get the token, either from the cache or by using the refresh token
+				googleAPI.getToken({
+					client_id: signIn.client_id,
+					client_secret: signIn.client_secret
+				}).then(function(data) {
+					return googleapi.userInfo({ access_token: data.access_token }); //returns the promise
+				}).done(function(user) {
+					$("#google-login-success p").html(user.name + " via Google"); //display message
+				}).fail(function() {
+					app.showLoginView(); //promise not fulfilled
+				});
+			},
+			
+			LoginButton: function() {
+				googleAPI.authorize({
+					client_id: signIn.client_id,
+					client_secret: signIn.client_secret,
+					redirect_uri: signIn.redirect_uri,
+					scope: signIn.scope
+				}).done(function() {
+					signIn.showSuccessView();
+				}).fail(function(data) {
+					$("#google-login p").html(data.error);
+				});
+			}
+		};
+		
+		signIn.init(); //put in device ready
+		/*end*/
 	});
-	
 	/* ----- */
 	
-	//sign in
+	//enter name manually here
 	
-	/**/
-	$("#logout").click(function() {
-		FB.logout(
-			function (response) {
-				window.location.reload();
-			}
-		);
-		return false;
+	$(function(manualName) {
+		//here
 	});
 	
-	function promptLogin() {
-		FB.login(null, {scope: 'email'});
-	}
-	
-	function updateUserInfo(response) {
-		FB.api('/me', {fields:"name,first_name,picture"}, function(response) {
-			console.log(response);
-			var output = '';
-			output += '<img src="' + response.picture.data.url + '" width="25" height="25"></img>';
-			output += ' ' + response.first_name;
-			//$('#user-identity').html(output);
-			console.log(output); //should be in html somewhere
-		});
-	};
-	
-	function handleOGSuccess() {
-		console.log("[handleOGSuccess] done.");
-	};
-	
-	/**/
 });
+
+//offers
+
+$(function(getOffers) {
+	
+});
+
 
 
 /*Prefetch facility - add class "prefetch" to any links

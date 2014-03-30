@@ -87,7 +87,7 @@
 	flex: 1;
 	flex-direction: column;
 	flex-wrap: wrap;*/
-	//padding-bottom: 56.25%; /*this works well as it is equiv to 19.9 aspect ratio - 9 divided by 16*/
+	//padding-bottom: 56.25%; /*this works well as it is equiv to 19.9 aspect ratio but also annoying as different devices*/
 	
 		@include breakpoint(break-tablet) {
 			height: 440px;
@@ -196,7 +196,6 @@
 		position: absolute;
 		top: 12px;
 		right: 10px;
-		
 		background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI5NyA5NS44IDMxNy45IDMyMC4zIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDk3IDk1LjggMzE3LjkgMzIwLjMiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9Im1hZ25pZmllci1pY29uIiBmaWxsPSIjNDQ0NDQ0IiBkPSJNNDE1LDM3NC41bC04NC44LTg0LjhjMTIuNC0xOS41LDE5LjYtNDIuNywxOS42LTY3LjVjMC02OS43LTU2LjctMTI2LjQtMTI2LjQtMTI2LjQNCglDMTUzLjcsOTUuOCw5NywxNTIuNSw5NywyMjIuMnM1Ni43LDEyNi40LDEyNi40LDEyNi40YzIzLjYsMCw0NS43LTYuNSw2NC42LTE3LjhsODUuNCw4NS40TDQxNSwzNzQuNXogTTE0NC4xLDIyMi4yDQoJYzAtNDMuNywzNS42LTc5LjMsNzkuMy03OS4zczc5LjMsMzUuNiw3OS4zLDc5LjNzLTM1LjYsNzkuMy03OS4zLDc5LjNDMTc5LjcsMzAxLjUsMTQ0LjEsMjY1LjksMTQ0LjEsMjIyLjJ6Ii8+DQo8L3N2Zz4NCg==");
 		background-size: cover;
 		@include no-select;
@@ -207,13 +206,13 @@
 /*-----------------------------------------------------------------*/
 
 #settings {
-	position: relative;
 	
 		.settings-block {
 			position: relative;
+			padding-bottom: 14px;
 			
-				&:nth-of-type(1), &:nth-of-type(2) {
-					padding-bottom: 14px;
+				&:last-of-type {
+					padding-bottom: 0;
 				}
 		}
 	
@@ -224,6 +223,7 @@
 			line-height: 40px;
 			background: #00adef;
 			color: $white;
+			font-size: 1.180rem;
 			
 				span {
 					font-size: 1.0rem;
@@ -253,7 +253,7 @@
 			color: $white;
 			
 				&:active {
-					opacity: .85;
+					@include tapped;
 				}
 				
 			@include clearfix;
@@ -269,10 +269,13 @@
 			display: inline-block;
 			float: right;
 			margin-top: 6.5px;
-			background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI3MSA3MSAzNzAgMzcwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDcxIDcxIDM3MCAzNzAiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImNoZWNrYm94LTE0LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik0yMjQuOSwzNDIuM2wtNzcuNC03Ny40bDMzLTMzbDQ0LjQsNDQuNWwxMDIuNi0xMDIuNmwzMywzMi45TDIyNC45LDM0Mi4zeiBNMjU2LDExMQ0KCWMzOC43LDAsNzUuMSwxNS4xLDEwMi41LDQyLjVTNDAxLDIxNy4zLDQwMSwyNTZzLTE1LjEsNzUuMS00Mi41LDEwMi41UzI5NC43LDQwMSwyNTYsNDAxcy03NS4xLTE1LjEtMTAyLjUtNDIuNVMxMTEsMjk0LjcsMTExLDI1Ng0KCXMxNS4xLTc1LjEsNDIuNS0xMDIuNVMyMTcuMywxMTEsMjU2LDExMXogTTI1Niw3MUMxNTMuOCw3MSw3MSwxNTMuOCw3MSwyNTZzODIuOCwxODUsMTg1LDE4NWMxMDIuMiwwLDE4NS04Mi44LDE4NS0xODUNCglTMzU4LjIsNzEsMjU2LDcxeiIvPg0KPC9zdmc+DQo=");
 			background-size: cover;
 			@include no-select;
 			cursor: pointer;
+		}
+		
+		.submit-icon {
+			background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI3MSA3MSAzNzAgMzcwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDcxIDcxIDM3MCAzNzAiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImNoZWNrYm94LTE0LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik0yMjQuOSwzNDIuM2wtNzcuNC03Ny40bDMzLTMzbDQ0LjQsNDQuNWwxMDIuNi0xMDIuNmwzMywzMi45TDIyNC45LDM0Mi4zeiBNMjU2LDExMQ0KCWMzOC43LDAsNzUuMSwxNS4xLDEwMi41LDQyLjVTNDAxLDIxNy4zLDQwMSwyNTZzLTE1LjEsNzUuMS00Mi41LDEwMi41UzI5NC43LDQwMSwyNTYsNDAxcy03NS4xLTE1LjEtMTAyLjUtNDIuNVMxMTEsMjk0LjcsMTExLDI1Ng0KCXMxNS4xLTc1LjEsNDIuNS0xMDIuNVMyMTcuMywxMTEsMjU2LDExMXogTTI1Niw3MUMxNTMuOCw3MSw3MSwxNTMuOCw3MSwyNTZzODIuOCwxODUsMTg1LDE4NWMxMDIuMiwwLDE4NS04Mi44LDE4NS0xODUNCglTMzU4LjIsNzEsMjU2LDcxeiIvPg0KPC9zdmc+DQo=");
 		}
 		
 		.go-icon {
@@ -284,7 +287,70 @@
 			background: lighten(#00adef, 10%);
 			color: $white;
 		}
+		
+		#google-login {
+			display: block;
+			
+				> p {
+					text-align: left;
+					padding-top: 0.5rem;
+					padding-bottom: 0.5rem;
+				}
+			
+				.google-signin {
+					width: 150px;
+					height: 45px;
+					display: inline-block;
+					background: url("#{$image-path}/google-signin.png") no-repeat;
+					background-size: cover;
+					margin: 14px 0 0 14px;
+					@include no-select;
+					cursor: pointer;
+					
+						&:active {
+							@include tapped;
+						}
+				}
+		}
+		
+		#google-login-success p {
+			width: 100%;
+			height: 50px;
+			position: relative;
+			display: block;
+			line-height: 50px;
+			background: $black;
+			color: $white;
+		}
+		
+		.attri-copy {
+			
+				p {
+					text-align: center;
+					
+						&:nth-of-type(1) {
+							margin: .3rem 0;
+							font-style: italic;
+						}
+						
+						&:last-of-type {
+							padding-bottom: 10px;
+							border-bottom: 1px solid $grey;
+						}
+				}
+				
+				.powered-by-google {
+					width: 208px;
+					height: 32px;
+					background: url("#{$image-path}/powered-by-google.png") no-repeat;
+					background-size: cover;
+					margin: .8rem auto;
+				}	
+		}
 }
+
+
+
 
 //some styling for form elements and errors/warnings and such
 label {
@@ -339,7 +405,7 @@ textarea {
 	color: $errorOrange;
 }
 
-.no-geo {
+.no-geo, .saved {
 	width: 100%;
 	position: absolute;
 	top: 50%;

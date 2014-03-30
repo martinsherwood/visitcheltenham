@@ -3264,7 +3264,6 @@ html, body {
 }
 
 html {
-  height: 100%;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -3281,7 +3280,6 @@ html {
 }
 
 body {
-  height: 100%;
   min-height: 100%;
   background: #fffffa;
   color: #454545;
@@ -3518,7 +3516,7 @@ h4 {
 
 /* ----------- */
 .nav-links {
-  padding: 1.00rem;
+  padding: .80rem;
 }
 .nav-links a {
   width: 100%;
@@ -3538,6 +3536,13 @@ h4 {
 }
 .nav-links .fa-border {
   border-radius: 50%;
+}
+.nav-links .offer-count {
+  padding: .20rem .5rem;
+  margin-left: .3rem;
+  background: #e03838;
+  vertical-align: middle;
+  border-radius: .6rem;
 }
 
 /*-----------------------------------------------------------------*/
@@ -3677,14 +3682,12 @@ h4 {
 }
 
 /*-----------------------------------------------------------------*/
-#settings {
-  position: relative;
-}
 #settings .settings-block {
   position: relative;
-}
-#settings .settings-block:nth-of-type(1), #settings .settings-block:nth-of-type(2) {
   padding-bottom: 14px;
+}
+#settings .settings-block:last-of-type {
+  padding-bottom: 0;
 }
 #settings label, #settings .settings-label {
   width: 100%;
@@ -3693,6 +3696,7 @@ h4 {
   line-height: 40px;
   background: #00adef;
   color: #fffffa;
+  font-size: 1.180rem;
 }
 #settings label span, #settings .settings-label span {
   font-size: 1.0rem;
@@ -3737,12 +3741,14 @@ h4 {
   display: inline-block;
   float: right;
   margin-top: 6.5px;
-  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI3MSA3MSAzNzAgMzcwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDcxIDcxIDM3MCAzNzAiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImNoZWNrYm94LTE0LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik0yMjQuOSwzNDIuM2wtNzcuNC03Ny40bDMzLTMzbDQ0LjQsNDQuNWwxMDIuNi0xMDIuNmwzMywzMi45TDIyNC45LDM0Mi4zeiBNMjU2LDExMQ0KCWMzOC43LDAsNzUuMSwxNS4xLDEwMi41LDQyLjVTNDAxLDIxNy4zLDQwMSwyNTZzLTE1LjEsNzUuMS00Mi41LDEwMi41UzI5NC43LDQwMSwyNTYsNDAxcy03NS4xLTE1LjEtMTAyLjUtNDIuNVMxMTEsMjk0LjcsMTExLDI1Ng0KCXMxNS4xLTc1LjEsNDIuNS0xMDIuNVMyMTcuMywxMTEsMjU2LDExMXogTTI1Niw3MUMxNTMuOCw3MSw3MSwxNTMuOCw3MSwyNTZzODIuOCwxODUsMTg1LDE4NWMxMDIuMiwwLDE4NS04Mi44LDE4NS0xODUNCglTMzU4LjIsNzEsMjU2LDcxeiIvPg0KPC9zdmc+DQo=");
   background-size: cover;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
   cursor: pointer;
+}
+#settings .submit-icon {
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI3MSA3MSAzNzAgMzcwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDcxIDcxIDM3MCAzNzAiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImNoZWNrYm94LTE0LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik0yMjQuOSwzNDIuM2wtNzcuNC03Ny40bDMzLTMzbDQ0LjQsNDQuNWwxMDIuNi0xMDIuNmwzMywzMi45TDIyNC45LDM0Mi4zeiBNMjU2LDExMQ0KCWMzOC43LDAsNzUuMSwxNS4xLDEwMi41LDQyLjVTNDAxLDIxNy4zLDQwMSwyNTZzLTE1LjEsNzUuMS00Mi41LDEwMi41UzI5NC43LDQwMSwyNTYsNDAxcy03NS4xLTE1LjEtMTAyLjUtNDIuNVMxMTEsMjk0LjcsMTExLDI1Ng0KCXMxNS4xLTc1LjEsNDIuNS0xMDIuNVMyMTcuMywxMTEsMjU2LDExMXogTTI1Niw3MUMxNTMuOCw3MSw3MSwxNTMuOCw3MSwyNTZzODIuOCwxODUsMTg1LDE4NWMxMDIuMiwwLDE4NS04Mi44LDE4NS0xODUNCglTMzU4LjIsNzEsMjU2LDcxeiIvPg0KPC9zdmc+DQo=");
 }
 #settings .go-icon {
   background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA1MCA0MTIgNDEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDUwIDUwIDQxMiA0MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImFycm93LTI4LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik05MCwyNTZjMCw5MS44LDc0LjMsMTY2LDE2NiwxNjZjOTEuOCwwLDE2Ni03NC4zLDE2Ni0xNjZjMC05MS44LTc0LjMtMTY2LTE2Ni0xNjYNCglDMTY0LjIsOTAsOTAsMTY0LjMsOTAsMjU2eiBNNDYyLDI1NmMwLDExMy44LTkyLjIsMjA2LTIwNiwyMDZTNTAsMzY5LjgsNTAsMjU2UzE0Mi4yLDUwLDI1Niw1MFM0NjIsMTQyLjIsNDYyLDI1NnogTTIwMCwxNjguNg0KCWwzMi4zLTMyLjFMMzUyLjIsMjU3TDIzMi4yLDM3Ny41TDIwMCwzNDUuNGw4OC04OC40TDIwMCwxNjguNnoiLz4NCjwvc3ZnPg0K");
@@ -3751,6 +3757,56 @@ h4 {
   display: block;
   background: #23c2ff;
   color: #fffffa;
+}
+#settings #google-login {
+  display: block;
+}
+#settings #google-login > p {
+  text-align: left;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+#settings #google-login .google-signin {
+  width: 150px;
+  height: 45px;
+  display: inline-block;
+  background: url("../img/google-signin.png") no-repeat;
+  background-size: cover;
+  margin: 14px 0 0 14px;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+#settings #google-login .google-signin:active {
+  opacity: .85;
+}
+#settings #google-login-success p {
+  width: 100%;
+  height: 50px;
+  position: relative;
+  display: block;
+  line-height: 50px;
+  background: #454545;
+  color: #fffffa;
+}
+#settings .attri-copy p {
+  text-align: center;
+}
+#settings .attri-copy p:nth-of-type(1) {
+  margin: .3rem 0;
+  font-style: italic;
+}
+#settings .attri-copy p:last-of-type {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ced0d4;
+}
+#settings .attri-copy .powered-by-google {
+  width: 208px;
+  height: 32px;
+  background: url("../img/powered-by-google.png") no-repeat;
+  background-size: cover;
+  margin: .8rem auto;
 }
 
 label {
@@ -3801,7 +3857,7 @@ textarea {
   color: #f27b36;
 }
 
-.no-geo {
+.no-geo, .saved {
   width: 100%;
   position: absolute;
   top: 50%;

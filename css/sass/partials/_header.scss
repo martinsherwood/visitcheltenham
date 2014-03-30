@@ -109,7 +109,7 @@
 /* ----------- */
 
 .nav-links {
-	padding: 1.00rem;
+	padding: .80rem;
 
 		a {
 			width: 100%;
@@ -132,5 +132,13 @@
 		
 		.fa-border {
 			border-radius: 50%;
+		}
+		
+		.offer-count {
+			padding: .20rem .5rem;
+			margin-left: .3rem;
+			background: hsla(360, 73%, 55%, 1);
+			vertical-align: middle;
+			border-radius: .6rem;
 		}
 }

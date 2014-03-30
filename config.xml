@@ -41,10 +41,5 @@
 	
 	<!--Plugins-->
 	<gap:plugin name="org.li8.inappbrowser" version="0.1" />
-	
-	<gap:plugin name="com.phonegap.plugins.facebookconnect">
-		<param name="APP_ID" value="229507903921018" />
-		<param name="APP_NAME" value="visitcheltenham" />
-	</gap:plugin>
 
 </widget>

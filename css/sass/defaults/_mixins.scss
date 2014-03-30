@@ -18,10 +18,14 @@
 	letter-spacing: 1px;
 }
 
-@mixin use-gpu {
+@mixin use-gpu { //do not overuse
 	-webkit-transform: translateZ(0);
 		-ms-transform: translateZ(0);
 			transform: translateZ(0);
+}
+
+@mixin tapped {
+	opacity: .85;
 }
 
 @mixin clearfix() {

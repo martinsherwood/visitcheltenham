@@ -90,9 +90,23 @@
                     
                     <div class="settings-block">
                     	<h1 class="inner-wrap">User Account</h1>
-                        <span class="settings-label inner-wrap">Connect with...</span>
+                        <span class="settings-label inner-wrap">Connect with Google</span>
                         
-                        <div id="fb-root"></div>
+                        <div id="google-login">
+                        	<div role="button" data-role="button" data-action="google-signin" class="google-signin"></div> <!--<span>or</span>-->
+                            <p class="inner-wrap warning"></p>
+                        </div>
+                        
+                        <div id="google-login-success">
+                        	<span class="settings-label inner-wrap">You are signed in as:</span>
+                            <p class="inner-wrap signed-in-name"></p>
+                        </div>
+                        
+                        <form method="post" id="user-name" style="opacity:.50">
+                        	<label for="username" class="inner-wrap">Username <span>(what others users see)</span></label>
+                            <input type="text" id="username" name="users" placeholder="Enter a username" autocomplete="off" autocorrect="off" autocapitalize="off" disabled>
+                            <div role="button" data-role="button" data-action="save-user-name" class="save-settings inner-wrap">Save<div class="submit-icon"></div></div>
+                        </form>
                     </div>
                     
                     <div class="settings-block">
@@ -105,10 +119,24 @@
                         </form>
                     </div>
                     
-
-                
-                </div>
-            </div>
+                    <div class="settings-block attri-copy">
+                    	<h1 class="inner-wrap">Attribution &amp; Copyright</h1>
+                        <!--<span class="settings-label inner-wrap">Design &amp; Development</span>-->
+                        
+                        <div class="inner-wrap">
+                            <p>Made by...</p>
+                        	<p>Martin Sherwood</p>
+                        	<p>Leanne Williams</p>
+                            
+                            <div class="powered-by-google"></div>
+                            
+                        </div>
+                        
+                        <!--<span class="settings-label inner-wrap">Abcde</span>-->
+                    </div>
+                    
+                </div><!--/container - content-->
+            </div><!--/settings-->
             
 
         </div><!--/app - wrapper-->
@@ -157,7 +185,6 @@
         <!--we are only loading Great Britain (better on mobile) so locations outside will not work, and probably cause errors-->
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC6n-3I8KfH6ReeERae16W5M8B1QtzjPGc&amp;sensor=true&amp;libraries=places&amp;region=GB"></script>
         <script src="js/min/hammer.min.js"></script>
-        <script src="js/min/push.min.js"></script>
         <script src="js/min/storage.min.js"></script>
         <script src="js/min/maps.min.js"></script>
         <script src="js/main.js"></script>
