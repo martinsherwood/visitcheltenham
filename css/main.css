@@ -3299,7 +3299,6 @@ body {
 }
 
 p, ul, li {
-  color: #454545;
   font-size: 1.3rem;
 }
 
@@ -3684,30 +3683,32 @@ h4 {
 #settings .settings-block {
   position: relative;
 }
-#settings .settings-block:first-of-type {
+#settings .settings-block:nth-of-type(1), #settings .settings-block:nth-of-type(2) {
   padding-bottom: 14px;
 }
-#settings label {
+#settings label, #settings .settings-label {
+  width: 100%;
   height: 40px;
+  display: block;
   line-height: 40px;
   background: #00adef;
   color: #fffffa;
 }
-#settings label span {
+#settings label span, #settings .settings-label span {
   font-size: 1.0rem;
 }
-#settings input {
+#settings input, #settings select {
   width: 100%;
   display: block;
   border: none;
   background: transparent;
 }
-#settings input:focus {
+#settings input:focus, #settings select:focus {
   outline: none;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-#settings .save-settings {
+#settings .save-settings, #settings .submit-geocode-search {
   width: 100%;
   height: 50px;
   position: relative;
@@ -3716,10 +3717,21 @@ h4 {
   background: #454545;
   color: #fffffa;
 }
-#settings .save-settings:active, #settings .save-settings:hover, #settings .save-settings:focus {
+#settings .save-settings:active, #settings .submit-geocode-search:active {
   opacity: .85;
 }
-#settings .save-settings div.save-icon {
+#settings .save-settings:before, #settings .save-settings:after, #settings .submit-geocode-search:before, #settings .submit-geocode-search:after {
+  content: "\0020";
+  display: table;
+  /*or block*/
+}
+#settings .save-settings:after, #settings .submit-geocode-search:after {
+  clear: both;
+}
+#settings .save-settings {
+  border-bottom: 1px solid #fffffa;
+}
+#settings .submit-icon, #settings .go-icon {
   width: 36px;
   height: 36px;
   display: inline-block;
@@ -3732,13 +3744,13 @@ h4 {
   user-select: none;
   cursor: pointer;
 }
-#settings .save-settings:before, #settings .save-settings:after {
-  content: "\0020";
-  display: table;
-  /*or block*/
+#settings .go-icon {
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA1MCA0MTIgNDEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDUwIDUwIDQxMiA0MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImFycm93LTI4LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik05MCwyNTZjMCw5MS44LDc0LjMsMTY2LDE2NiwxNjZjOTEuOCwwLDE2Ni03NC4zLDE2Ni0xNjZjMC05MS44LTc0LjMtMTY2LTE2Ni0xNjYNCglDMTY0LjIsOTAsOTAsMTY0LjMsOTAsMjU2eiBNNDYyLDI1NmMwLDExMy44LTkyLjIsMjA2LTIwNiwyMDZTNTAsMzY5LjgsNTAsMjU2UzE0Mi4yLDUwLDI1Niw1MFM0NjIsMTQyLjIsNDYyLDI1NnogTTIwMCwxNjguNg0KCWwzMi4zLTMyLjFMMzUyLjIsMjU3TDIzMi4yLDM3Ny41TDIwMCwzNDUuNGw4OC04OC40TDIwMCwxNjguNnoiLz4NCjwvc3ZnPg0K");
 }
-#settings .save-settings:after {
-  clear: both;
+#settings .geocode-result {
+  display: block;
+  background: #23c2ff;
+  color: #fffffa;
 }
 
 label {
@@ -3760,8 +3772,6 @@ input, textarea, select {
   letter-spacing: 1px;
 }
 input:focus, textarea:focus, select:focus {
-  color: #454545;
-  border: 1px solid #00aed1;
   outline: none;
   -webkit-box-shadow: none;
   box-shadow: none;

@@ -43,7 +43,7 @@
                     <div role="search" class="searches">
                         <form id="place-search" role="search">               
                     		<input type="text" id="place-query" name="place-query" placeholder="Search for a place" autocomplete="off" autocorrect="on" autocapitalize="off">
-                            <div role="button" data-role="button" data-action="submit-search" class="search-button"></div>
+                            <div role="button" data-role="button" data-action="submit-place-search" class="search-button"></div>
                     	</form>
                         
                         <div class="results">
@@ -84,16 +84,29 @@
                                 <option value="imperial">Imperial</option>
                                 <option value="metric">Metric</option>
                             </select>
-                            <div role="button" data-role="button" data-action="save-settings" class="save-settings inner-wrap">Save<div class="save-icon"></div></div>
+                            <div role="button" data-role="button" data-action="save-search-settings" class="save-settings inner-wrap">Save<div class="submit-icon"></div></div>
                         </form>
                     </div>
                     
                     <div class="settings-block">
-                    	<h1 class="inner-wrap">User Profile</h1>
+                    	<h1 class="inner-wrap">User Account</h1>
+                        <span class="settings-label inner-wrap">Connect with...</span>
                     </div>
+                    
+                    <div class="settings-block">
+                    	<h1 class="inner-wrap">Utilities</h1>
+                        <form method="post" id="geocode-search">
+                        	<label for="address" class="inner-wrap">Postcode Lookup</label>
+                        	<input type="text" id="address" name="address" placeholder="Enter a postcode" autocomplete="off" autocorrect="off" autocapitalize="off">
+                            <div role="button" data-role="button" data-action="submit-geocode-search" class="submit-geocode-search inner-wrap">Search<div class="go-icon"></div></div>
+                            <!--<div class="geocode-result inner-wrap"></div>-->
+                        </form>
+                    </div>
+                    
+
                 
-                </div><!--/container - content-->
-            </div><!--/settings-->
+                </div>
+            </div>
             
 
         </div><!--/app - wrapper-->
