@@ -175,8 +175,8 @@ $(function(navigationalHandles) {
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		//$currentPage = $("#app > *:first-child").addClass("current");
-		$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
+		$currentPage = $("#app > *:first-child").addClass("current");
+		//$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	}
