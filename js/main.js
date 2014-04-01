@@ -478,6 +478,11 @@ $(function(navigationalHandles) {
 						
 						removeMarkers(); //remove markers from the map
 						
+						if (locationCircle && locationMark) {
+							locationCircle.setMap(null);
+							locationMark.setMap(null);
+						};
+						
 						map.addMarker({//add marker at user current location
 							lat: position.lat,
 							lng: position.lng,
