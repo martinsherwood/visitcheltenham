@@ -14,6 +14,18 @@ var app = {
 		addEventListeners();
 		setStorage();
 		
+		document.addEventListener("backbutton", function() {
+			exitApp();
+			function exitApp() {
+				navigator.notification.confirm("Exit?", function(button) {
+					if (button == 1) {
+						navigator.app.exitApp();
+					} 
+				}, "Exit", "Yes, No");  
+				return false;
+			}
+		}, false);
+		
 			/* EVERYTHING BAR HELPER FUNCTIONS SHOULD BE IN HERE FOR PHONEGAP FUNCTIONS TO WORK.
 			 * All phonegap functionality needs to be in here - a copy and paste should work, but we need to test everything.
 			 */
@@ -104,27 +116,6 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
 $("body").prepend(header);
 
 /*-----------------------------------------------------------------------------------------*/
-
-$(document).on("deviceready", function() {
-	//backbutton detection for exiting the application
-	document.addEventListener("backbutton", function() {
-		exitApp();
-		
-		function exitApp() {
-			navigator.notification.confirm("Exit?", function(button) {
-				if (button == 1) {
-					navigator.app.exitApp();
-				} 
-			}, "Exit", "Yes, No");  
-			return false;
-		}
-	}, false);
-	
-	//here
-
-});
-
-//$(document).on("deviceready", function() {
 
 /*Pull out menu, using 3dtransforms
 -----------------------------------------------------------------------------------------*/
@@ -272,11 +263,6 @@ $(function(navigationalHandles) {
 			zoom: 14, //14 is good, 19 is optimal for our use as it shows POI marker icons but is perhaps too zoomed in
 			disableDefaultUI: true,
 			styles: mapStyles,
-			
-			dragend: function(e) {
-				//do stuff here, update vars or whatever
-				console.log("dragend detected");
-			}
 		});
 	
 		$(".locate-button").hammer().on("tap", function(e) {
