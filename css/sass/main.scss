@@ -93,6 +93,10 @@
 			height: 440px;
 		}
 		
+		@include breakpoint(break-desktop) {
+			height: 440px;
+		}
+		
 		.adp-warnbox, .adp-legal, .gmnoprint, .gm-style-cc { /*shouldn't do this - absolutely must remove if released*/
 			display: none;
 		}

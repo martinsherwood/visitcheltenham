@@ -3565,8 +3565,14 @@ h4 {
   flex: 1;
   flex-direction: column;
   flex-wrap: wrap;*/
+  /*@else if $point == break-desktop {
+  	@media screen and (min-width: 80.000em) { @content; }
+  }*/
+  /*@else if $point == break-desktop {
+  	@media screen and (min-width: 80.000em) { @content; }
+  }*/
 }
-@media screen and (min-width: 48em) {
+@media screen and (min-width: 37.5em) {
   #map-container {
     height: 440px;
   }
