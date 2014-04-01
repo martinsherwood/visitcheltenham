@@ -14,7 +14,13 @@ var app = {
 		addEventListeners();
 		setStorage();
 		
-		document.addEventListener("backbutton", function() {
+		document.addEventListener("backbutton", onBackKeyDown, false);
+		
+		function onBackKeyDown() {
+			navigator.notification.alert("hello world");
+		}
+		
+		/*document.addEventListener("backbutton", function() {
 			exitApp();
 			function exitApp() {
 				navigator.notification.confirm("Exit?", function(button) {
@@ -24,7 +30,7 @@ var app = {
 				}, "Exit", "Yes, No");  
 				return false;
 			}
-		}, false);
+		}, false);*/
 		
 			/* EVERYTHING BAR HELPER FUNCTIONS SHOULD BE IN HERE FOR PHONEGAP FUNCTIONS TO WORK.
 			 * All phonegap functionality needs to be in here - a copy and paste should work, but we need to test everything.
