@@ -16,9 +16,7 @@ var app = {
 		
 		document.addEventListener("backbutton", onBackKeyDown, false);
 		
-		function onBackKeyDown() {
-			navigator.notification.alert("hello world");
-		}
+		
 		
 		/*document.addEventListener("backbutton", function() {
 			exitApp();
@@ -41,6 +39,11 @@ var app = {
         console.log("report:" + id);
     }
 };
+
+function onBackKeyDown() {
+	alert("1");
+	//navigator.notification.alert("hello world");
+}
 
 /*Sets up the device storage environment to use, automatically selects the best library
 /*depending what is supported by the device. Uses store.js, based on Mozilla LocalStorage.
