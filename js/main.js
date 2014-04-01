@@ -1,15 +1,16 @@
 /* All main JavaScript */
 
-//define
+//define - offline, and other functions to be built on
 var app = {
     initialize: function() {
         this.bind();
     },
     bind: function() {
         document.addEventListener("deviceready", this.deviceready, false);
+		//add others here
     },
     deviceready: function() {
-		//app.report("deviceready"); //this is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
+		app.report("deviceready"); //this is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
 		addEventListeners();
 		setStorage();
 		
@@ -99,7 +100,7 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                     "</nav>" +
                     "<div role=\"button\" data-role=\"button\" class=\"locate-button\"></div>" +
                 "</header>";
-//href=\"settings.html\"			
+							
 $("body").prepend(header);
 
 /*-----------------------------------------------------------------------------------------*/
