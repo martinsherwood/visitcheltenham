@@ -1,17 +1,19 @@
 /* All main JavaScript */
 
-//define
+//define - offline, and other functions to be built on
 var app = {
     initialize: function() {
         this.bind();
     },
     bind: function() {
         document.addEventListener("deviceready", this.deviceready, false);
+		addEvents();
     },
     deviceready: function() {
-		//app.report("deviceready"); //this is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
-		addEventListeners();
+		app.report("deviceready"); //this is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
 		setStorage();
+		
+		
 		
 			/* EVERYTHING BAR HELPER FUNCTIONS SHOULD BE IN HERE FOR PHONEGAP FUNCTIONS TO WORK.
 			 * All phonegap functionality needs to be in here - a copy and paste should work, but we need to test everything.
@@ -52,37 +54,22 @@ function setStorage() {
 	};
 };
 
-//for later
-function online() {
-	//here
-}
-
-//for later
-function offline() {
-	//here
-};
-
-//for later
-function paused() {
-	//here	
-};
-
-//for later
-function resumed() {
-	//here
-};
-
-function addEventListeners() {
-	//touch
-	document.addEventListener("touchstart", this, false);
-	document.addEventListener("touchmove", this, false);
-	document.addEventListener("touchend", this, false);
-	document.addEventListener("touchcancel", this, false);
+function addEvents() {
 	//phonegap
 	document.addEventListener("online", online, false); //device is online
 	document.addEventListener("offline", offline, false); //we'll use this to detect if the device is offline or not later
 	document.addEventListener("pause", paused, false); //when the app is backgrounded this event is fired
 	document.addEventListener("resume", resumed, false); //when the app is resumed from being backgrounded
+	document.addEventListener("backbutton", backButton, false);
+}
+
+function backButton() {
+	navigator.notification.confirm("Exit?", function(button) {
+		if (button == 1) {
+			navigator.app.exitApp();
+		} 
+	}, "Exit", "Yes, No");  
+	return false;
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -99,31 +86,10 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                     "</nav>" +
                     "<div role=\"button\" data-role=\"button\" class=\"locate-button\"></div>" +
                 "</header>";
-//href=\"settings.html\"			
+							
 $("body").prepend(header);
 
 /*-----------------------------------------------------------------------------------------*/
-
-/*$(document).on("deviceready", function() {
-	//backbutton detection for exiting the application
-	document.addEventListener("backbutton", function() {
-		exitApp();
-		
-		function exitApp() {
-			navigator.notification.confirm("Exit?", function(button) {
-				if (button == 1) {
-					navigator.app.exitApp();
-				} 
-			}, "Exit", "Yes, No");  
-			return false;
-		}
-	}, false);
-	
-	//here
-
-});*/
-
-//$(document).on("deviceready", function() {
 
 /*Pull out menu, using 3dtransforms
 -----------------------------------------------------------------------------------------*/
@@ -175,8 +141,8 @@ $(function(navigationalHandles) {
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		//$currentPage = $("#app > *:first-child").addClass("current");
-		$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
+		$currentPage = $("#app > *:first-child").addClass("current");
+		//$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	}
@@ -271,11 +237,6 @@ $(function(navigationalHandles) {
 			zoom: 14, //14 is good, 19 is optimal for our use as it shows POI marker icons but is perhaps too zoomed in
 			disableDefaultUI: true,
 			styles: mapStyles,
-			
-			dragend: function(e) {
-				//do stuff here, update vars or whatever
-				console.log("dragend detected");
-			}
 		});
 	
 		$(".locate-button").hammer().on("tap", function(e) {
@@ -477,6 +438,11 @@ $(function(navigationalHandles) {
 						
 						removeMarkers(); //remove markers from the map
 						
+						if (locationCircle && locationMark) {
+							locationCircle.setMap(null);
+							locationMark.setMap(null);
+						};
+						
 						map.addMarker({//add marker at user current location
 							lat: position.lat,
 							lng: position.lng,
@@ -553,24 +519,9 @@ $(function(navigationalHandles) {
 })(); //end scope
 
 
-/*Map on start page, with geolocation
-
-var map - the map on the start page
-var cheltenham - lat and long from centre of cheltenham built into a google maps latlng object
-var mapStyles - json style array for the map
-
-//IMPORTANT
-var position - is used to get the lat and long values from the gps
-var currentLocation - holds the users current location from the values in position
-
------------------------------------------------------------------------------------------*/
-
-
 /*Settings and options functionality
 -----------------------------------------------------------------------------------------*/
 $(function(userSettings) {
-	
-	//search settings
 	$(function(searchSettings) {
 		store.getItem("searchSettings").then(function(value) {
 			//console.log(value);
@@ -603,8 +554,6 @@ $(function(userSettings) {
 	
 	/* ----- */
 	
-	//postcode lookup
-	
 	$(function(postcodeLookup) {
 		$("[data-action=\"submit-geocode-search\"]").hammer().on("tap", function(e) {
 			$("#geocode-search").submit();
@@ -625,8 +574,6 @@ $(function(userSettings) {
 						
 						//save the items in indexeddb too? some sort of history list or whatever?
 						
-						//$(".geocode-result").append("<p>" + addr + "</p>");
-						
 					} else {
 						$("#address").attr("placeholder", "No results") && $("#address").addClass("plc-warning");
 						setTimeout(function() {
@@ -640,7 +587,7 @@ $(function(userSettings) {
 	
 	/* ----- */
 	
-	//sign in via google (alpha'ish / beta) - TEST
+	//sign in via google (alpha'ish / beta) - not fully working, it throws up at then end when getting the auth token
 	
 	/*start*/
 	$(function(googleSignin) {
