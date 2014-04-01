@@ -31,7 +31,7 @@
 	<preference name="ios-statusbarstyle" value="black-opaque" />
 	<preference name="detect-data-types" value="false" />
 	<preference name="exit-on-suspend" value="false" />
-	<preference name="WebViewBounce" value="false" />
+	<!--<preference name="WebViewBounce" value="false" />-->
 	
 	<!--Android-->
 	<preference name="android-installLocation" value="auto" />
