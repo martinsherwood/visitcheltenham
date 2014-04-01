@@ -105,7 +105,7 @@ $("body").prepend(header);
 
 /*-----------------------------------------------------------------------------------------*/
 
-/*$(document).on("deviceready", function() {
+$(document).on("deviceready", function() {
 	//backbutton detection for exiting the application
 	document.addEventListener("backbutton", function() {
 		exitApp();
@@ -122,7 +122,7 @@ $("body").prepend(header);
 	
 	//here
 
-});*/
+});
 
 //$(document).on("deviceready", function() {
 
