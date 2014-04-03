@@ -453,46 +453,6 @@
       "type": "Png",
       "initialSize": 5201,
       "status": "NOT_OPTIMIZED"
-    },
-    "a6294c2d": {
-      "id": "a6294c2d",
-      "pid": "cc820037",
-      "path": "img\\google-signin.png",
-      "size": 125966,
-      "name": "google-signin.png",
-      "type": "Png",
-      "initialSize": 125966,
-      "status": "NOT_OPTIMIZED"
-    },
-    "3cbf2cec": {
-      "id": "3cbf2cec",
-      "pid": "cc820037",
-      "path": "img\\location-marker-blue.png",
-      "size": 15622,
-      "name": "location-marker-blue.png",
-      "type": "Png",
-      "initialSize": 15622,
-      "status": "NOT_OPTIMIZED"
-    },
-    "ca3121b6": {
-      "id": "ca3121b6",
-      "pid": "cc820037",
-      "path": "img\\location-marker-pink.png",
-      "size": 15189,
-      "name": "location-marker-pink.png",
-      "type": "Png",
-      "initialSize": 15189,
-      "status": "NOT_OPTIMIZED"
-    },
-    "d08feef6": {
-      "id": "d08feef6",
-      "pid": "cc820037",
-      "path": "img\\powered-by-google.png",
-      "size": 6971,
-      "name": "powered-by-google.png",
-      "type": "Png",
-      "initialSize": 6971,
-      "status": "NOT_OPTIMIZED"
     }
   },
   "config": {

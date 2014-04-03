@@ -1,0 +1,22 @@
+﻿CACHE MANIFEST
+# V1
+
+# Explicitly cached entries
+CACHE:
+/
+
+# CSS
+
+
+# JavaScript
+
+
+# Images
+
+
+# Resources that require the device to be online
+NETWORK:
+*
+
+# Fallback resources 
+FALLBACK:

@@ -31,7 +31,7 @@
 	<preference name="ios-statusbarstyle" value="black-opaque" />
 	<preference name="detect-data-types" value="false" />
 	<preference name="exit-on-suspend" value="false" />
-	<!--<preference name="WebViewBounce" value="false" />-->
+	<preference name="WebViewBounce" value="false" />
 	
 	<!--Android-->
 	<preference name="android-installLocation" value="auto" />
@@ -40,7 +40,14 @@
 	<access origin="*" />
 	
 	<!--Plugins-->
-	<gap:plugin name="org.li8.inappbrowser" version="0.1" />
-	<gap:plugin name="org.apache.cordova.dialogs" />
+	<gap:plugin name="SplashScreen" value="org.apache.cordova.core.SplashScreen" />
+	<gap:plugin name="Notification" value="org.apache.cordova.core.Notification" />
+	<gap:plugin name="Vibration" value="org.apache.cordova.core.Vibration" />
+	<!--<gap:plugin name="org.li8.inappbrowser" version="0.1" />-->
+	<gap:plugin name="InAppBrowser" value="org.apache.cordova.core.InAppBrowser" />
+	<gap:plugin name="NetworkStatus" value="org.apache.cordova.core.NetworkManager" />
+	<gap:plugin name="Battery" value="org.apache.cordova.core.BatteryListener" />
+	<gap:plugin name="Compass" value="org.apache.cordova.core.CompassListener" />
+	<gap:plugin name="Geolocation" value="org.apache.cordova.core.GeoBroker" />
 
 </widget>

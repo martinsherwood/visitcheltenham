@@ -10,7 +10,6 @@
         <title>Visit Cheltenham</title>
         <meta name="description" content="Travel &amp; Tourism App for Cheltenham, United Kingdom">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, width=device-width">
-        <meta http-equiv="cleartype" content="on">
 		<meta name="format-detection" content="telephone=no">
         
 		<link rel="shortcut icon" href="img/touchicons/favicon.ico">
@@ -64,6 +63,7 @@
             
             <div id="settings" data-role="page">
                 <div role="contentinfo" data-role="content" data-transition="slide-down-in" class="push content container">
+                
                     <div class="settings-block">
                         <h1 class="inner-wrap">Search Settings</h1>
                         
@@ -89,10 +89,10 @@
                     
                     <div class="settings-block">
                     	<h1 class="inner-wrap">User Account</h1>
-                        <span class="settings-label inner-wrap">Connect with Google<span> (does not fully work)</span></span>
+                        <span class="settings-label inner-wrap">Connect with Google <span>(not fully working)</span></span>
                         
                         <div id="google-login">
-                        	<div role="button" data-role="button" data-action="google-signin" class="google-signin"></div>
+                        	<div role="button" data-role="button" data-action="google-signin" class="google-signin"></div> <!--<span>or</span>-->
                             <p class="inner-wrap warning"></p>
                         </div>
                         
@@ -101,7 +101,7 @@
                             <p class="inner-wrap signed-in-name"></p>
                         </div>
                         
-                        <form method="post" id="user-name">
+                        <form method="post" id="user-name" style="opacity:.50">
                         	<label for="username" class="inner-wrap">Username <span>(what others users see)</span></label>
                             <input type="text" id="username" name="users" placeholder="Enter a username" autocomplete="off" autocorrect="off" autocapitalize="off" disabled>
                             <div role="button" data-role="button" data-action="save-user-name" class="save-settings inner-wrap">Save<div class="submit-icon"></div></div>
@@ -120,7 +120,9 @@
                     
                     <div class="settings-block attri-copy">
                     	<h1 class="inner-wrap">Attribution &amp; Copyright</h1>
-                        <div class="powered-by-google"></div>
+                        <div class="inner-wrap">
+                            <div class="powered-by-google"></div>
+                        </div>
                     </div>
                     
                 </div><!--/container - content-->
