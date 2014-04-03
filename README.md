@@ -1,12 +1,17 @@
 visitcheltenham
-===============
+======
 
 To do:
+----------
 
+User names
 
+Add place as a favourite
 
-Add favourites function, from place.name and send to database, but needs user account as well (Facebook or Twitter or ?) - any ideas?
+Add geofences to map
 
-Implement geofences into the map - IMPORTANT
+Add offers
 
-Add offers and vouchers - database driven
+Create database
+
+Do ajax/requests
