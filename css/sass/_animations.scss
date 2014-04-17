@@ -1,23 +1,6 @@
 /* Page Transition Animations */
 
 /* Fade */
-.fade.in {
-	-webkit-animation-name: fadeIn;
-	   -moz-animation-name: fadeIn;
-		-ms-animation-name: fadeIn;
-		 -o-animation-name: fadeIn;
-			animation-name: fadeIn;
-}
-
-.fade.out {
-	z-index: 10;
-	-webkit-animation-name: fadeOut;
-	   -moz-animation-name: fadeOut;
-		-ms-animation-name: fadeOut;
-		 -o-animation-name: fadeOut;
-			animation-name: fadeOut;
-}
-
 @-webkit-keyframes fadeIn {
 	0% {
 		opacity: 0;
@@ -121,22 +104,6 @@
 /* ------------------------------------------ */
 
 /* Slide Left */
-.slideleft.in {
-	-webkit-animation-name: slideLeftIn;
-	   -moz-animation-name: slideLeftIn;
-		-ms-animation-name: slideLeftIn;
-		 -o-animation-name: slideLeftIn;
-			animation-name: slideLeftIn;
-}
-
-.slideleft.out {
-	-webkit-animation-name: slideLeftOut;
-	   -moz-animation-name: slideLeftOut;
-		-ms-animation-name: slideLeftOut;
-		 -o-animation-name: slideLeftOut;
-			animation-name: slideLeftOut;
-}
-
 @-webkit-keyframes slideLeftIn {
 	0% {
 		-webkit-transform: translateX(100%);
@@ -272,22 +239,6 @@
 /* ------------------------------------------ */
 
 /* Slide Right */
-.slideright.in {
-	-webkit-animation-name: slideRightIn;
-	   -moz-animation-name: slideRightIn;
-		-ms-animation-name: slideRightIn;
-		 -o-animation-name: slideRightIn;
-			animation-name: slideRightIn;
-}
-
-.slideright.out {
- 	-webkit-animation-name: slideRightOut;
-	   -moz-animation-name: slideRightOut;
-		-ms-animation-name: slideRightOut;
-		 -o-animation-name: slideRightOut;
-			animation-name: slideRightOut;
-}
-
 @-webkit-keyframes slideRightIn {
 	0% {
 		-webkit-transform: translateX(-100%);
@@ -423,24 +374,6 @@
 /* ------------------------------------------ */
 
 /* Slide Up */
-.slideup.in {
-	z-index: 10;
-	-webkit-animation-name: slideUpIn;
-	   -moz-animation-name: slideUpIn;
-		-ms-animation-name: slideUpIn;
-		 -o-animation-name: slideUpIn;
-			animation-name: slideUpIn;
-}
-
-.slideup.out {
-	z-index: 0;
-	-webkit-animation-name: slideUpOut;
-	   -moz-animation-name: slideUpOut;
-		-ms-animation-name: slideUpOut;
-		 -o-animation-name: slideUpOut;
-			animation-name: slideUpOut;
-}
-
 @-webkit-keyframes slideUpIn {
 	0% {
 		-webkit-transform: translateY(100%);
@@ -576,24 +509,6 @@
 /* ------------------------------------------ */
 
 /* Slide Down */
-.slidedown.in {
-	z-index: 0;
-	-webkit-animation-name: slideDownIn;
-	   -moz-animation-name: slideDownIn;
-		-ms-animation-name: slideDownIn;
-		 -o-animation-name: slideDownIn;
-			animation-name: slideDownIn;
-}
-
-.slidedown.out {
-	z-index: 10;
-  	-webkit-animation-name: slideDownOut;
-	   -moz-animation-name: slideDownOut;
-		-ms-animation-name: slideDownOut;
-		 -o-animation-name: slideDownOut;
-			animation-name: slideDownOut;
-}
-
 @-webkit-keyframes slideDownIn {
 	0% {
 		-webkit-transform: translateY(-100%);
@@ -730,90 +645,90 @@
 
 [data-transition="fade-in"] {
 	z-index: 10;
-	-webkit-animation: fadeIn $page-trans-time;
-	-moz-animation: fadeIn $page-trans-time;
-	-ms-animation: fadeIn $page-trans-time;
-	-o-animation: fadeIn $page-trans-time;
-	animation: fadeIn $page-trans-time;
+	-webkit-animation: fadeIn $page-anim;
+	-moz-animation: fadeIn $page-anim;
+	-ms-animation: fadeIn $page-anim;
+	-o-animation: fadeIn $page-anim;
+	animation: fadeIn $page-anim;
 }
 
 [data-transition="fade-out"] {
 	z-index: 0;
-	-webkit-animation: fadeOut $page-trans-time;
-	-moz-animation: fadeOut $page-trans-time;
-	-ms-animation: fadeOut $page-trans-time;
-	-o-animation: fadeOut $page-trans-time;
-	animation: fadeOut $page-trans-time;
+	-webkit-animation: fadeOut $page-anim;
+	-moz-animation: fadeOut $page-anim;
+	-ms-animation: fadeOut $page-anim;
+	-o-animation: fadeOut $page-anim;
+	animation: fadeOut $page-anim;
 }
 
 [data-transition="slide-left-in"] {
 	z-index: 10;
-	-webkit-animation: slideLeftIn $page-trans-time;
-	-moz-animation: slideLeftIn $page-trans-time;
-	-ms-animation: slideLeftIn $page-trans-time;
-	-o-animation: slideLeftIn $page-trans-time;
-	animation: slideLeftIn $page-trans-time;
+	-webkit-animation: slideLeftIn $page-anim;
+	-moz-animation: slideLeftIn $page-anim;
+	-ms-animation: slideLeftIn $page-anim;
+	-o-animation: slideLeftIn $page-anim;
+	animation: slideLeftIn $page-anim;
 }
 
 [data-transition="slide-left-out"] {
 	z-index: 0;
-	-webkit-animation: slideLeftOut $page-trans-time;
-	-moz-animation: slideLeftOut $page-trans-time;
-	-ms-animation: slideLeftOut $page-trans-time;
-	-o-animation: slideLeftOut $page-trans-time;
-	animation: slideLeftOut $page-trans-time;
+	-webkit-animation: slideLeftOut $page-anim;
+	-moz-animation: slideLeftOut $page-anim;
+	-ms-animation: slideLeftOut $page-anim;
+	-o-animation: slideLeftOut $page-anim;
+	animation: slideLeftOut $page-anim;
 }
 
 [data-transition="slide-right-in"] {
 	z-index: 10;
-	-webkit-animation: slideRightIn $page-trans-time;
-	-moz-animation: slideRightIn $page-trans-time;
-	-ms-animation: slideRightIn $page-trans-time;
-	-o-animation: slideRightIn $page-trans-time;
-	animation: slideRightIn $page-trans-time;
+	-webkit-animation: slideRightIn $page-anim;
+	-moz-animation: slideRightIn $page-anim;
+	-ms-animation: slideRightIn $page-anim;
+	-o-animation: slideRightIn $page-anim;
+	animation: slideRightIn $page-anim;
 }
 
 [data-transition="slide-right-out"] {
 	z-index: 0;
-	-webkit-animation: slideRightOut $page-trans-time;
-	-moz-animation: slideRightOut $page-trans-time;
-	-ms-animation: slideRightOut $page-trans-time;
-	-o-animation: slideRightOut $page-trans-time;
-	animation: slideRightOut $page-trans-time;
+	-webkit-animation: slideRightOut $page-anim;
+	-moz-animation: slideRightOut $page-anim;
+	-ms-animation: slideRightOut $page-anim;
+	-o-animation: slideRightOut $page-anim;
+	animation: slideRightOut $page-anim;
 }
 
 [data-transition="slide-up-in"] {
 	z-index: 10;
-	-webkit-animation: slideUpIn $page-trans-time;
-	-moz-animation: slideUpIn $page-trans-time;
-	-ms-animation: slideUpIn $page-trans-time;
-	-o-animation: slideUpIn $page-trans-time;
-	animation: slideUpIn $page-trans-time;
+	-webkit-animation: slideUpIn $page-anim;
+	-moz-animation: slideUpIn $page-anim;
+	-ms-animation: slideUpIn $page-anim;
+	-o-animation: slideUpIn $page-anim;
+	animation: slideUpIn $page-anim;
 }
 
 [data-transition="slide-up-out"] {
 	z-index: 0;
-	-webkit-animation: slideUpOut $page-trans-time;
-	-moz-animation: slideUpOut $page-trans-time;
-	-ms-animation: slideUpOut $page-trans-time;
-	-o-animation: slideUpOut $page-trans-time;
-	animation: slideUpOut $page-trans-time;
+	-webkit-animation: slideUpOut $page-anim;
+	-moz-animation: slideUpOut $page-anim;
+	-ms-animation: slideUpOut $page-anim;
+	-o-animation: slideUpOut $page-anim;
+	animation: slideUpOut $page-anim;
 }
 
 [data-transition="slide-down-in"] {
 	z-index: 10;
-	-webkit-animation: slideDownIn $page-trans-time;
-	-moz-animation: slideDownIn $page-trans-time;
-	-ms-animation: slideDownIn $page-trans-time;
-	-o-animation: slideDownIn $page-trans-time;
-	animation: slideDownIn $page-trans-time;
+	-webkit-animation: slideDownIn $page-anim;
+	-moz-animation: slideDownIn $page-anim;
+	-ms-animation: slideDownIn $page-anim;
+	-o-animation: slideDownIn $page-anim;
+	animation: slideDownIn $page-anim;
 }
 
 [data-transition="slide-down-out"] {
 	z-index: 0;
-  	-webkit-animation: slideDownOut $page-trans-time;
-	-moz-animation: slideDownOut $page-trans-time;
-	-ms-animation: slideDownOut $page-trans-time;
-	-o-animation: slideDownOut $page-trans-time;
-	animation: slideDownOut $page-trans-time;
+  	-webkit-animation: slideDownOut $page-anim;
+	-moz-animation: slideDownOut $page-anim;
+	-ms-animation: slideDownOut $page-anim;
+	-o-animation: slideDownOut $page-anim;
+	animation: slideDownOut $page-anim;
 }

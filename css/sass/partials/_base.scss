@@ -1,10 +1,8 @@
 html, body {
-    overflow-x: hidden; //prevents horizontal scroll bars
-    height: 100%; //fixes focus scrolling in Safari
+	height: 100%;
 }
 
 html {
-	//height: 100%;
 	-webkit-text-size-adjust: 100%;
 		-ms-text-size-adjust: 100%;
 			text-size-adjust: 100%;
@@ -21,7 +19,6 @@ html {
 }
 
 body {
-	//height: 100%;
 	min-height: 100%;
 	background: $white;
 	color: $black;
@@ -39,20 +36,11 @@ body {
 }
 
 p, ul, li {
-	//color: $black;
 	font-size: $base-size;
 }
 
 audio, canvas, img, video {
     vertical-align: middle;
-}
-
-//might not need these
-h1, h2, h3, h4 {
-	//margin: 0 0 10px 0;
-	color: $black;
-	font-weight: $weight;
-	line-height: 1.2;
 }
 
 h1 {
@@ -61,18 +49,7 @@ h1 {
 	background: #8fd445;
 	margin: 0;
 	font-size: 1.6rem;
+	font-weight: $weight;
 	line-height: 50px;
 	border-bottom: 1px solid $white;
-}
-
-h2 {
-	font-size: 1.4rem;
-}
-
-h3 {
-	font-size: 1.2rem;
-}
-
-h4 {
-	font-size: 1.1rem;
 }

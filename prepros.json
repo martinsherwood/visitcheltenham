@@ -105,6 +105,20 @@
         "mangle": true,
         "sourcemaps": false
       }
+    },
+    "a31ff0e2": {
+      "id": "a31ff0e2",
+      "pid": "cc820037",
+      "name": "selectbox.js",
+      "input": "js\\selectbox.js",
+      "customOutput": false,
+      "type": "Js",
+      "config": {
+        "autoCompile": true,
+        "uglify": true,
+        "mangle": true,
+        "sourcemaps": false
+      }
     }
   },
   "imports": {
@@ -214,244 +228,44 @@
       "initialSize": 19666,
       "status": "NOT_OPTIMIZED"
     },
-    "c9ff156b": {
-      "id": "c9ff156b",
+    "a6294c2d": {
+      "id": "a6294c2d",
       "pid": "cc820037",
-      "path": "img\\topcoat\\avatar.png",
-      "size": 11926,
-      "name": "avatar.png",
+      "path": "img\\google-signin.png",
+      "size": 125966,
+      "name": "google-signin.png",
       "type": "Png",
-      "initialSize": 11926,
+      "initialSize": 125966,
       "status": "NOT_OPTIMIZED"
     },
-    "c62b4288": {
-      "id": "c62b4288",
+    "3cbf2cec": {
+      "id": "3cbf2cec",
       "pid": "cc820037",
-      "path": "img\\topcoat\\bg_dark.png",
-      "size": 85839,
-      "name": "bg_dark.png",
+      "path": "img\\location-marker-blue.png",
+      "size": 15622,
+      "name": "location-marker-blue.png",
       "type": "Png",
-      "initialSize": 85839,
+      "initialSize": 15622,
       "status": "NOT_OPTIMIZED"
     },
-    "6d230ec3": {
-      "id": "6d230ec3",
+    "ca3121b6": {
+      "id": "ca3121b6",
       "pid": "cc820037",
-      "path": "img\\topcoat\\breadcrumb.png",
-      "size": 202,
-      "name": "breadcrumb.png",
+      "path": "img\\location-marker-pink.png",
+      "size": 15189,
+      "name": "location-marker-pink.png",
       "type": "Png",
-      "initialSize": 202,
+      "initialSize": 15189,
       "status": "NOT_OPTIMIZED"
     },
-    "4ea1c662": {
-      "id": "4ea1c662",
+    "d08feef6": {
+      "id": "d08feef6",
       "pid": "cc820037",
-      "path": "img\\topcoat\\checkbox_checked.png",
-      "size": 1424,
-      "name": "checkbox_checked.png",
+      "path": "img\\powered-by-google.png",
+      "size": 6971,
+      "name": "powered-by-google.png",
       "type": "Png",
-      "initialSize": 1424,
-      "status": "NOT_OPTIMIZED"
-    },
-    "be23046a": {
-      "id": "be23046a",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\checkbox_checked_dark.png",
-      "size": 1437,
-      "name": "checkbox_checked_dark.png",
-      "type": "Png",
-      "initialSize": 1437,
-      "status": "NOT_OPTIMIZED"
-    },
-    "aa3aed25": {
-      "id": "aa3aed25",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\checkbox_unchecked.png",
-      "size": 1216,
-      "name": "checkbox_unchecked.png",
-      "type": "Png",
-      "initialSize": 1216,
-      "status": "NOT_OPTIMIZED"
-    },
-    "9f49ff93": {
-      "id": "9f49ff93",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\checkbox_unchecked_dark.png",
-      "size": 1199,
-      "name": "checkbox_unchecked_dark.png",
-      "type": "Png",
-      "initialSize": 1199,
-      "status": "NOT_OPTIMIZED"
-    },
-    "bc2200d4": {
-      "id": "bc2200d4",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\dark-combo-box-bg.png",
-      "size": 1023,
-      "name": "dark-combo-box-bg.png",
-      "type": "Png",
-      "initialSize": 1023,
-      "status": "NOT_OPTIMIZED"
-    },
-    "d8916371": {
-      "id": "d8916371",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\dark-combo-box-bg2x.png",
-      "size": 1124,
-      "name": "dark-combo-box-bg2x.png",
-      "type": "Png",
-      "initialSize": 1124,
-      "status": "NOT_OPTIMIZED"
-    },
-    "36da97d9": {
-      "id": "36da97d9",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\dark-grips.png",
-      "size": 220,
-      "name": "dark-grips.png",
-      "type": "Png",
-      "initialSize": 220,
-      "status": "NOT_OPTIMIZED"
-    },
-    "99c3d26d": {
-      "id": "99c3d26d",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\dark-sprites2x.png",
-      "size": 5066,
-      "name": "dark-sprites2x.png",
-      "type": "Png",
-      "initialSize": 5066,
-      "status": "NOT_OPTIMIZED"
-    },
-    "e2f15cd0": {
-      "id": "e2f15cd0",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\dialog-zone-bg.png",
-      "size": 600868,
-      "name": "dialog-zone-bg.png",
-      "type": "Png",
-      "initialSize": 600868,
-      "status": "NOT_OPTIMIZED"
-    },
-    "bb7fc9c1": {
-      "id": "bb7fc9c1",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\drop-down-triangle-dark.png",
-      "size": 1091,
-      "name": "drop-down-triangle-dark.png",
-      "type": "Png",
-      "initialSize": 1091,
-      "status": "NOT_OPTIMIZED"
-    },
-    "713d2a26": {
-      "id": "713d2a26",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\drop-down-triangle.png",
-      "size": 2892,
-      "name": "drop-down-triangle.png",
-      "type": "Png",
-      "initialSize": 2892,
-      "status": "NOT_OPTIMIZED"
-    },
-    "a050cd1e": {
-      "id": "a050cd1e",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\light-combo-box-bg.png",
-      "size": 1023,
-      "name": "light-combo-box-bg.png",
-      "type": "Png",
-      "initialSize": 1023,
-      "status": "NOT_OPTIMIZED"
-    },
-    "24d8b6fd": {
-      "id": "24d8b6fd",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\light-combo-box-bg2x.png",
-      "size": 1124,
-      "name": "light-combo-box-bg2x.png",
-      "type": "Png",
-      "initialSize": 1124,
-      "status": "NOT_OPTIMIZED"
-    },
-    "418325f3": {
-      "id": "418325f3",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\light-grips.png",
-      "size": 248,
-      "name": "light-grips.png",
-      "type": "Png",
-      "initialSize": 248,
-      "status": "NOT_OPTIMIZED"
-    },
-    "5014624a": {
-      "id": "5014624a",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\light-sprites2x.png",
-      "size": 5351,
-      "name": "light-sprites2x.png",
-      "type": "Png",
-      "initialSize": 5351,
-      "status": "NOT_OPTIMIZED"
-    },
-    "f16bdee1": {
-      "id": "f16bdee1",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\pop-up-triangle-dark.png",
-      "size": 1153,
-      "name": "pop-up-triangle-dark.png",
-      "type": "Png",
-      "initialSize": 1153,
-      "status": "NOT_OPTIMIZED"
-    },
-    "e2427c9f": {
-      "id": "e2427c9f",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\pop-up-triangle.png",
-      "size": 2958,
-      "name": "pop-up-triangle.png",
-      "type": "Png",
-      "initialSize": 2958,
-      "status": "NOT_OPTIMIZED"
-    },
-    "6475970b": {
-      "id": "6475970b",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\search-bg.png",
-      "size": 1390,
-      "name": "search-bg.png",
-      "type": "Png",
-      "initialSize": 1390,
-      "status": "NOT_OPTIMIZED"
-    },
-    "9a0f03c0": {
-      "id": "9a0f03c0",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\search-bg2x.png",
-      "size": 1800,
-      "name": "search-bg2x.png",
-      "type": "Png",
-      "initialSize": 1800,
-      "status": "NOT_OPTIMIZED"
-    },
-    "fcca378d": {
-      "id": "fcca378d",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\spinner.png",
-      "size": 2707,
-      "name": "spinner.png",
-      "type": "Png",
-      "initialSize": 2707,
-      "status": "NOT_OPTIMIZED"
-    },
-    "b3d4ca1e": {
-      "id": "b3d4ca1e",
-      "pid": "cc820037",
-      "path": "img\\topcoat\\spinner2x.png",
-      "size": 5201,
-      "name": "spinner2x.png",
-      "type": "Png",
-      "initialSize": 5201,
+      "initialSize": 6971,
       "status": "NOT_OPTIMIZED"
     }
   },

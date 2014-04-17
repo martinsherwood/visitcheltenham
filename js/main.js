@@ -1,29 +1,26 @@
 /* All main JavaScript */
 
-//define - offline, and other functions to be built on
+//application constructor -> bind events/listeners -> deviceready -> update and display -> report
+//deviceready event handler, the scope of 'this' is the event. In order to call the 'report' function, we must explicity call 'app.report(...);', same for any others
+//app.report is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
+
 var app = {
     initialize: function() {
-        this.bind();
+        this.bindEvents();
     },
-    bind: function() {
-        document.addEventListener("deviceready", this.deviceready, false);
-		addEvents();
+    bindEvents: function() {
+        document.addEventListener("deviceready", this.onDeviceReady, false);
+		document.addEventListener("backbutton", backButton, false);
+		//add more here
     },
-    deviceready: function() {
-		app.report("deviceready"); //this is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
+    onDeviceReady: function() {
 		setStorage();
-		
-		
-		
-			/* EVERYTHING BAR HELPER FUNCTIONS SHOULD BE IN HERE FOR PHONEGAP FUNCTIONS TO WORK.
-			 * All phonegap functionality needs to be in here - a copy and paste should work, but we need to test everything.
-			 */
-		
     },
-    report: function(id) { 
-        console.log("report:" + id);
-    }
-};
+    report: function(id) {
+		console.log("report:" + id);
+    },
+}
+
 
 /*Sets up the device storage environment to use, automatically selects the best library
 /*depending what is supported by the device. Uses store.js, based on Mozilla LocalStorage.
@@ -33,15 +30,15 @@ function setStorage() {
 	
 	if (indexedDB) {
 		store.setDriver("IndexedDBWrapper").then(function() {
-			//console.log(store.driver + " IndexedDB");
+			console.log(store.driver + " IndexedDB");
 		});
 	} else if (window.openDatabase) { // WebSQL is available, so we'll use that.
 		store.setDriver("WebSQLWrapper").then(function() {
-			//console.log(store.driver + " WebSQL");
+			console.log(store.driver + " WebSQL");
 		});
 	} else { // If nothing else is available, we use localStorage.
 		store.setDriver("localStorageWrapper").then(function() {
-			//console.log(store.driver + " LocalStorage");
+			console.log(store.driver + " LocalStorage");
 		});
 	};
 	
@@ -54,22 +51,53 @@ function setStorage() {
 	};
 };
 
-function addEvents() {
-	//phonegap
-	document.addEventListener("online", online, false); //device is online
-	document.addEventListener("offline", offline, false); //we'll use this to detect if the device is offline or not later
-	document.addEventListener("pause", paused, false); //when the app is backgrounded this event is fired
-	document.addEventListener("resume", resumed, false); //when the app is resumed from being backgrounded
-	document.addEventListener("backbutton", backButton, false);
-}
+function reloadApp() {
+	location.reload(true); //refresh the app, true tells the app that the restart is valid and not a crash
+};
+
+var searchRadius, travelMode, unitSystem, userName;
+function getSettings() {
+	store.getItem("searchSettings").then(function(value) {
+		searchRadius = parseInt(value[0].searchRadius);
+		
+		if (value[1].travelMode == "walking") {
+			travelMode = google.maps.TravelMode.WALKING;
+		} else if (value[1].travelMode == "bicycling") {
+			travelMode = google.maps.TravelMode.BICYCLING;
+		} else if (value[1].travelMode == "driving") {
+			travelMode = google.maps.TravelMode.DRIVING;
+		};
+		
+		if (value[2].unitSystem == "imperial") {
+			unitSystem = google.maps.UnitSystem.IMPERIAL;
+		} else if (value[2].unitSystem == "metric") {
+			unitSystem = google.maps.UnitSystem.METRIC;
+		};
+	});
+	
+	store.getItem("userName").then(function(value) {
+		userName = value;
+		//console.log(userName);
+	});
+};
 
 function backButton() {
-	navigator.notification.confirm("Exit?", function(button) {
+	console.log("backbutton"); //works
+	navigator.notification.confirm("Exit?", function(button) { // :(
 		if (button == 1) {
 			navigator.app.exitApp();
-		} 
-	}, "Exit", "Yes, No");  
-	return false;
+		};
+	}, "Exit", "Yes, No");
+	
+	 /*navigator.notification.confirm(
+            'You are the winner!',  // message
+            onConfirm,              // callback to invoke with index of button pressed
+            'Game Over',            // title
+            'Restart,Exit'          // buttonLabels
+        );
+		function onConfirm(button) {
+        alert('You selected button ' + button);
+    }*/
 }
 
 /*-----------------------------------------------------------------------------------------*/
@@ -78,7 +106,7 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                 	"<div role=\"button\" data-role=\"button\" class=\"menu-stack push\"></div>" +
                     "<nav role=\"navigation\" data-role=\"navbar\" class=\"main-menu menu-closed\">" +
                     	"<div class=\"nav-links\">" +
-                        	"<a data-goto=\"#home\" data-push=\"page\" data-settings=\"update\" class=\"page\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
+                        	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\" class=\"page\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
                             "<a data-goto=\"#places\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-location-arrow\"></i>My Places</a>" +
                             "<a data-goto=\"#offers\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span class=\"offer-count\">0</span></a>" +
                             "<a data-goto=\"#settings\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
@@ -91,7 +119,7 @@ $("body").prepend(header);
 
 /*-----------------------------------------------------------------------------------------*/
 
-/*Pull out menu, using 3dtransforms
+/*Pull out menu, using 3dtransforms (remade from the absolute positioned using left)
 -----------------------------------------------------------------------------------------*/
 $(function(navigationalHandles) {
 	var menu = $(".main-menu"), //menu css class
@@ -104,7 +132,6 @@ $(function(navigationalHandles) {
 		containerClass = "container-push", //container open class
 		pushClass = "pushed", //pushed content
 		menuButton = $(".menu-stack"); //menu button
-		//view and page handles
 		app = $("#app");
 		handle = "data-goto";
 	
@@ -117,23 +144,19 @@ $(function(navigationalHandles) {
 	
 	if (Modernizr.csstransforms3d) {
 		menuButton.hammer().on("tap", function(e) {
-			//console.log(this, e);
 			toggleMenu();
 		});
 		
 		overlay.hammer().on("tap", function(e) {
-			//console.log(this, e);
 			toggleMenu();
 		});
 		
 		$("html").hammer().on("swipe", function(e) {
 			if (!$(body).hasClass("push-active") && e.gesture.direction === "right") {
 				e.stopPropagation(); e.preventDefault();
-				//console.log(this, e);
 				toggleMenu();
 			} else if ($(body).hasClass("push-active") && e.gesture.direction === "left") {
 				e.stopPropagation(); e.preventDefault();
-				//console.log(this, e);
 				toggleMenu();
 			};
 		});
@@ -157,53 +180,32 @@ $(function(navigationalHandles) {
 		//hide current and show new
 		$(current).removeClass("current");
 		$(newPage).addClass("current");
-		
-		//return false; - we do this up top instead
-	});
+	}); 
 	
-	$("[data-settings=\"update\"]").hammer().on("tap", function(e) {
+	$("[data-get=\"settings\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
-		console.log("update fired");
-		//updateSettings(); - for later instead of asking for app restart, if time allows
+		getSettings();
 	});
 });
 
 
-(function() { //begin main scope
+/*Main location and map based services
+-----------------------------------------------------------------------------------------*/
+(function() { //begin main map scope
 	//variables to cache the result lists for faster performance
 	var nameList = $(".results-names"),
-		distanceList = $(".results-distances"),
+		detailsList = $(".results-details"),
 		noResults = $(".results h1")
 		
+	//vars to the control and store various aspects of the app	
 	var locationMark, locationCircle;
-	
-	//vars to the control and store various aspects of the app
 	var map;
 	var cheltenham = new google.maps.LatLng(51.902707,-2.073361);
 	var currentLocation;
 	var origin; //this is used for the distance matrix function
 	var mapStyles = [{featureType:"road",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"poi",elementType:"labels",stylers:[{visibility:"simplified"}]},{featureType:"transit",elementType:"labels.text",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#a2daf2"}]},{featureType:"landscape.man_made",elementType:"geometry",stylers:[{color:"#f7f1df"}]},{featureType:"landscape.natural",elementType:"geometry",stylers:[{color:"#d0e3b4"}]},{featureType:"landscape.natural.terrain",elementType:"geometry",stylers:[{visibility:"off"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#bde6ab"}]},{featureType:"poi.medical",elementType:"geometry",stylers:[{color:"#fbd3da"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{color:"#ffe15f"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#efd151"}]},{featureType:"road.arterial",elementType:"geometry.fill",stylers:[{color:"#ffffff"}]},{featureType:"road.local",elementType:"geometry.fill",stylers:[{color:"black"}]},{featureType:"transit.station.airport",elementType:"geometry.fill",stylers:[{color:"#cfb2db"}]}];
 	
-	var searchRadius, travelMode, unitSystem;
-	
-	store.getItem("searchSettings").then(function(value) {
-		//console.log(value);
-		searchRadius = parseInt(value[0].searchRadius);
-		
-		if (value[1].travelMode == "walking") {
-			travelMode = google.maps.TravelMode.WALKING;
-		} else if (value[1].travelMode == "bicycling") {
-			travelMode = google.maps.TravelMode.BICYCLING;
-		} else if (value[1].travelMode == "driving") {
-			travelMode = google.maps.TravelMode.DRIVING;
-		};
-		
-		if (value[2].unitSystem == "imperial") {
-			unitSystem = google.maps.UnitSystem.IMPERIAL;
-		} else if (value[2].unitSystem == "metric") {
-			unitSystem = google.maps.UnitSystem.METRIC;
-		};
-	});
+	getSettings();
 	
 	//get the location of the user and store in currentLocation var
 	$(function(initialLocate) {
@@ -212,7 +214,7 @@ $(function(navigationalHandles) {
 				success: function(position) {
 					var position = {"lat": position.coords.latitude, "lng": position.coords.longitude};
 					currentLocation = new google.maps.LatLng(position.lat, position.lng);
-					console.log("currentLocation: " + currentLocation);
+					//console.log("currentLocation: " + currentLocation);
 				},
 				error: function(error) {
 					$(".location-map").append("<p class=\"no-geo message warning\">Sorry, we failed to get your current location.</p>");
@@ -290,7 +292,7 @@ $(function(navigationalHandles) {
 							var bounds = new google.maps.LatLngBounds();
 							//console.log(bounds);
 							
-							//by default the places api returns 20 result sets (I think it is actually a limit imposed by Google unless you're a business customer - Martin)
+							//by default the places api returns 20 result sets (I think it is actually a limit imposed by Google unless you're a business customer)
 							for (var i = 0; i < results.length; i++) {
 								var place = results[i];
 								//console.log(i);
@@ -349,7 +351,8 @@ $(function(navigationalHandles) {
 												var from = origins[i];
 												var to = destinations[x];
 												
-												distanceList.append("<li class=\"distance\">" + distance + "</li>"); //put the resuls into the list as items
+												//put the resuls into the list as items, tap the list for distance or duration
+												detailsList.append("<li class=\"change\"><span class=\"distance\">" + distance + "</span><span class=\"duration\">" + duration + "</span></li>");
 											}
 										}
 									} else { //catch errors here
@@ -423,7 +426,21 @@ $(function(navigationalHandles) {
 				//searchBox.setBounds(bounds);
 				$("#place-query").setBounds(bounds);
 			});
-			
+		});
+		
+		
+		//rework for individual tap for each result
+		detailsList.hammer().on("tap", "li", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			$(".distance").toggleClass("visible-no");
+			$(".duration").toggleClass("visible-yes");
+		});
+		
+		//finish this
+		nameList.hammer().on("tap", "li", function(e) {
+			//$(this).toggleClass("myClass");
+			var nameF = $(this).text();
+			alert(nameF);
 		});
 		
 		//function to locate the user and update the currentLocation variable (could be made cleaner into same function as initialLocate - later if time)
@@ -488,7 +505,7 @@ $(function(navigationalHandles) {
 		//function to remove previous search results
 		function clearResults() {
 			nameList.html(""); 
-			distanceList.html("");
+			detailsList.html("");
 			removeMarkers();
 			$(".no-results").remove();
 			map.setZoom(14);
@@ -541,14 +558,11 @@ $(function(userSettings) {
 			var searchSettings = [{searchRadius: searchRadius}, {travelMode: travelMode}, {unitSystem: unitSystem}];
 			
 			store.setItem("searchSettings", searchSettings).then(function(value) {
-				console.log(value);
+				$("#search-settings").append("<p class=\"message success saved s-set\">Settings have been saved.</p>");
+				setTimeout(function() {
+					$(".s-set").remove();
+				}, 3500);
 			});
-			
-			//MAKE PHONEGAP ALERT LIKE THE BACKBUTTON
-			$("#search-settings").append("<p class=\"message success saved ss-set\">Settings have been saved, but a restart is required.</p>");
-			setTimeout(function() {
-				$(".ss-set").remove();
-			}, 3500);
 		});
 	});
 	
@@ -566,14 +580,9 @@ $(function(userSettings) {
 				callback: function(results, status) {
 					if (status == "OK") {
 						//var result = results[0].geometry.location;
-						
 						var addr = results[0].formatted_address;
 						console.log(addr);
-						
 						$("#address").val(addr);
-						
-						//save the items in indexeddb too? some sort of history list or whatever?
-						
 					} else {
 						$("#address").attr("placeholder", "No results") && $("#address").addClass("plc-warning");
 						setTimeout(function() {
@@ -744,13 +753,29 @@ $(function(userSettings) {
 	//enter name manually here
 	
 	$(function(manualName) {
-		//here
+		store.getItem("userName").then(function(value) {
+			//console.log(value);
+			$("#username").val(value);
+		});
+		
+		$("[data-action=\"save-username\"]").hammer().on("tap", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			
+			var username = $("#username").val()
+			
+			store.setItem("userName", username).then(function(value) {
+				$("#user").append("<p class=\"message success saved s-set\">Username has been saved.</p>");
+				setTimeout(function() {
+					$(".s-set").remove();
+				}, 3500);
+			});
+		});
 	});
-	
 });
 
-//offers
 
+/*Offers and redemption
+-----------------------------------------------------------------------------------------*/
 $(function(getOffers) {
 	
 });

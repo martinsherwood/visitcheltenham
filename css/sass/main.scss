@@ -32,8 +32,6 @@
 .container {
 	width: 100%;
 	min-width: 100%;
-	max-width: 100%;
-	/*margin: 0 auto;*/
 }
 
 .wrapper {
@@ -67,13 +65,6 @@
 
 /*-----------------------------------------------------------------*/
 
-.content { /*this might need to change*/
-	position: absolute;
-	top: 40px;
-}
-
-/*-----------------------------------------------------------------*/
-
 .location-map {
 	width: 100%;
 	position: relative;
@@ -82,10 +73,6 @@
 #map-container {
 	width: 100%;
 	height: 220px;
-	/*display: flex;
-	flex: 1;
-	flex-direction: column;
-	flex-wrap: wrap;*/
 	//padding-bottom: 56.25%; /*this works well as it is equiv to 19.9 aspect ratio but also annoying as different devices*/
 	
 		@include breakpoint(break-tablet) {
@@ -114,7 +101,15 @@
 					border-bottom: 1px solid $white;
 				}
 				
-				ul.results-names, ul.results-distances {
+				.visible-yes {
+					display: block;
+				}
+				
+				.visible-no {
+					display: none;
+				}
+				
+				ul.results-names, ul.results-details {
 					float: left;
 					position: relative;
 					list-style-type: none;
@@ -148,7 +143,7 @@
 						}
 				}
 				
-				ul.results-distances {
+				ul.results-details {
 					width: 30%;
 					
 						li {
@@ -393,7 +388,7 @@ textarea {
 
 .success {
 	@extend .message;
-	color: hsla(70, 48%, 50%, 1);
+	color: $successGreen;
 }
 
 .no-results {
@@ -428,7 +423,6 @@ textarea {
 
 .pressed {
     background-color: rgba(0, 0, 0, 0.7);
-	//opacity: .9;
 }
 
 /*specifies that an entire element should be draggable instead of its contents*/
