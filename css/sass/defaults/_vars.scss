@@ -1,5 +1,5 @@
 //Image Paths
-$image-path: "../img";
+$imagePath: "../img";
 
 //Colours
 $black: hsla(0, 0%, 27%, 1);
@@ -8,10 +8,12 @@ $grey: hsla(220, 7%, 82%, 1);
 $errorOrange: hsla(22, 88%, 58%, 1);
 $successGreen: hsla(70, 48%, 50%, 1);
 
-
 //Typography
-$base-size: 1.300rem;
-$weight: 300;
+$baseSize: 1.300rem;
+$baseWeight: 300;
 
 //Page Transition
-$page-anim: .4s cubic-bezier(.16, .68, .43, .99);
+$pageAnim: .4s cubic-bezier(.16, .68, .43, .99);
+
+//Misc
+$resultOptionsWidth: 120px;

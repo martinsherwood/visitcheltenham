@@ -645,90 +645,110 @@
 
 [data-transition="fade-in"] {
 	z-index: 10;
-	-webkit-animation: fadeIn $page-anim;
-	-moz-animation: fadeIn $page-anim;
-	-ms-animation: fadeIn $page-anim;
-	-o-animation: fadeIn $page-anim;
-	animation: fadeIn $page-anim;
+	-webkit-animation: fadeIn $pageAnim;
+	-moz-animation: fadeIn $pageAnim;
+	-ms-animation: fadeIn $pageAnim;
+	-o-animation: fadeIn $pageAnim;
+	animation: fadeIn $pageAnim;
 }
 
 [data-transition="fade-out"] {
 	z-index: 0;
-	-webkit-animation: fadeOut $page-anim;
-	-moz-animation: fadeOut $page-anim;
-	-ms-animation: fadeOut $page-anim;
-	-o-animation: fadeOut $page-anim;
-	animation: fadeOut $page-anim;
+	-webkit-animation: fadeOut $pageAnim;
+	-moz-animation: fadeOut $pageAnim;
+	-ms-animation: fadeOut $pageAnim;
+	-o-animation: fadeOut $pageAnim;
+	animation: fadeOut $pageAnim;
 }
 
 [data-transition="slide-left-in"] {
 	z-index: 10;
-	-webkit-animation: slideLeftIn $page-anim;
-	-moz-animation: slideLeftIn $page-anim;
-	-ms-animation: slideLeftIn $page-anim;
-	-o-animation: slideLeftIn $page-anim;
-	animation: slideLeftIn $page-anim;
+	-webkit-animation: slideLeftIn $pageAnim;
+	-moz-animation: slideLeftIn $pageAnim;
+	-ms-animation: slideLeftIn $pageAnim;
+	-o-animation: slideLeftIn $pageAnim;
+	animation: slideLeftIn $pageAnim;
 }
 
 [data-transition="slide-left-out"] {
 	z-index: 0;
-	-webkit-animation: slideLeftOut $page-anim;
-	-moz-animation: slideLeftOut $page-anim;
-	-ms-animation: slideLeftOut $page-anim;
-	-o-animation: slideLeftOut $page-anim;
-	animation: slideLeftOut $page-anim;
+	-webkit-animation: slideLeftOut $pageAnim;
+	-moz-animation: slideLeftOut $pageAnim;
+	-ms-animation: slideLeftOut $pageAnim;
+	-o-animation: slideLeftOut $pageAnim;
+	animation: slideLeftOut $pageAnim;
 }
 
 [data-transition="slide-right-in"] {
 	z-index: 10;
-	-webkit-animation: slideRightIn $page-anim;
-	-moz-animation: slideRightIn $page-anim;
-	-ms-animation: slideRightIn $page-anim;
-	-o-animation: slideRightIn $page-anim;
-	animation: slideRightIn $page-anim;
+	-webkit-animation: slideRightIn $pageAnim;
+	-moz-animation: slideRightIn $pageAnim;
+	-ms-animation: slideRightIn $pageAnim;
+	-o-animation: slideRightIn $pageAnim;
+	animation: slideRightIn $pageAnim;
 }
 
 [data-transition="slide-right-out"] {
 	z-index: 0;
-	-webkit-animation: slideRightOut $page-anim;
-	-moz-animation: slideRightOut $page-anim;
-	-ms-animation: slideRightOut $page-anim;
-	-o-animation: slideRightOut $page-anim;
-	animation: slideRightOut $page-anim;
+	-webkit-animation: slideRightOut $pageAnim;
+	-moz-animation: slideRightOut $pageAnim;
+	-ms-animation: slideRightOut $pageAnim;
+	-o-animation: slideRightOut $pageAnim;
+	animation: slideRightOut $pageAnim;
 }
 
 [data-transition="slide-up-in"] {
 	z-index: 10;
-	-webkit-animation: slideUpIn $page-anim;
-	-moz-animation: slideUpIn $page-anim;
-	-ms-animation: slideUpIn $page-anim;
-	-o-animation: slideUpIn $page-anim;
-	animation: slideUpIn $page-anim;
+	-webkit-animation: slideUpIn $pageAnim;
+	-moz-animation: slideUpIn $pageAnim;
+	-ms-animation: slideUpIn $pageAnim;
+	-o-animation: slideUpIn $pageAnim;
+	animation: slideUpIn $pageAnim;
 }
 
 [data-transition="slide-up-out"] {
 	z-index: 0;
-	-webkit-animation: slideUpOut $page-anim;
-	-moz-animation: slideUpOut $page-anim;
-	-ms-animation: slideUpOut $page-anim;
-	-o-animation: slideUpOut $page-anim;
-	animation: slideUpOut $page-anim;
+	-webkit-animation: slideUpOut $pageAnim;
+	-moz-animation: slideUpOut $pageAnim;
+	-ms-animation: slideUpOut $pageAnim;
+	-o-animation: slideUpOut $pageAnim;
+	animation: slideUpOut $pageAnim;
 }
 
 [data-transition="slide-down-in"] {
 	z-index: 10;
-	-webkit-animation: slideDownIn $page-anim;
-	-moz-animation: slideDownIn $page-anim;
-	-ms-animation: slideDownIn $page-anim;
-	-o-animation: slideDownIn $page-anim;
-	animation: slideDownIn $page-anim;
+	-webkit-animation: slideDownIn $pageAnim;
+	-moz-animation: slideDownIn $pageAnim;
+	-ms-animation: slideDownIn $pageAnim;
+	-o-animation: slideDownIn $pageAnim;
+	animation: slideDownIn $pageAnim;
 }
 
 [data-transition="slide-down-out"] {
 	z-index: 0;
-  	-webkit-animation: slideDownOut $page-anim;
-	-moz-animation: slideDownOut $page-anim;
-	-ms-animation: slideDownOut $page-anim;
-	-o-animation: slideDownOut $page-anim;
-	animation: slideDownOut $page-anim;
+  	-webkit-animation: slideDownOut $pageAnim;
+	-moz-animation: slideDownOut $pageAnim;
+	-ms-animation: slideDownOut $pageAnim;
+	-o-animation: slideDownOut $pageAnim;
+	animation: slideDownOut $pageAnim;
+}
+
+//Individuals
+
+[data-animate="place-name"] {
+	z-index: 10;
+	-webkit-animation: slideLeftIn ease-in .3s;
+	-moz-animation: slideLeftIn ease-in .3s;
+	-ms-animation: slideLeftIn ease-in .3s;
+	-o-animation: slideLeftIn ease-in .3s;
+	animation: slideLeftIn ease-in .3s;
+}
+
+[data-animate="place-details"] {
+	z-index: 10;
+	-webkit-animation: slideLeftIn ease-in .4s;
+	-moz-animation: slideLeftIn ease-in .4s;
+	-ms-animation: slideLeftIn ease-in .4s;
+	-o-animation: slideLeftIn ease-in .4s;
+	animation: slideLeftIn ease-in .4s;
 }

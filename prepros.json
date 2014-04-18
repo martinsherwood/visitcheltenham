@@ -185,6 +185,14 @@
       "parents": [
         "7c23f569"
       ]
+    },
+    "09d6abfa": {
+      "id": "09d6abfa",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_layout.scss",
+      "parents": [
+        "7c23f569"
+      ]
     }
   },
   "images": {

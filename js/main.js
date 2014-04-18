@@ -1,9 +1,6 @@
-/* All main JavaScript */
-
 //application constructor -> bind events/listeners -> deviceready -> update and display -> report
 //deviceready event handler, the scope of 'this' is the event. In order to call the 'report' function, we must explicity call 'app.report(...);', same for any others
 //app.report is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
-
 var app = {
     initialize: function() {
         this.bindEvents();
@@ -15,11 +12,12 @@ var app = {
     },
     onDeviceReady: function() {
 		setStorage();
+		//default settings should be set here as well
     },
     report: function(id) {
 		console.log("report:" + id);
     },
-}
+};
 
 
 /*Sets up the device storage environment to use, automatically selects the best library
@@ -88,20 +86,11 @@ function backButton() {
 			navigator.app.exitApp();
 		};
 	}, "Exit", "Yes, No");
-	
-	 /*navigator.notification.confirm(
-            'You are the winner!',  // message
-            onConfirm,              // callback to invoke with index of button pressed
-            'Game Over',            // title
-            'Restart,Exit'          // buttonLabels
-        );
-		function onConfirm(button) {
-        alert('You selected button ' + button);
-    }*/
-}
+};
 
 /*-----------------------------------------------------------------------------------------*/
 
+//we add the header like this incase we need it different pages and sections
 var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header container inner-wrap\">" +
                 	"<div role=\"button\" data-role=\"button\" class=\"menu-stack push\"></div>" +
                     "<nav role=\"navigation\" data-role=\"navbar\" class=\"main-menu menu-closed\">" +
@@ -115,9 +104,7 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                     "<div role=\"button\" data-role=\"button\" class=\"locate-button\"></div>" +
                 "</header>";
 							
-$("body").prepend(header);
-
-/*-----------------------------------------------------------------------------------------*/
+$("body").prepend(header); //or wherever we want on different pages
 
 /*Pull out menu, using 3dtransforms (remade from the absolute positioned using left)
 -----------------------------------------------------------------------------------------*/
@@ -133,13 +120,13 @@ $(function(navigationalHandles) {
 		pushClass = "pushed", //pushed content
 		menuButton = $(".menu-stack"); //menu button
 		app = $("#app");
-		handle = "data-goto";
+		handle = "goto";
 	
 	var toggleMenu = function() {
 		body.toggleClass(pushActiveClass); //toggle site overlay
 		menu.toggleClass(pushOpen);
 		container.toggleClass(containerClass);
-		push.toggleClass(pushClass); //css class to add pushy capability
+		push.toggleClass(pushClass); //css class to add push
 	};
 	
 	if (Modernizr.csstransforms3d) {
@@ -168,14 +155,14 @@ $(function(navigationalHandles) {
 		//$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
-	}
+	};
 	
 	$("[data-push=\"page\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		toggleMenu();
 		
 		var current = $(app).find(".current"); //this won't work more globally as the class current changes
-		var newPage = $(this).attr(handle);
+		var newPage = $(this).data(handle);
 		
 		//hide current and show new
 		$(current).removeClass("current");
@@ -265,7 +252,7 @@ $(function(navigationalHandles) {
 			}
 		});
 		
-		$("#place-search").submit(function(e){
+		$("#place-search").submit(function(e) {
 			e.stopPropagation(); e.preventDefault();
 			var query = $("#place-query").val();
 			
@@ -305,7 +292,14 @@ $(function(navigationalHandles) {
 									scaledSize: new google.maps.Size(20, 20)
 								};
 								
-								nameList.append("<li class=\"name\">" + place.name + "</li>")
+								nameList.append("<li data-animate=\"place-name\" data-placename=\"" + place.name + "\">" + 
+								
+								"<span class=\"placename\">" + place.name + "</span>" +
+								
+								"<div class=\"options\">" +
+									"<div class=\"opt\"><i data-destination=\"" + place.geometry.location + "\" id=\"get-directions\" class=\"fa fa-2x fa-location-arrow\"></i></div>" +
+									"<div class=\"opt\"><i data-placename=\"" + place.name + "\" id=\"add-place\" class=\"fa fa-2x fa-star\"></i></div>" +
+								"</div></li>");
 								
 								/* ---------- */
 								
@@ -333,7 +327,7 @@ $(function(navigationalHandles) {
 										var origins = response.originAddresses;
 										var destinations = response.destinationAddresses;
 										
-										/* do some funky stuff with loops.
+										/* do some stuff with loops.
 										   it is actually looping through each of the search results lat and longs and working out the
 										   distance and duration to each places location (using the currentLocation var), then getting
 										   data from the results of the calculations, e.g. distance and time
@@ -352,7 +346,7 @@ $(function(navigationalHandles) {
 												var to = destinations[x];
 												
 												//put the resuls into the list as items, tap the list for distance or duration
-												detailsList.append("<li class=\"change\"><span class=\"distance\">" + distance + "</span><span class=\"duration\">" + duration + "</span></li>");
+												detailsList.append("<li data-animate=\"place-details\" data-distance=\"" + distance + "\"" + "data-duration=\"" + duration + "\">" + distance + "</li>");
 											}
 										}
 									} else { //catch errors here
@@ -415,9 +409,22 @@ $(function(navigationalHandles) {
 						} else if (status == google.maps.places.PlacesServiceStatus.INVALID_REQUEST) {
 							console.log(status);
 						}
-					}
+					}//search
 				});
 			}
+			
+			detailsList.hammer().on("tap", "li", function(e) {
+				e.stopPropagation(); e.preventDefault();
+				var change = $(this);
+				var dist = $(this).data("distance")
+				var dura = $(this).data("duration")
+				//if distance is shown, show duration else show distance and vice-versa
+				if (change.text() == dist) {
+					change.text(dura);
+				} else {
+					change.text(dist);
+				};
+			});
 			
 			//bias the search results towards places that are within the bounds of the current maps viewport
 			google.maps.event.addListener(map, "bounds_changed", function() {
@@ -426,21 +433,6 @@ $(function(navigationalHandles) {
 				//searchBox.setBounds(bounds);
 				$("#place-query").setBounds(bounds);
 			});
-		});
-		
-		
-		//rework for individual tap for each result
-		detailsList.hammer().on("tap", "li", function(e) {
-			e.stopPropagation(); e.preventDefault();
-			$(".distance").toggleClass("visible-no");
-			$(".duration").toggleClass("visible-yes");
-		});
-		
-		//finish this
-		nameList.hammer().on("tap", "li", function(e) {
-			//$(this).toggleClass("myClass");
-			var nameF = $(this).text();
-			alert(nameF);
 		});
 		
 		//function to locate the user and update the currentLocation variable (could be made cleaner into same function as initialLocate - later if time)
@@ -480,7 +472,7 @@ $(function(navigationalHandles) {
 				});
 			} else {//if no geolocation is supported, replace the content
 				noGeo();
-				console.log("This browser does not support geolocation");
+				console.log("This browser/device does not support geolocation");
 			};
 		};
 		
@@ -532,9 +524,54 @@ $(function(navigationalHandles) {
 				}
 			});
 		};
-	});
-})(); //end scope
+	});//placesMap
+})(); //end map scope
 
+$(function(doMore) {
+	
+	var placeName;
+	var directionsTo;
+	
+	var directionsOverlay = "<div id=\"directions-box\" class=\"directions\" data-transition=\"slide-down-in\">" +
+								"<h1 class=\"inner-wrap\">Directions<i class=\"fa fa-times close-directions\"></i></h1>" +
+							"</div>"
+							
+	$(".results-names").hammer().on("swipeleft tap", "li", function(e) {
+		e.stopPropagation(); e.preventDefault();
+
+		//placeName = $(this).data("placename");
+
+		$(this).children("span").toggleClass("swiped");
+		$(this).children("div").toggleClass("shown"); //options div
+		
+	});
+	
+	$(".results-names").hammer().on("tap", "i#add-place", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		placeName = $(this).data("placename");
+		console.log(placeName)
+		//add as fav and change colour of star here, also set to storage and colour star according to it
+	});
+	
+	$(".results-names").hammer().on("tap", "i#get-directions", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		directionsTo = $(this).data("destination");
+		console.log(directionsTo);
+		
+		$("#home").removeClass("current");
+		
+		$("body").prepend(directionsOverlay);
+		
+		//finish this and the overlay styles and do the directions stuff - test everything
+		
+		$(".close-directions").hammer().on("tap", function(e) {
+			console.log("closed");
+			$("#directions-box").remove();
+			$("#home").addClass("current");
+		});
+		
+	});
+});
 
 /*Settings and options functionality
 -----------------------------------------------------------------------------------------*/
@@ -566,10 +603,9 @@ $(function(userSettings) {
 		});
 	});
 	
-	/* ----- */
-	
 	$(function(postcodeLookup) {
 		$("[data-action=\"submit-geocode-search\"]").hammer().on("tap", function(e) {
+			e.stopPropagation(); e.preventDefault();
 			$("#geocode-search").submit();
 		});
 		
@@ -594,11 +630,9 @@ $(function(userSettings) {
 		});
 	});
 	
+	//sign in via google (alpha) - not fully working, it throws up at then end when getting the auth token
+	//the code should get the token from the url in the inappbrowser window (don't know why it won't work)
 	/* ----- */
-	
-	//sign in via google (alpha'ish / beta) - not fully working, it throws up at then end when getting the auth token
-	
-	/*start*/
 	$(function(googleSignin) {
 		var googleAPI = {
 			setToken: function(data) {
@@ -750,8 +784,6 @@ $(function(userSettings) {
 	});
 	/* ----- */
 	
-	//enter name manually here
-	
 	$(function(manualName) {
 		store.getItem("userName").then(function(value) {
 			//console.log(value);
@@ -782,7 +814,7 @@ $(function(getOffers) {
 
 
 
-/*Prefetch facility - add class "prefetch" to any links
+/*Prefetching - add class "prefetch" to any links
 -----------------------------------------------------------------------------------------*/
 $(function(prefetch) {
 	//create object and build array of urls to prefetch, to use add class prefetch to link (later: make it use data-attr, e.g. data-prefetch="true" or false

@@ -7,7 +7,7 @@
 	position: fixed;
 	padding-top: 4px;
 	background: $white;
-	z-index: 999;
+	z-index: 100; //was 999
 	@include clearfix;
 }
 
@@ -44,6 +44,9 @@
 	width: 220px;
 	height: 100%;
 	position: fixed;
+	-webkit-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	transform: translateZ(0);
 	top: 0;
 	left: 0;
 	z-index: 9999;
