@@ -3,17 +3,21 @@
 /*
  * Notes:
  * ------
- * We only need to use the -webkit- and -ms- prefixed for as we are building for iOS, Android and Windows Phone
- * They might event be needed then, but they cause no problems.
- *
+ * We only need to use the -webkit- and -ms- prefixed for as we are building for iOS, Android and Windows Phone.
+ * They might not even be needed then, but they cause no problems.
+ * 
 */
 
-//imports
-@import "_normalize.scss";
+@import "defaults/_normalize.scss";
+
 @import "defaults/_vars.scss";
+
 @import "defaults/_mixins.scss";
 
-@import "_typography.scss";
+@import "defaults/_typography.scss";
+
+@import "defaults/_forms.scss";
+
 @import "_animations.scss";
 
 /*-----------------------------------------------------------------*/
@@ -211,18 +215,22 @@
 				}
 		}
 	
-	.search-button {
-		width: 40px;
-		height: 40px;
-		display: block;
-		position: absolute;
-		top: 12px;
-		right: 10px;
-		background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI5NyA5NS44IDMxNy45IDMyMC4zIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDk3IDk1LjggMzE3LjkgMzIwLjMiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9Im1hZ25pZmllci1pY29uIiBmaWxsPSIjNDQ0NDQ0IiBkPSJNNDE1LDM3NC41bC04NC44LTg0LjhjMTIuNC0xOS41LDE5LjYtNDIuNywxOS42LTY3LjVjMC02OS43LTU2LjctMTI2LjQtMTI2LjQtMTI2LjQNCglDMTUzLjcsOTUuOCw5NywxNTIuNSw5NywyMjIuMnM1Ni43LDEyNi40LDEyNi40LDEyNi40YzIzLjYsMCw0NS43LTYuNSw2NC42LTE3LjhsODUuNCw4NS40TDQxNSwzNzQuNXogTTE0NC4xLDIyMi4yDQoJYzAtNDMuNywzNS42LTc5LjMsNzkuMy03OS4zczc5LjMsMzUuNiw3OS4zLDc5LjNzLTM1LjYsNzkuMy03OS4zLDc5LjNDMTc5LjcsMzAxLjUsMTQ0LjEsMjY1LjksMTQ0LjEsMjIyLjJ6Ii8+DQo8L3N2Zz4NCg==");
-		background-size: cover;
-		@include no-select;
-		cursor: pointer;
-	}
+		.search-button {
+			width: 40px;
+			height: 40px;
+			display: block;
+			position: absolute;
+			top: 12px;
+			right: 10px;
+			background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI5NyA5NS44IDMxNy45IDMyMC4zIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDk3IDk1LjggMzE3LjkgMzIwLjMiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9Im1hZ25pZmllci1pY29uIiBmaWxsPSIjNDQ0NDQ0IiBkPSJNNDE1LDM3NC41bC04NC44LTg0LjhjMTIuNC0xOS41LDE5LjYtNDIuNywxOS42LTY3LjVjMC02OS43LTU2LjctMTI2LjQtMTI2LjQtMTI2LjQNCglDMTUzLjcsOTUuOCw5NywxNTIuNSw5NywyMjIuMnM1Ni43LDEyNi40LDEyNi40LDEyNi40YzIzLjYsMCw0NS43LTYuNSw2NC42LTE3LjhsODUuNCw4NS40TDQxNSwzNzQuNXogTTE0NC4xLDIyMi4yDQoJYzAtNDMuNywzNS42LTc5LjMsNzkuMy03OS4zczc5LjMsMzUuNiw3OS4zLDc5LjNzLTM1LjYsNzkuMy03OS4zLDc5LjNDMTc5LjcsMzAxLjUsMTQ0LjEsMjY1LjksMTQ0LjEsMjIyLjJ6Ii8+DQo8L3N2Zz4NCg==");
+			background-size: cover;
+			@include no-select;
+			cursor: pointer;
+			
+				&:active {
+					@include tapped;
+				}
+		}
 }
 
 /*-----------------------------------------------------------------*/
@@ -249,7 +257,7 @@
 	
 		.settings-block {
 			position: relative;
-			padding-bottom: 14px;
+			//padding-bottom: 14px;
 			
 				&:last-of-type {
 					padding-bottom: 0;
@@ -260,8 +268,8 @@
 			width: 100%;
 			height: 40px;
 			display: block;
-			line-height: 40px;
-			background: #00adef;
+			line-height: 40px; 
+			background: darken(#8fd445, 15%);
 			color: $white;
 			font-size: 1.180rem;
 			
@@ -271,9 +279,7 @@
 		}
 	
 		input, select {
-			width: 100%;
 			display: block;
-			border: none;
 			background: transparent;
 				
 				&:focus {
@@ -393,35 +399,6 @@
 
 
 //some styling for form elements and errors/warnings and such
-label {
-	display: block;
-	font-size: 1.180rem;
-}
-
-input, textarea, select {
-	width: 100%;
-	padding: 1.00rem;
-	outline: none;
-	resize: none;
-	line-height: 2.00rem;
-	border: none;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-	font-size: 1.100rem;
-	color: $black;
-	@include letter-spacing;
-	
-		&:focus {
-			outline: none;
-			-webkit-box-shadow: none;
-			box-shadow: none;
-		}
-}
-
-textarea {
-    resize: vertical;
-}
-
 //error and user messages
 .message {
 	text-align: center;

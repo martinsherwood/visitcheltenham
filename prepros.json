@@ -122,14 +122,6 @@
     }
   },
   "imports": {
-    "63330617": {
-      "id": "63330617",
-      "pid": "cc820037",
-      "path": "css\\sass\\_normalize.scss",
-      "parents": [
-        "7c23f569"
-      ]
-    },
     "84597581": {
       "id": "84597581",
       "pid": "cc820037",
@@ -150,14 +142,6 @@
       "id": "ed97a1f6",
       "pid": "cc820037",
       "path": "css\\sass\\defaults\\_mixins.scss",
-      "parents": [
-        "7c23f569"
-      ]
-    },
-    "837c4bd5": {
-      "id": "837c4bd5",
-      "pid": "cc820037",
-      "path": "css\\sass\\_typography.scss",
       "parents": [
         "7c23f569"
       ]
@@ -190,6 +174,30 @@
       "id": "09d6abfa",
       "pid": "cc820037",
       "path": "css\\sass\\partials\\_layout.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "0dd6b665": {
+      "id": "0dd6b665",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_normalize.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "3fd31db6": {
+      "id": "3fd31db6",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_typography.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "fa00d7ee": {
+      "id": "fa00d7ee",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_forms.scss",
       "parents": [
         "7c23f569"
       ]

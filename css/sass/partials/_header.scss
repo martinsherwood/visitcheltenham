@@ -7,6 +7,7 @@
 	position: fixed;
 	padding-top: 4px;
 	background: $white;
+	border-bottom: 1px solid $grey;
 	z-index: 100; //was 999
 	@include clearfix;
 }
@@ -44,7 +45,7 @@
 	width: 220px;
 	height: 100%;
 	position: fixed;
-	-webkit-transform: translateZ(0);
+	-webkit-transform: translateZ(0); //fix for header issue
 	-ms-transform: translateZ(0);
 	transform: translateZ(0);
 	top: 0;

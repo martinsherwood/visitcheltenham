@@ -1,9 +1,9 @@
 /*
  * Notes:
  * ------
- * We only need to use the -webkit- and -ms- prefixed for as we are building for iOS, Android and Windows Phone
- * They might event be needed then, but they cause no problems.
- *
+ * We only need to use the -webkit- and -ms- prefixed for as we are building for iOS, Android and Windows Phone.
+ * They might not even be needed then, but they cause no problems.
+ * 
 */
 /*! normalize.css v2.1.3 | MIT License | git.io/normalize */
 /* ==========================================================================
@@ -405,6 +405,33 @@ table {
   font-weight: 700;
   font-style: normal;
 }
+label {
+  display: block;
+  font-size: 1.180rem;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 1.00rem;
+  outline: none;
+  resize: none;
+  line-height: 2.00rem;
+  border: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: #454545;
+  letter-spacing: 1px;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
 /* Page Transition Animations */
 /* Fade */
 @-webkit-keyframes fadeIn {
@@ -1223,6 +1250,7 @@ h1 {
   position: fixed;
   padding-top: 4px;
   background: #fffffa;
+  border-bottom: 1px solid #ced0d4;
   z-index: 100;
 }
 .app-header:before, .app-header:after {
@@ -1536,6 +1564,9 @@ h1 {
   user-select: none;
   cursor: pointer;
 }
+#place-search .search-button:active {
+  opacity: .85;
+}
 
 /*-----------------------------------------------------------------*/
 #directions-box {
@@ -1556,7 +1587,6 @@ h1 {
 /*-----------------------------------------------------------------*/
 #settings .settings-block {
   position: relative;
-  padding-bottom: 14px;
 }
 #settings .settings-block:last-of-type {
   padding-bottom: 0;
@@ -1566,7 +1596,7 @@ h1 {
   height: 40px;
   display: block;
   line-height: 40px;
-  background: #00adef;
+  background: #68a626;
   color: #fffffa;
   font-size: 1.180rem;
 }
@@ -1574,9 +1604,7 @@ h1 {
   font-size: 1.0rem;
 }
 #settings input, #settings select {
-  width: 100%;
   display: block;
-  border: none;
   background: transparent;
 }
 #settings input:focus, #settings select:focus {
@@ -1679,34 +1707,6 @@ h1 {
   background: url("../img/powered-by-google.png") no-repeat;
   background-size: cover;
   margin: .8rem auto;
-}
-
-label {
-  display: block;
-  font-size: 1.180rem;
-}
-
-input, textarea, select {
-  width: 100%;
-  padding: 1.00rem;
-  outline: none;
-  resize: none;
-  line-height: 2.00rem;
-  border: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  font-size: 1.100rem;
-  color: #454545;
-  letter-spacing: 1px;
-}
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-
-textarea {
-  resize: vertical;
 }
 
 .message, .warning, .success {

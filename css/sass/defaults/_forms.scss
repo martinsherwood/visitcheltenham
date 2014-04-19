@@ -1,0 +1,27 @@
+label {
+	display: block;
+	font-size: 1.180rem;
+}
+
+input, textarea, select {
+	width: 100%;
+	padding: 1.00rem;
+	outline: none;
+	resize: none;
+	line-height: 2.00rem;
+	border: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	color: $black;
+	@include letter-spacing;
+	
+		&:focus {
+			outline: none;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+		}
+}
+
+textarea {
+    resize: vertical;
+}

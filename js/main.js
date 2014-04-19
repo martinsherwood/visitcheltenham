@@ -151,8 +151,8 @@ $(function(navigationalHandles) {
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		$currentPage = $("#app > *:first-child").addClass("current");
-		//$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
+		//$currentPage = $("#app > *:first-child").addClass("current");
+		$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	};
@@ -584,9 +584,9 @@ $(function(userSettings) {
 			$("#unit-system option[value=\"" + value[2].unitSystem + "\"]").attr("selected", "selected");
 		});
 		
-		$("[data-action=\"save-search-settings\"]").hammer().on("tap", function(e) {
+		$("[data-action=\"save-settings\"]").hammer().on("tap", function(e) {
 			e.stopPropagation(); e.preventDefault();
-			console.log(this, e + "saved");
+			//console.log(this, e + "saved");
 			
 			var searchRadius = $("#search-radius").val(),
 				travelMode   = $("#travel-mode").val(),

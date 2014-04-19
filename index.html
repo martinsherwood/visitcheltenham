@@ -79,16 +79,16 @@
                                 <option value="imperial">Imperial</option>
                                 <option value="metric">Metric</option>
                             </select>
-                            <div role="button" data-role="button" data-action="save-search-settings" class="save-settings inner-wrap">Save<div class="submit-icon"></div></div>
+                            <div role="button" data-role="button" data-action="save-settings" class="save-settings inner-wrap">Save<div class="submit-icon"></div></div>
                         </form>
                     </div>
                     
                     <div class="settings-block">
                     	<h1 class="inner-wrap">User Account</h1>
-                        <span class="settings-label inner-wrap">Connect with Google <span>(not fully working)</span></span>
+                        <span class="settings-label inner-wrap">Connect with Google</span>
                         
                         <div id="google-login">
-                        	<div role="button" data-role="button" data-action="google-signin" class="google-signin"></div> <!--<span>or</span>-->
+                        	<div role="button" data-role="button" data-action="google-signin" class="google-signin"></div>
                             <p class="inner-wrap warning"></p>
                         </div>
                         
@@ -97,8 +97,8 @@
                             <p class="inner-wrap signed-in-name"></p>
                         </div>
                         
-                        <form method="post" id="user">
-                        	<label for="username" class="inner-wrap">Username <span>(what others users see)</span></label>
+                        <form id="user">
+                        	<label for="username" class="inner-wrap">Username</label>
                             <input type="text" id="username" name="username" placeholder="Enter a username" autocomplete="off" autocorrect="off" autocapitalize="off">
                             <div role="button" data-role="button" data-action="save-username" class="save-settings inner-wrap">Save<div class="submit-icon"></div></div>
                         </form>
@@ -106,8 +106,8 @@
                     
                     <div class="settings-block">
                     	<h1 class="inner-wrap">Utilities</h1>
-                        <form method="post" id="geocode-search">
-                        	<label for="address" class="inner-wrap">Postcode Lookup <span>(result displayed below)</span></label>
+                        <form id="geocode-search">
+                        	<label for="address" class="inner-wrap">Postcode Lookup</label>
                         	<input type="text" id="address" name="address" placeholder="Enter a postcode" autocomplete="off" autocorrect="off" autocapitalize="off">
                             <div role="button" data-role="button" data-action="submit-geocode-search" class="submit-geocode-search inner-wrap">Search<div class="go-icon"></div></div>
                         </form>
