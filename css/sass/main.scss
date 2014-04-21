@@ -205,7 +205,8 @@
 			width: 82%;
 			display: block;
 			border: none;
-			color: #333;
+			padding: 1rem;
+			margin: 0;
 			background: transparent;
 			
 				&:focus {
@@ -254,10 +255,15 @@
 /*-----------------------------------------------------------------*/
 
 #settings {
+	display: block;
 	
 		.settings-block {
 			position: relative;
-			//padding-bottom: 14px;
+			padding-bottom: 14px;
+			
+				> h1 {
+					margin-bottom: 0.2rem;
+				}
 			
 				&:last-of-type {
 					padding-bottom: 0;
@@ -266,21 +272,20 @@
 	
 		label, .settings-label {
 			width: 100%;
-			height: 40px;
+			height: 30px;
 			display: block;
-			line-height: 40px; 
-			background: darken(#8fd445, 15%);
-			color: $white;
-			font-size: 1.180rem;
+			line-height: 30px; 
+			color: darken($grey, 30%);
 			
 				span {
 					font-size: 1.0rem;
 				}
 		}
 	
-		input, select {
+		input, select, textarea {
+			width: 92%;
 			display: block;
-			background: transparent;
+			margin-bottom: 1rem;
 				
 				&:focus {
 					outline: none;
@@ -289,7 +294,7 @@
 				}
 		}
 		
-		.save-settings, .submit-geocode-search {
+		.save-settings, .submit-geocode-search, .send-feedback {
 			width: 100%;
 			height: 50px;
 			position: relative;
@@ -298,7 +303,7 @@
 			background: $black;
 			color: $white;
 			
-				&:active {
+				&:active, &:hover {
 					@include tapped;
 				}
 				
@@ -328,10 +333,9 @@
 			background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA1MCA0MTIgNDEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDUwIDUwIDQxMiA0MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImFycm93LTI4LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik05MCwyNTZjMCw5MS44LDc0LjMsMTY2LDE2NiwxNjZjOTEuOCwwLDE2Ni03NC4zLDE2Ni0xNjZjMC05MS44LTc0LjMtMTY2LTE2Ni0xNjYNCglDMTY0LjIsOTAsOTAsMTY0LjMsOTAsMjU2eiBNNDYyLDI1NmMwLDExMy44LTkyLjIsMjA2LTIwNiwyMDZTNTAsMzY5LjgsNTAsMjU2UzE0Mi4yLDUwLDI1Niw1MFM0NjIsMTQyLjIsNDYyLDI1NnogTTIwMCwxNjguNg0KCWwzMi4zLTMyLjFMMzUyLjIsMjU3TDIzMi4yLDM3Ny41TDIwMCwzNDUuNGw4OC04OC40TDIwMCwxNjguNnoiLz4NCjwvc3ZnPg0K");
 		}
 		
-		.geocode-result {
-			display: block;
-			background: lighten(#00adef, 10%);
-			color: $white;
+		#geocode-search p {
+			font-size: 1.1rem;
+			margin-bottom: 1rem;
 		}
 		
 		#google-login {
@@ -341,6 +345,7 @@
 					text-align: left;
 					padding-top: 0.5rem;
 					padding-bottom: 0.5rem;
+					display: none; /*display when working properly*/
 				}
 			
 				.google-signin {
@@ -369,69 +374,13 @@
 			color: $white;
 		}
 		
-		.attri-copy {
-			
-				p {
-					text-align: center;
-					
-						&:nth-of-type(1) {
-							margin: .3rem 0;
-							font-style: italic;
-						}
-						
-						&:last-of-type {
-							padding-bottom: 10px;
-							border-bottom: 1px solid $grey;
-						}
-				}
-				
-				.powered-by-google {
-					width: 208px;
-					height: 32px;
-					background: url("#{$imagePath}/powered-by-google.png") no-repeat;
-					background-size: cover;
-					margin: .8rem auto;
-				}	
+		.sending {
+			text-align: center;
 		}
 }
 
 
 
-
-//some styling for form elements and errors/warnings and such
-//error and user messages
-.message {
-	text-align: center;
-}
-
-.warning {
-	@extend .message;
-	color: $errorOrange
-}
-
-.success {
-	@extend .message;
-	color: $successGreen;
-}
-
-.no-results {
-	padding-top: 10px;
-}
-
-.plc-warning::-webkit-input-placeholder {
-	color: $errorOrange;
-}
-
-.no-geo, .saved {
-	width: 100%;
-	position: absolute;
-	top: 50%;
-	-webkit-transform: translateY(-50%);
-	-ms-transform: translateY(-50%);
-	transform: translateY(-50%);
-	background: hsla(0,0%,0%,0.85);
-	padding: 0.5rem;
-}
 
 
 /*-----------------------------------------------------------------*/

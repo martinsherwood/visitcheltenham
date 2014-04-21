@@ -28,7 +28,7 @@
     
     	<div class="overlay"></div>
         
-    	<div id="app" role="main" class="wrapper">
+    	<div id="app" role="main" class="main">
         
             <div id="home" data-role="page">
                 <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
@@ -65,7 +65,7 @@
                         
                         <form id="search-settings">
                             <label for="search-radius" class="inner-wrap">Search Radius <span>(metres)</span></label>
-                            <input type="text" id="search-radius" name="search-radius" autocomplete="off" autocorrect="off" autocapitalize="off">
+                            <input type="text" id="search-radius" name="search-radius" class="inner-wrap" autocomplete="off" autocorrect="off" autocapitalize="off">
                             
                             <label for="travel-mode" class="inner-wrap">Travel Mode <span>(tell us if you have a car)</span></label>
                             <select id="travel-mode" name="travel-mode">
@@ -85,7 +85,7 @@
                     
                     <div class="settings-block">
                     	<h1 class="inner-wrap">User Account</h1>
-                        <span class="settings-label inner-wrap">Connect with Google</span>
+                        <!--<span class="settings-label inner-wrap">Connect with Google</span>-->
                         
                         <div id="google-login">
                         	<div role="button" data-role="button" data-action="google-signin" class="google-signin"></div>
@@ -107,22 +107,33 @@
                     <div class="settings-block">
                     	<h1 class="inner-wrap">Utilities</h1>
                         <form id="geocode-search">
-                        	<label for="address" class="inner-wrap">Postcode Lookup</label>
-                        	<input type="text" id="address" name="address" placeholder="Enter a postcode" autocomplete="off" autocorrect="off" autocapitalize="off">
+                        	<label for="postcode" class="inner-wrap">Postcode Lookup</label>
+                        	<input type="text" id="postcode" name="postcode" placeholder="Enter a postcode" autocomplete="off" autocorrect="off" autocapitalize="off">
+                            <p class="inner-wrap"><span>Result: </span><span class="geocode-result"></span></p>
                             <div role="button" data-role="button" data-action="submit-geocode-search" class="submit-geocode-search inner-wrap">Search<div class="go-icon"></div></div>
                         </form>
                     </div>
                     
+                    <div class="settings-block">
+                    	<h1 class="inner-wrap">Send Feedback</h1>
+                        <form id="send-feedback" method="post">
+                        	<label for="name" class="inner-wrap">Name</label>
+                            <input type="text" id="name" name="name" placeholder="Your name" autocomplete="on" autocorrect="on" autocapitalize="on">
+                            
+                            <label for="email" class="inner-wrap">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Your email" autocomplete="on" autocorrect="off" autocapitalize="off">
+                            
+                            <label for="message" class="inner-wrap">Message</label>
+                            <textarea id="message" name="message" placeholder="Your message" autocorrect="on" autocapitalize="on" rows="3"></textarea>
+                            
+                            <div role="button" data-role="button" data-action="send-feedback" class="send-feedback inner-wrap">Send<div class="go-icon"></div></div>
+                        </form>
                 </div><!--/container - content-->
             </div><!--/settings-->
             
-
-        </div><!--/app - wrapper-->
-        
-
+        </div><!--/app-->
         
         <script src="js/libs/jquery-2.1.0.min.js"></script>
-        
         <!--this won't load if the device is offline which will cause problems and all kinds of hell, so we need to test for the connection-->
         <!--we are only loading Great Britain (better on mobile) so locations outside will not work, and probably cause errors-->
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC6n-3I8KfH6ReeERae16W5M8B1QtzjPGc&amp;sensor=true&amp;libraries=places&amp;region=GB"></script>

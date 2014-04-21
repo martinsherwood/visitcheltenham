@@ -1730,23 +1730,8 @@ h1 {
   background: #454545;
   color: #fffffa;
 }
-#settings .attri-copy p {
+#settings .sending {
   text-align: center;
-}
-#settings .attri-copy p:nth-of-type(1) {
-  margin: .3rem 0;
-  font-style: italic;
-}
-#settings .attri-copy p:last-of-type {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ced0d4;
-}
-#settings .attri-copy .powered-by-google {
-  width: 208px;
-  height: 32px;
-  background: url("../img/powered-by-google.png") no-repeat;
-  background-size: cover;
-  margin: .8rem auto;
 }
 
 /*-----------------------------------------------------------------*/
@@ -1826,5 +1811,3 @@ textarea[contenteditable] {
 .invisible {
   visibility: hidden;
 }
-
-/*# sourceMappingURL=main.css.map */

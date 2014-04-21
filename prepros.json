@@ -31,25 +31,6 @@
         "sourcemaps": true
       }
     },
-    "7c23f569": {
-      "id": "7c23f569",
-      "pid": "cc820037",
-      "name": "main.scss",
-      "input": "css\\sass\\main.scss",
-      "customOutput": "css\\main.css",
-      "type": "Scss",
-      "config": {
-        "autoCompile": true,
-        "lineNumbers": false,
-        "unixNewlines": false,
-        "sourcemaps": true,
-        "debug": false,
-        "compass": false,
-        "fullCompass": false,
-        "outputStyle": "expanded",
-        "autoprefixer": false
-      }
-    },
     "703ed662": {
       "id": "703ed662",
       "pid": "cc820037",
@@ -119,6 +100,25 @@
         "mangle": true,
         "sourcemaps": false
       }
+    },
+    "7c23f569": {
+      "id": "7c23f569",
+      "pid": "cc820037",
+      "name": "main.scss",
+      "input": "css\\sass\\main.scss",
+      "customOutput": false,
+      "type": "Scss",
+      "config": {
+        "autoCompile": true,
+        "lineNumbers": false,
+        "unixNewlines": false,
+        "sourcemaps": false,
+        "debug": false,
+        "compass": false,
+        "fullCompass": false,
+        "outputStyle": "expanded",
+        "autoprefixer": false
+      }
     }
   },
   "imports": {
@@ -126,6 +126,14 @@
       "id": "84597581",
       "pid": "cc820037",
       "path": "css\\sass\\partials\\_base.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "0dd6b665": {
+      "id": "0dd6b665",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_normalize.scss",
       "parents": [
         "7c23f569"
       ]
@@ -146,10 +154,34 @@
         "7c23f569"
       ]
     },
+    "3fd31db6": {
+      "id": "3fd31db6",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_typography.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "fa00d7ee": {
+      "id": "fa00d7ee",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_forms.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
     "812bb21d": {
       "id": "812bb21d",
       "pid": "cc820037",
       "path": "css\\sass\\_animations.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "09d6abfa": {
+      "id": "09d6abfa",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_layout.scss",
       "parents": [
         "7c23f569"
       ]
@@ -166,38 +198,6 @@
       "id": "d4d7a55f",
       "pid": "cc820037",
       "path": "css\\sass\\partials\\_header.scss",
-      "parents": [
-        "7c23f569"
-      ]
-    },
-    "09d6abfa": {
-      "id": "09d6abfa",
-      "pid": "cc820037",
-      "path": "css\\sass\\partials\\_layout.scss",
-      "parents": [
-        "7c23f569"
-      ]
-    },
-    "0dd6b665": {
-      "id": "0dd6b665",
-      "pid": "cc820037",
-      "path": "css\\sass\\defaults\\_normalize.scss",
-      "parents": [
-        "7c23f569"
-      ]
-    },
-    "3fd31db6": {
-      "id": "3fd31db6",
-      "pid": "cc820037",
-      "path": "css\\sass\\defaults\\_typography.scss",
-      "parents": [
-        "7c23f569"
-      ]
-    },
-    "fa00d7ee": {
-      "id": "fa00d7ee",
-      "pid": "cc820037",
-      "path": "css\\sass\\defaults\\_forms.scss",
       "parents": [
         "7c23f569"
       ]

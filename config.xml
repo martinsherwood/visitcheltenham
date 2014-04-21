@@ -47,7 +47,6 @@
 	<gap:plugin name="InAppBrowser" value="org.apache.cordova.core.InAppBrowser" />
 	<gap:plugin name="NetworkStatus" value="org.apache.cordova.core.NetworkManager" />
 	<gap:plugin name="Battery" value="org.apache.cordova.core.BatteryListener" />
-	<gap:plugin name="Compass" value="org.apache.cordova.core.CompassListener" />
 	<gap:plugin name="Geolocation" value="org.apache.cordova.core.GeoBroker" />
 
 </widget>

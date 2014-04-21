@@ -611,27 +611,38 @@ $(function(userSettings) {
 		
 		$("#geocode-search").submit(function(e) {
 			e.stopPropagation(); e.preventDefault();
-			GMaps.geocode({
-				address: $("#address").val().trim(),
-				callback: function(results, status) {
-					if (status == "OK") {
-						//var result = results[0].geometry.location;
-						var addr = results[0].formatted_address;
-						console.log(addr);
-						$("#address").val(addr);
-					} else {
-						$("#address").attr("placeholder", "No results") && $("#address").addClass("plc-warning");
-						setTimeout(function() {
-							$("#address").attr("placeholder", "Enter a postcode") && $("#address").removeClass("plc-warning");;
-						}, 2800);
-					};
-				}
-			});
+			if ($("#postcode").val() == "") {
+				$("#postcode").focus();
+				$("#postcode").attr("placeholder", "No postcode entered") && $("#postcode").addClass("plc-warning"); //jazzy
+				setTimeout(function() {
+					$("#postcode").attr("placeholder", "Enter a postcode") && $("#postcode").removeClass("plc-warning");;
+				}, 2800);
+				return false;
+			} else {
+				GMaps.geocode({
+					address: $("#postcode").val().trim(),
+					callback: function(results, status) {
+						if (status == "OK") {
+							var addr = results[0].formatted_address;
+							//console.log(addr);
+							$(".geocode-result").text(addr);
+							$("#postcode").val("");
+						} else {
+							$("#address").attr("placeholder", "No results") && $("#address").addClass("plc-warning");
+							setTimeout(function() {
+								$("#address").attr("placeholder", "Enter a postcode") && $("#address").removeClass("plc-warning");;
+							}, 2800);
+						};
+					}
+				});
+			};
 		});
 	});
 	
-	//sign in via google (alpha) - not fully working, it throws up at then end when getting the auth token
-	//the code should get the token from the url in the inappbrowser window (don't know why it won't work)
+	//sign in via google - not fully working, it throws up at then end when getting the auth token
+	//the code should get the token from the url in the inappbrowser window (I don't know why it won't work)
+	//you can console.log and get the code before it chucks up the error so I can't see why the code from the
+	//url in the inappbrowser window isn't being retrieved.
 	/* ----- */
 	$(function(googleSignin) {
 		var googleAPI = {
@@ -786,22 +797,62 @@ $(function(userSettings) {
 	
 	$(function(manualName) {
 		store.getItem("userName").then(function(value) {
-			//console.log(value);
 			$("#username").val(value);
 		});
 		
 		$("[data-action=\"save-username\"]").hammer().on("tap", function(e) {
 			e.stopPropagation(); e.preventDefault();
-			
+			$("#user").submit();
+		});
+		
+		$("#user").submit(function(e) {
+			e.stopPropagation(); e.preventDefault();
 			var username = $("#username").val()
 			
-			store.setItem("userName", username).then(function(value) {
-				$("#user").append("<p class=\"message success saved s-set\">Username has been saved.</p>");
+			if (username == "") {
+				$("#username").attr("placeholder", "No username entered") && $("#username").addClass("plc-warning"); //jazzy
 				setTimeout(function() {
-					$(".s-set").remove();
-				}, 3500);
-			});
+					$("#username").attr("placeholder", "Enter a username") && $("#username").removeClass("plc-warning");;
+				}, 2800);
+				return false;
+			} else {
+				store.setItem("userName", username).then(function(value) {
+					$("#user").append("<p class=\"message success saved s-set\">Username has been saved.</p>");
+					setTimeout(function() {
+						$(".s-set").remove();
+						$("#username").val(username);
+					}, 3500);
+				});
+			};
 		});
+	});
+	
+	$(function(sendFeedback) {
+		$("[data-action=\"send-feedback\"]").hammer().on("tap", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			$("#send-feedback").submit();
+		});
+		
+		$("#send-feedback").submit(function(e) {
+			e.stopPropagation(); e.preventDefault();
+			var feedback = $(this).serialize();
+			
+			$.ajax({
+				type: "POST",
+				data: feedback,		
+				url: "http://martinsherwood.co.uk/visitcheltenham/feedback.php", //feedback.php sends the mail
+				beforeSend: function() {
+					$("#send-feedback").append("<p class=\"message\">Sending...<br><i class=\"fa fa-spinner fa-spin\"></i></p>"); //finish styling this
+				},
+				success: function() {
+					//console.log(feedback);
+					$("#send-feedback").html("<p class=\"message sent\">Thanks, we've got your message and we'll reply shortly!</p>"); //finish styling this
+				},
+			});
+			
+		});
+		
+		
 	});
 });
 

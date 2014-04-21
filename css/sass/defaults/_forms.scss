@@ -4,15 +4,16 @@ label {
 }
 
 input, textarea, select {
-	width: 100%;
-	padding: 1.00rem;
+	padding: .6rem;
 	outline: none;
 	resize: none;
 	line-height: 2.00rem;
-	border: none;
+	border: 3px solid $black;
 	-webkit-box-shadow: none;
 	box-shadow: none;
 	color: $black;
+	margin: 0 auto;
+	background: transparent;
 	@include letter-spacing;
 	
 		&:focus {
@@ -23,5 +24,39 @@ input, textarea, select {
 }
 
 textarea {
-    resize: vertical;
+    resize: none;
+}
+
+//error and user messages
+.message {
+	text-align: center;
+}
+
+.warning {
+	@extend .message;
+	color: $errorOrange
+}
+
+.success {
+	@extend .message;
+	color: $successGreen;
+}
+
+.no-results {
+	padding-top: 10px;
+}
+
+.plc-warning::-webkit-input-placeholder {
+	color: $errorOrange;
+}
+
+.no-geo, .saved {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	background: hsla(0,0%,0%,0.85);
+	padding: 0.5rem;
 }

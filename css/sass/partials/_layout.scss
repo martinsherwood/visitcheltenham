@@ -3,13 +3,9 @@
 	min-width: 100%;
 }
 
-.wrapper {
-	//min-height: 100%;
-}
-
 .inner-wrap {
-	padding-right: 14px;
-	padding-left: 14px;
+	padding-right: $sidePadding;
+	padding-left: $sidePadding;
 }
 
 .centre {
