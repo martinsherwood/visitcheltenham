@@ -25,9 +25,8 @@
 			$headers .= "MIME-Version: 1.0\r\n";
 			$headers .= "Content-type: text/html; charset=utf-8" . "\r\n";
 			
-			$emailBody = "<h1>New Message</h1>
+			$emailBody = "<p style=\"font-size:1.0em;\"><strong>From: {$name}, {$email} </strong></p>
 						  <hr>
-						  <p style=\"font-size:1.2em;\"><strong>From:  {$name}, {$email} </strong></p>
 						  <h3>Message:</h3>
 						  <p>{$message}</p>
 						  <hr>
