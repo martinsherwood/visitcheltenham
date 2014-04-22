@@ -55,6 +55,18 @@
 		.adp-warnbox, .adp-legal, .gmnoprint, .gm-style-cc { //shouldn't do this
 			display: none;
 		}
+		
+		//information window styles
+		.iw-heading {
+			font-family: "Roboto Bold", sans-serif;
+			font-weight: 700;
+			font-size: 1rem;
+			border-bottom: 1px solid $grey;
+		}
+		
+		.iw-address {
+			font-size: 1rem;
+		}
 }
 
 .searches {
@@ -70,7 +82,6 @@
 			height: auto;
 			
 				> h1 {
-					border-top: 1px solid $grey;
 					border-bottom: 1px solid $white;
 				}
 				
@@ -89,7 +100,6 @@
 							border-bottom: 1px solid $white;
 							padding: 1.0rem 14px;
 							color: $white;
-							
 							white-space: nowrap;
   							overflow: hidden;
   							text-overflow: ellipsis;
@@ -151,27 +161,35 @@
 							height: 80px;
 							display: inline-block;
 							position: relative;
+							background: $black;
 								
 								&:nth-of-type(1) {
-									background: $black;
 									border-right: 1px solid $white;
 								}
-								
-								&:nth-of-type(2) {
-									background: $black;
-								}
 						}
-					
-						i {
-							height: 50%;
+						
+						.directions-button {
+							width: 45px;
+							height: 48px;
 							position: absolute;
-							top: 0;
-							right: 0;
-							bottom: 0;
-							left: 0;
-							margin: auto;
-							color: $white;
-							text-align: center;
+							top: .91rem;
+							left: .48rem;
+							background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1OS45IDUwIDM5Mi4xIDQxMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1OS45IDUwIDM5Mi4xIDQxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8cGF0aCBpZD0iZGlyZWN0aW9uLTctaWNvbiIgZmlsbD0iI0ZGRkZGQSIgZD0iTTQ1Mi4xLDIxOS4yTDQwNSwzMjAuOGwtMTUuMi0zNy43Yy03MS4zLDM2LjctOTIuNyw5Mi4yLTk3LjQsMTc4LjlsLTcxLjktMC4zDQoJYzUuNi0xMTAuMiwzNS43LTE5My4yLDE0Mi4zLTI0NS41bC0xNS4zLTM4LjFMNDUyLjEsMjE5LjJ6IE0yMjAuNiwyMjMuN2MxMy40LDEwLjcsMjUuMiwyMi40LDM1LjgsMzUNCgljMTAuNi0xMi41LDIyLjYtMjQuMSwzNi4xLTM0Ljd2LTkwLjRoNDEuM0wyNTgsNTBsLTc4LjEsODNsNDAuNiwwLjJMMjIwLjYsMjIzLjdMMjIwLjYsMjIzLjd6IE0yMzcuNCwyODQuMg0KCWMtMjAuOC0yNi43LTQ5LTQ5LjctODcuMi02OC44bDE1LjYtMzhMNTkuOSwyMTYuN2w0Ny4zLDEwM2wxNS41LTM3LjZjNDEuMiwyMS42LDY1LjYsNDkuNSw3OS42LDg2DQoJQzIwOS44LDMzNy43LDIyMSwzMDkuOSwyMzcuNCwyODQuMnoiLz4NCjwvc3ZnPg0K");
+							background-size: cover;
+							@include no-select;
+							cursor: pointer;
+						}
+						
+						.favourite-button {
+							width: 48px;
+							height: 46px;
+							position: absolute;
+							top: .99rem;
+							left: .38rem;
+							background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA2MC4xIDQxMiAzOTEuOCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1MCA2MC4xIDQxMiAzOTEuOCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8cG9seWdvbiBpZD0ic3Rhci0yLWljb24iIGZpbGw9IiNGRkZGRkEiIHBvaW50cz0iMjU2LDYwLjEgMzE5LDE5MCA0NjIsMjA5LjggMzU3LjksMzA5LjggMzgzLjMsNDUxLjkgMjU2LDM4My44IDEyOC43LDQ1MS45IA0KCTE1NC4xLDMwOS44IDUwLDIwOS44IDE5MywxOTAgIi8+DQo8L3N2Zz4NCg==");
+							background-size: cover;
+							@include no-select;
+							cursor: pointer;
 						}
 				}
 				
@@ -244,6 +262,7 @@
 	position: absolute;
 	top: 0;
 	left: 0;
+	font-size: 1rem;
 	
 		#directions-list {
 			position: absolute;
@@ -277,12 +296,10 @@
 			padding: .8rem;
 			font-family: "Roboto Bold", sans-serif;
 			font-weight: 700;
-			font-size: 1.100rem;
 		}
 		
 		.adp-summary {
 			padding: $sidePadding / 2 $sidePadding $sidePadding / 2 $sidePadding;
-			text-transform: uppercase;
 			
 				&:before {
 					content: "Summary: ";

@@ -73,34 +73,6 @@
         "sourcemaps": false
       }
     },
-    "1f5444d8": {
-      "id": "1f5444d8",
-      "pid": "cc820037",
-      "name": "push.js",
-      "input": "js\\push.js",
-      "customOutput": false,
-      "type": "Js",
-      "config": {
-        "autoCompile": true,
-        "uglify": true,
-        "mangle": true,
-        "sourcemaps": false
-      }
-    },
-    "a31ff0e2": {
-      "id": "a31ff0e2",
-      "pid": "cc820037",
-      "name": "selectbox.js",
-      "input": "js\\selectbox.js",
-      "customOutput": false,
-      "type": "Js",
-      "config": {
-        "autoCompile": true,
-        "uglify": true,
-        "mangle": true,
-        "sourcemaps": false
-      }
-    },
     "7c23f569": {
       "id": "7c23f569",
       "pid": "cc820037",
@@ -204,26 +176,6 @@
     }
   },
   "images": {
-    "f42b9b51": {
-      "id": "f42b9b51",
-      "pid": "cc820037",
-      "path": "img\\startup\\startup-phone-portrait.png",
-      "size": 5346,
-      "name": "startup-phone-portrait.png",
-      "type": "Png",
-      "initialSize": 5346,
-      "status": "NOT_OPTIMIZED"
-    },
-    "85f43701": {
-      "id": "85f43701",
-      "pid": "cc820037",
-      "path": "img\\startup\\startup-tablet-portrait.png",
-      "size": 5397,
-      "name": "startup-tablet-portrait.png",
-      "type": "Png",
-      "initialSize": 5397,
-      "status": "NOT_OPTIMIZED"
-    },
     "3397b453": {
       "id": "3397b453",
       "pid": "cc820037",

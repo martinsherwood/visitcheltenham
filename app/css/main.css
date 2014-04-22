@@ -1389,7 +1389,6 @@ h1 {
 }
 .nav-links a {
   width: 100%;
-  height: 80px;
   display: block;
   padding: 1.25rem;
   color: #fffffa;
@@ -1432,6 +1431,15 @@ h1 {
 #map-container .adp-warnbox, #map-container .adp-legal, #map-container .gmnoprint, #map-container .gm-style-cc {
   display: none;
 }
+#map-container .iw-heading {
+  font-family: "Roboto Bold", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  border-bottom: 1px solid #ced0d4;
+}
+#map-container .iw-address {
+  font-size: 1rem;
+}
 
 .searches {
   width: 100%;
@@ -1446,7 +1454,6 @@ h1 {
   height: auto;
 }
 .searches .results > h1 {
-  border-top: 1px solid #ced0d4;
   border-bottom: 1px solid #fffffa;
 }
 .searches .results ul.results-names, .searches .results ul.results-details {
@@ -1516,24 +1523,36 @@ h1 {
   height: 80px;
   display: inline-block;
   position: relative;
+  background: #454545;
 }
 .searches .results .options .opt:nth-of-type(1) {
-  background: #454545;
   border-right: 1px solid #fffffa;
 }
-.searches .results .options .opt:nth-of-type(2) {
-  background: #454545;
-}
-.searches .results .options i {
-  height: 50%;
+.searches .results .options .directions-button {
+  width: 45px;
+  height: 48px;
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  color: #fffffa;
-  text-align: center;
+  top: .91rem;
+  left: .48rem;
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1OS45IDUwIDM5Mi4xIDQxMiIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1OS45IDUwIDM5Mi4xIDQxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8cGF0aCBpZD0iZGlyZWN0aW9uLTctaWNvbiIgZmlsbD0iI0ZGRkZGQSIgZD0iTTQ1Mi4xLDIxOS4yTDQwNSwzMjAuOGwtMTUuMi0zNy43Yy03MS4zLDM2LjctOTIuNyw5Mi4yLTk3LjQsMTc4LjlsLTcxLjktMC4zDQoJYzUuNi0xMTAuMiwzNS43LTE5My4yLDE0Mi4zLTI0NS41bC0xNS4zLTM4LjFMNDUyLjEsMjE5LjJ6IE0yMjAuNiwyMjMuN2MxMy40LDEwLjcsMjUuMiwyMi40LDM1LjgsMzUNCgljMTAuNi0xMi41LDIyLjYtMjQuMSwzNi4xLTM0Ljd2LTkwLjRoNDEuM0wyNTgsNTBsLTc4LjEsODNsNDAuNiwwLjJMMjIwLjYsMjIzLjdMMjIwLjYsMjIzLjd6IE0yMzcuNCwyODQuMg0KCWMtMjAuOC0yNi43LTQ5LTQ5LjctODcuMi02OC44bDE1LjYtMzhMNTkuOSwyMTYuN2w0Ny4zLDEwM2wxNS41LTM3LjZjNDEuMiwyMS42LDY1LjYsNDkuNSw3OS42LDg2DQoJQzIwOS44LDMzNy43LDIyMSwzMDkuOSwyMzcuNCwyODQuMnoiLz4NCjwvc3ZnPg0K");
+  background-size: cover;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+.searches .results .options .favourite-button {
+  width: 48px;
+  height: 46px;
+  position: absolute;
+  top: .99rem;
+  left: .38rem;
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA2MC4xIDQxMiAzOTEuOCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1MCA2MC4xIDQxMiAzOTEuOCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8cG9seWdvbiBpZD0ic3Rhci0yLWljb24iIGZpbGw9IiNGRkZGRkEiIHBvaW50cz0iMjU2LDYwLjEgMzE5LDE5MCA0NjIsMjA5LjggMzU3LjksMzA5LjggMzgzLjMsNDUxLjkgMjU2LDM4My44IDEyOC43LDQ1MS45IA0KCTE1NC4xLDMwOS44IDUwLDIwOS44IDE5MywxOTAgIi8+DQo8L3N2Zz4NCg==");
+  background-size: cover;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
 }
 .searches .results .shown {
   -webkit-transform: translate3d(0, 0, 0);
@@ -1611,6 +1630,7 @@ h1 {
   position: absolute;
   top: 0;
   left: 0;
+  font-size: 1rem;
 }
 #directions-box #directions-list {
   position: absolute;
@@ -1639,11 +1659,9 @@ h1 {
   padding: .8rem;
   font-family: "Roboto Bold", sans-serif;
   font-weight: 700;
-  font-size: 1.100rem;
 }
 #directions-box .adp-summary {
   padding: 7px 14px 7px 14px;
-  text-transform: uppercase;
 }
 #directions-box .adp-summary:before {
   content: "Summary: ";

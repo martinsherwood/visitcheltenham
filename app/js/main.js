@@ -43,7 +43,7 @@ function setStorage() {
 	window.storeConfig = {
 		name        : "visit_cheltenham_app",
 		version     : 1.0,
-		size        : 4980736, //size of database, in bytes. WebSQL-only
+		size        : 4980736, //size of database, in bytes. WebSQL only
 		storeName   : "vc_storage",
 		description : "Config settings and other application data"
 	};
@@ -120,7 +120,7 @@ $(function(navigationalHandles) {
 		menuButton = $(".menu-stack"); //menu button
 		app = $("#app");
 		handle = "goto";
-	
+		
 	var toggleMenu = function() {
 		body.toggleClass(pushActiveClass); //toggle site overlay
 		menu.toggleClass(pushOpen);
@@ -166,6 +166,9 @@ $(function(navigationalHandles) {
 		//hide current and show new
 		$(current).removeClass("current");
 		$(newPage).addClass("current");
+		
+		//var state = { name: newPage };
+		//history.pushState(state, newPage, newPage.split("#").join(""));
 	}); 
 	
 	$("[data-get=\"settings\"]").hammer().on("tap", function(e) {
@@ -260,7 +263,7 @@ $(function(navigationalHandles) {
 					language: "en-GB",
 					
 					//text search function, accepts terms like "coffee", "hotels", and returns 20 results in the area or expanded area (see above re searchRadius)
-					textSearch: function (results, status) {
+					textSearch: function (results, status) { //pagination needs to be in this function for the more results experiment to work
 						if (status == google.maps.places.PlacesServiceStatus.OK) {
 							clearResults(); //remove previous results and markers
 							
@@ -285,8 +288,8 @@ $(function(navigationalHandles) {
 								"<span class=\"placename\">" + place.name + "</span>" +
 								
 								"<div class=\"options\">" +
-									"<div class=\"opt\"><i data-destination=\"" + place.formatted_address + "\" id=\"get-directions\" class=\"fa fa-2x fa-location-arrow\"></i></div>" +
-									"<div class=\"opt\"><i data-placename=\"" + place.name + "\" id=\"add-place\" class=\"fa fa-2x fa-star\"></i></div>" +
+									"<div class=\"opt\"><div data-destination=\"" + place.formatted_address + "\" id=\"get-directions\" class=\"directions-button\"></div></div>" +
+									"<div class=\"opt\"><div data-placename=\"" + place.name + "\" id=\"add-place\" class=\"favourite-button\"></div></div>" +
 								"</div></li>"); 
 								
 								/* ---------- */
@@ -350,13 +353,25 @@ $(function(navigationalHandles) {
 									animation: google.maps.Animation.DROP,
 									title: place.name,
 									
-									//we need to style and build these better - ideas? should be simple I think, Name + Location + Image"<p>Rating: '+place.rating+'</p>'
+									//allow tappable information windows with basic information
 									infoWindow: {
-										content: "<h2>" + place.name + "</h2>" + "<p>" + (place.vicinity ? place.vicinity : place.formatted_address) + "</p>"
+										content: "<h2 class=\"iw-heading\">" + place.name + "</h2>" +
+													"<p class=\"iw-address\">" + (place.vicinity ? place.vicinity : place.formatted_address) + "</p>"
 									}
 								});
-								bounds.extend(place.geometry.location);
+								bounds.extend(place.geometry.location); //extend the bounds to show all search results on map
 							}
+							
+							//----------------
+							//experimenting with getting more results after the initial 20
+							/*if (pagination.hasNextPage) {
+								//console.log("more results exist");
+								$("#loadmore").hammer().on("tap", function(e) {
+									e.stopPropagation(); e.preventDefault();
+									pagination.nextPage();
+								});
+							};*/
+							//----------------
 							
 							map.fitBounds(bounds); //fit to the new bounds
 							
@@ -401,6 +416,7 @@ $(function(navigationalHandles) {
 				});
 			}
 			
+			//allow user to change between showing distance or estimated time to get there via their chosen travel mode
 			detailsList.hammer().on("tap", "li", function(e) {
 				e.stopPropagation(); e.preventDefault();
 				var change = $(this);
@@ -530,22 +546,24 @@ $(function(navigationalHandles) {
 			$(this).children("div").toggleClass("shown"); //options div
 		});
 		
-		$(".results-names").hammer().on("tap", "i#add-place", function(e) {
+		$(".results-names").hammer().on("tap", "#add-place", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			placeName = $(this).data("placename");
+			console.log(placeName);
 			
-			var addPlace = [{id: placeID}, {placeName: placeName}];
+			//var addPlace = [{id: placeID}, {placeName: placeName}];
 			
-			store.setItem("favouritedPlaces", addPlace).then(function(value) {
+			//store.setItem("favouritedPlaces", addPlace).then(function(value) {
 				//here
-			});
+			//});
 			
 		});
 		
-		$(".results-names").hammer().on("tap", "i#get-directions", function(e) {
+		$(".results-names").hammer().on("tap", "#get-directions", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			$("#home").removeClass("current");
-			$("body").prepend(directionsOverlay);
+			$("body").prepend(directionsOverlay); //sometimes this doesn't render properly on the display
+			
 			
 			directionsTo = $(this).data("destination");
 			var panel = document.getElementById("directions-list");
@@ -565,7 +583,6 @@ $(function(navigationalHandles) {
 			});
 			
 			$(".close-directions").hammer().on("tap", function(e) {
-				console.log("closed");
 				$("#directions-box").remove();
 				$("#home").addClass("current");
 			});
