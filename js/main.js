@@ -12,13 +12,13 @@ var app = {
     },
     onDeviceReady: function() {
 		setStorage();
+		getSettings();
 		//default settings should be set here as well
     },
     report: function(id) {
 		console.log("report:" + id);
     },
 };
-
 
 /*Sets up the device storage environment to use, automatically selects the best library
 /*depending what is supported by the device. Uses store.js, based on Mozilla LocalStorage.
@@ -75,7 +75,6 @@ function getSettings() {
 	
 	store.getItem("userName").then(function(value) {
 		userName = value;
-		//console.log(userName);
 	});
 };
 
@@ -95,10 +94,10 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                 	"<div role=\"button\" data-role=\"button\" class=\"menu-stack push\"></div>" +
                     "<nav role=\"navigation\" data-role=\"navbar\" class=\"main-menu menu-closed\">" +
                     	"<div class=\"nav-links\">" +
-                        	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\" class=\"page\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
-                            "<a data-goto=\"#places\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-location-arrow\"></i>My Places</a>" +
-                            "<a data-goto=\"#offers\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span class=\"offer-count\">0</span></a>" +
-                            "<a data-goto=\"#settings\" data-push=\"page\" class=\"page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
+                        	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
+                            "<a data-goto=\"#places\" data-push=\"page\"><i class=\"fa fa-border fa-location-arrow\"></i>My Places</a>" +
+                            "<a data-goto=\"#offers\" data-push=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span class=\"offer-count\">0</span></a>" +
+                            "<a data-goto=\"#settings\" data-push=\"page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
                         "</div>" +
                     "</nav>" +
                     "<div role=\"button\" data-role=\"button\" class=\"locate-button\"></div>" +
@@ -151,8 +150,8 @@ $(function(navigationalHandles) {
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		//$currentPage = $("#app > *:first-child").addClass("current");
-		$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
+		$currentPage = $("#app > *:first-child").addClass("current");
+		//$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	};
@@ -174,7 +173,6 @@ $(function(navigationalHandles) {
 		getSettings();
 	});
 });
-
 
 /*Main location and map based services
 -----------------------------------------------------------------------------------------*/
@@ -239,24 +237,14 @@ $(function(navigationalHandles) {
 		
 		$("[data-action=\"submit-place-search\"]").hammer().on("tap", function(e) {
 			e.stopPropagation(); e.preventDefault();
-			var query = $("#place-query").val();
-			if (query == "") {
-				$("#place-query").focus();
-				$("#place-query").attr("placeholder", "You didn't enter any terms") && $("#place-query").addClass("plc-warning"); //jazzy
-				setTimeout(function() {
-					$("#place-query").attr("placeholder", "Search for places") && $("#place-query").removeClass("plc-warning");;
-				}, 2800);
-				return false;
-			} else {
-				$("#place-search").submit();
-			}
+			$("#place-search").submit();
 		});
 		
 		$("#place-search").submit(function(e) {
 			e.stopPropagation(); e.preventDefault();
 			var query = $("#place-query").val();
 			
-			if (query == "") { //this check should be a function, but since its calling the submit() function on success, it got all confused (will write better if time permits)
+			if (query == "") {
 				$("#place-query").focus();
 				$("#place-query").attr("placeholder", "You didn't enter any terms") && $("#place-query").addClass("plc-warning");
 				setTimeout(function() {
@@ -297,9 +285,9 @@ $(function(navigationalHandles) {
 								"<span class=\"placename\">" + place.name + "</span>" +
 								
 								"<div class=\"options\">" +
-									"<div class=\"opt\"><i data-destination=\"" + place.geometry.location + "\" id=\"get-directions\" class=\"fa fa-2x fa-location-arrow\"></i></div>" +
+									"<div class=\"opt\"><i data-destination=\"" + place.formatted_address + "\" id=\"get-directions\" class=\"fa fa-2x fa-location-arrow\"></i></div>" +
 									"<div class=\"opt\"><i data-placename=\"" + place.name + "\" id=\"add-place\" class=\"fa fa-2x fa-star\"></i></div>" +
-								"</div></li>");
+								"</div></li>"); 
 								
 								/* ---------- */
 								
@@ -525,53 +513,65 @@ $(function(navigationalHandles) {
 			});
 		};
 	});//placesMap
-})(); //end map scope
-
-$(function(doMore) {
 	
-	var placeName;
-	var directionsTo;
-	
-	var directionsOverlay = "<div id=\"directions-box\" class=\"directions\" data-transition=\"slide-down-in\">" +
-								"<h1 class=\"inner-wrap\">Directions<i class=\"fa fa-times close-directions\"></i></h1>" +
-							"</div>"
-							
-	$(".results-names").hammer().on("swipeleft tap", "li", function(e) {
-		e.stopPropagation(); e.preventDefault();
-
-		//placeName = $(this).data("placename");
-
-		$(this).children("span").toggleClass("swiped");
-		$(this).children("div").toggleClass("shown"); //options div
-		
-	});
-	
-	$(".results-names").hammer().on("tap", "i#add-place", function(e) {
-		e.stopPropagation(); e.preventDefault();
-		placeName = $(this).data("placename");
-		console.log(placeName)
-		//add as fav and change colour of star here, also set to storage and colour star according to it
-	});
-	
-	$(".results-names").hammer().on("tap", "i#get-directions", function(e) {
-		e.stopPropagation(); e.preventDefault();
-		directionsTo = $(this).data("destination");
-		console.log(directionsTo);
-		
-		$("#home").removeClass("current");
-		
-		$("body").prepend(directionsOverlay);
-		
-		//finish this and the overlay styles and do the directions stuff - test everything
-		
-		$(".close-directions").hammer().on("tap", function(e) {
-			console.log("closed");
-			$("#directions-box").remove();
-			$("#home").addClass("current");
+	//options for search results - favourite and get directions
+	$(function(doMore) {
+		var placeName;
+		var directionsTo;
+		var directionsOverlay = "<div id=\"directions-box\">" +
+									"<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Directions<i class=\"fa fa-times close-directions\"></i></h1>" +
+									"<div id=\"directions-list\"></div>" +
+								"</div>"
+								
+		$(".results-names").hammer().on("swipeleft tap", "li", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			//placeName = $(this).data("placename");
+			$(this).children("span").toggleClass("swiped");
+			$(this).children("div").toggleClass("shown"); //options div
 		});
 		
+		$(".results-names").hammer().on("tap", "i#add-place", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			placeName = $(this).data("placename");
+			
+			var addPlace = [{id: placeID}, {placeName: placeName}];
+			
+			store.setItem("favouritedPlaces", addPlace).then(function(value) {
+				//here
+			});
+			
+		});
+		
+		$(".results-names").hammer().on("tap", "i#get-directions", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			$("#home").removeClass("current");
+			$("body").prepend(directionsOverlay);
+			
+			directionsTo = $(this).data("destination");
+			var panel = document.getElementById("directions-list");
+			var dirServ = new google.maps.DirectionsService();
+			var dirDisp = new google.maps.DirectionsRenderer();
+			
+			dirDisp.setPanel(panel);
+			
+			dirServ.route({
+				origin: currentLocation,
+				destination: directionsTo,
+				travelMode: travelMode,
+				unitSystem: unitSystem
+			}, function(result, status) {
+				if (status === google.maps.DirectionsStatus.OK)
+				dirDisp.setDirections(result);
+			});
+			
+			$(".close-directions").hammer().on("tap", function(e) {
+				console.log("closed");
+				$("#directions-box").remove();
+				$("#home").addClass("current");
+			});
+		});
 	});
-});
+})(); //end map scope
 
 /*Settings and options functionality
 -----------------------------------------------------------------------------------------*/
@@ -595,47 +595,12 @@ $(function(userSettings) {
 			var searchSettings = [{searchRadius: searchRadius}, {travelMode: travelMode}, {unitSystem: unitSystem}];
 			
 			store.setItem("searchSettings", searchSettings).then(function(value) {
-				$("#search-settings").append("<p class=\"message success saved s-set\">Settings have been saved.</p>");
+				$("#search-settings").append("<p class=\"message success prominent timed\">Settings have been saved.</p>");
 				setTimeout(function() {
-					$(".s-set").remove();
+					$(".timed").remove();
+					getSettings();
 				}, 3500);
 			});
-		});
-	});
-	
-	$(function(postcodeLookup) {
-		$("[data-action=\"submit-geocode-search\"]").hammer().on("tap", function(e) {
-			e.stopPropagation(); e.preventDefault();
-			$("#geocode-search").submit();
-		});
-		
-		$("#geocode-search").submit(function(e) {
-			e.stopPropagation(); e.preventDefault();
-			if ($("#postcode").val() == "") {
-				$("#postcode").focus();
-				$("#postcode").attr("placeholder", "No postcode entered") && $("#postcode").addClass("plc-warning"); //jazzy
-				setTimeout(function() {
-					$("#postcode").attr("placeholder", "Enter a postcode") && $("#postcode").removeClass("plc-warning");;
-				}, 2800);
-				return false;
-			} else {
-				GMaps.geocode({
-					address: $("#postcode").val().trim(),
-					callback: function(results, status) {
-						if (status == "OK") {
-							var addr = results[0].formatted_address;
-							//console.log(addr);
-							$(".geocode-result").text(addr);
-							$("#postcode").val("");
-						} else {
-							$("#address").attr("placeholder", "No results") && $("#address").addClass("plc-warning");
-							setTimeout(function() {
-								$("#address").attr("placeholder", "Enter a postcode") && $("#address").removeClass("plc-warning");;
-							}, 2800);
-						};
-					}
-				});
-			};
 		});
 	});
 	
@@ -817,11 +782,48 @@ $(function(userSettings) {
 				return false;
 			} else {
 				store.setItem("userName", username).then(function(value) {
-					$("#user").append("<p class=\"message success saved s-set\">Username has been saved.</p>");
+					$("#user").append("<p class=\"message success prominent timed\">Username has been saved.</p>");
 					setTimeout(function() {
-						$(".s-set").remove();
+						$(".timed").remove();
 						$("#username").val(username);
+						getSettings();
 					}, 3500);
+				});
+			};
+		});
+	});
+	
+	$(function(postcodeLookup) {
+		$("[data-action=\"submit-geocode-search\"]").hammer().on("tap", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			$("#geocode-search").submit();
+		});
+		
+		$("#geocode-search").submit(function(e) {
+			e.stopPropagation(); e.preventDefault();
+			if ($("#postcode").val() == "") {
+				$("#postcode").focus();
+				$("#postcode").attr("placeholder", "No postcode entered") && $("#postcode").addClass("plc-warning"); //jazzy
+				setTimeout(function() {
+					$("#postcode").attr("placeholder", "Enter a postcode") && $("#postcode").removeClass("plc-warning");;
+				}, 2800);
+				return false;
+			} else {
+				GMaps.geocode({
+					address: $("#postcode").val().trim(),
+					callback: function(results, status) {
+						if (status == "OK") {
+							var addr = results[0].formatted_address;
+							//console.log(addr);
+							$(".geocode-result").text(addr);
+							$("#postcode").val("");
+						} else {
+							$("#address").attr("placeholder", "No results") && $("#address").addClass("plc-warning");
+							setTimeout(function() {
+								$("#address").attr("placeholder", "Enter a postcode") && $("#address").removeClass("plc-warning");;
+							}, 2800);
+						};
+					}
 				});
 			};
 		});
@@ -835,35 +837,41 @@ $(function(userSettings) {
 		
 		$("#send-feedback").submit(function(e) {
 			e.stopPropagation(); e.preventDefault();
-			var feedback = $(this).serialize();
-			
-			$.ajax({
-				type: "POST",
-				data: feedback,		
-				url: "http://martinsherwood.co.uk/visitcheltenham/feedback.php", //feedback.php sends the mail
-				beforeSend: function() {
-					$("#send-feedback").append("<p class=\"message\">Sending...<br><i class=\"fa fa-spinner fa-spin\"></i></p>"); //finish styling this
-				},
-				success: function() {
-					//console.log(feedback);
-					$("#send-feedback").html("<p class=\"message sent\">Thanks, we've got your message and we'll reply shortly!</p>"); //finish styling this
-				},
-			});
-			
+			if ($("#name").val() == "" || $("#email").val() == "" || $("#message").val() == "") {
+				$("#send-feedback").append("<p class=\"message warning prominent timed\">Please fill out all fields.</p>");
+				setTimeout(function() {
+					$(".timed").remove();
+					//$("#username").val(username);
+				}, 3500);
+			} else {
+				var feedback = $(this).serialize();
+				$.ajax({
+					type: "POST",
+					data: feedback,		
+					url: "http://martinsherwood.co.uk/visitcheltenham/feedback.php", //feedback.php sends the mail
+					beforeSend: function() {
+						$("#send-feedback").append("<p class=\"message success prominent sending\">Sending...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>"); //finish styling this
+					},
+					success: function() {
+						$(".sending").remove();
+						//console.log(feedback);
+						$("#send-feedback").append("<p class=\"message success prominent timed\">Thanks for the feedback!</p>"); //finish styling this
+						setTimeout(function() {
+							$(".timed").remove();
+							$("#name").val("") && $("#email").val("") && $("#message").val("");
+						}, 3500);
+					},
+				});
+			};
 		});
-		
-		
 	});
 });
-
 
 /*Offers and redemption
 -----------------------------------------------------------------------------------------*/
 $(function(getOffers) {
 	
 });
-
-
 
 /*Prefetching - add class "prefetch" to any links
 -----------------------------------------------------------------------------------------*/

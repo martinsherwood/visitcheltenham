@@ -453,7 +453,7 @@ textarea {
   color: #f27b36;
 }
 
-.no-geo, .saved {
+.no-geo, .prominent {
   width: 100%;
   position: absolute;
   top: 50%;
@@ -1249,6 +1249,10 @@ h1 {
   float: right;
 }
 
+.behind {
+  z-index: -1 !important;
+}
+
 #app {
   width: 100%;
   display: block;
@@ -1380,7 +1384,6 @@ h1 {
   z-index: 9999;
 }
 
-/* ----------- */
 .nav-links {
   padding: .80rem;
 }
@@ -1420,9 +1423,6 @@ h1 {
 #map-container {
   width: 100%;
   height: 220px;
-  /*@else if $point == break-desktop {
-  	@media screen and (min-width: 80.000em) { @content; }
-  }*/
 }
 @media screen and (min-width: 37.5em) {
   #map-container {
@@ -1571,7 +1571,7 @@ h1 {
   position: relative;
 }
 #place-search #place-query {
-  width: 82%;
+  width: 84%;
   display: block;
   border: none;
   padding: 1rem;
@@ -1604,17 +1604,55 @@ h1 {
 /*-----------------------------------------------------------------*/
 #directions-box {
   width: 100%;
-  height: 100%;
-  min-height: 100%;
+  height: auto;
   min-width: 100%;
   z-index: 101;
-  background: #5E89E0;
+  background: #fffffa;
   position: absolute;
   top: 0;
   left: 0;
 }
+#directions-box #directions-list {
+  position: absolute;
+  top: 50px;
+  background: #fffffa;
+}
+#directions-box > h1 {
+  width: 100%;
+  position: fixed;
+  border-bottom: none;
+  z-index: 102;
+}
 #directions-box .close-directions {
   float: right;
+  font-size: 3rem;
+}
+#directions-box .adp-placemark {
+  background: #cccfd7;
+  border: none;
+  margin: 0;
+}
+#directions-box img.adp-marker {
+  margin-left: 14px;
+}
+#directions-box .adp-text {
+  padding: .8rem;
+  font-family: "Roboto Bold", sans-serif;
+  font-weight: 700;
+  font-size: 1.100rem;
+}
+#directions-box .adp-summary {
+  padding: 7px 14px 7px 14px;
+  text-transform: uppercase;
+}
+#directions-box .adp-summary:before {
+  content: "Summary: ";
+}
+#directions-box .adp-directions {
+  margin: 0 14px;
+}
+#directions-box .adp-warnbox, #directions-box .adp-details, #directions-box .adp-legal {
+  display: none;
 }
 
 /*-----------------------------------------------------------------*/
@@ -1644,12 +1682,17 @@ h1 {
 #settings input, #settings select, #settings textarea {
   width: 92%;
   display: block;
-  margin-bottom: 1rem;
+  margin-bottom: .8rem;
 }
 #settings input:focus, #settings select:focus, #settings textarea:focus {
   outline: none;
   -webkit-box-shadow: none;
   box-shadow: none;
+}
+@media screen and (min-width: 37.5em) {
+  #settings input, #settings select, #settings textarea {
+    width: 99%;
+  }
 }
 #settings .save-settings, #settings .submit-geocode-search, #settings .send-feedback {
   width: 100%;
@@ -1730,23 +1773,8 @@ h1 {
   background: #454545;
   color: #fffffa;
 }
-#settings .attri-copy p {
+#settings .sending {
   text-align: center;
-}
-#settings .attri-copy p:nth-of-type(1) {
-  margin: .3rem 0;
-  font-style: italic;
-}
-#settings .attri-copy p:last-of-type {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ced0d4;
-}
-#settings .attri-copy .powered-by-google {
-  width: 208px;
-  height: 32px;
-  background: url("../img/powered-by-google.png") no-repeat;
-  background-size: cover;
-  margin: .8rem auto;
 }
 
 /*-----------------------------------------------------------------*/

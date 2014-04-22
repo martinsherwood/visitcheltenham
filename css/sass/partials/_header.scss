@@ -1,5 +1,3 @@
-//Header
-
 .app-header {
 	width: 100%;
 	height: 40px;
@@ -45,7 +43,7 @@
 	width: 220px;
 	height: 100%;
 	position: fixed;
-	-webkit-transform: translateZ(0); //fix for header issue
+	-webkit-transform: translateZ(0); //fix for header issue with fixed positioning when translating elements
 	-ms-transform: translateZ(0);
 	transform: translateZ(0);
 	top: 0;
@@ -99,8 +97,6 @@
 	left: 220px;
 	z-index: 9999;
 }
-
-/* ----------- */
 
 .nav-links {
 	padding: .80rem;

@@ -48,7 +48,7 @@
 	width: 100%;
 	height: 220px;
 	
-		@include breakpoint(break-tablet) {
+		@include breakpoint(tablet) {
 			height: 440px;
 		}
 		
@@ -139,7 +139,6 @@
 					position: absolute;
 					top: 0;
 					right: 0;
-					
 					-webkit-transform: translate3d($resultOptionsWidth,0,0);
 					-ms-transform: translate3d($resultOptionsWidth,0,0);
 					transform: translate3d($resultOptionsWidth,0,0);
@@ -202,7 +201,7 @@
 	position: relative;
 	
 		#place-query {
-			width: 82%;
+			width: 84%;
 			display: block;
 			border: none;
 			padding: 1rem;
@@ -238,17 +237,64 @@
 
 #directions-box {
 	width: 100%;
-	height: 100%;
-	min-height: 100%;
+	height: auto;
 	min-width: 100%;
 	z-index: 101;
-	background: #5E89E0;
+	background: $white;
 	position: absolute;
 	top: 0;
 	left: 0;
 	
+		#directions-list {
+			position: absolute;
+			top: 50px;
+			background: $white;
+		}
+	
+		> h1 {
+			width: 100%;
+			position: fixed;
+			border-bottom: none;
+			z-index: 102;
+		}
+	
 		.close-directions {
 			float: right;
+			font-size: 3rem;
+		}
+		
+		.adp-placemark {
+			background: saturate($grey, 5%);
+			border: none;
+			margin: 0;
+		}
+		
+		img.adp-marker {
+			margin-left: 14px;
+		}
+		
+		.adp-text {
+			padding: .8rem;
+			font-family: "Roboto Bold", sans-serif;
+			font-weight: 700;
+			font-size: 1.100rem;
+		}
+		
+		.adp-summary {
+			padding: $sidePadding / 2 $sidePadding $sidePadding / 2 $sidePadding;
+			text-transform: uppercase;
+			
+				&:before {
+					content: "Summary: ";
+				}
+		}
+		
+		.adp-directions {
+			margin: 0 14px;
+		}
+		
+		.adp-warnbox, .adp-details, .adp-legal {
+			display: none;
 		}
 }
 
@@ -285,12 +331,16 @@
 		input, select, textarea {
 			width: 92%;
 			display: block;
-			margin-bottom: 1rem;
+			margin-bottom: .8rem;
 				
 				&:focus {
 					outline: none;
 					-webkit-box-shadow: none;
 					box-shadow: none;
+				}
+				
+				@include breakpoint(tablet) {
+					width: 99%;
 				}
 		}
 		
