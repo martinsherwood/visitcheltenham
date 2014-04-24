@@ -55,7 +55,19 @@
                 </div><!--/container - content-->
             </div><!--/home-->
             
-            <!-- other sections will be here -->
+            <!--###-->
+            
+            <div id="places" data-role="page">
+            	<div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
+                	<h1 class="inner-wrap">Favourites</h1>
+                	
+                    <ul class="favourites-list">
+                    </ul>
+                	
+            	</div><!--/container - content-->
+            </div><!--/myplaces-->
+            
+            <!--###-->
             
             <div id="settings" data-role="page">
                 <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
@@ -63,7 +75,7 @@
                     <div class="settings-block">
                         <h1 class="inner-wrap">Search Settings</h1>
                         
-                        <form id="search-settings">
+                        <form id="search-settings" autocomplete="off">
                             <label for="search-radius" class="inner-wrap">Search Radius <span>(metres)</span></label>
                             <input type="text" id="search-radius" name="search-radius" class="inner-wrap" autocomplete="off" autocorrect="off" autocapitalize="off">
                             
@@ -79,7 +91,7 @@
                                 <option value="imperial">Imperial</option>
                                 <option value="metric">Metric</option>
                             </select>
-                            <div role="button" data-role="button" data-action="save-settings" class="save-settings inner-wrap">Save<div class="submit-icon"></div></div>
+                            <div role="button" data-role="button" data-action="save-settings" class="settings-button inner-wrap">Save<div class="submit-icon"></div></div>
                         </form>
                     </div>
                     
@@ -95,36 +107,43 @@
                             <p class="inner-wrap signed-in-name"></p>
                         </div>
                         
-                        <form id="user">
+                        <form id="user-account" method="post" autocomplete="off">
                         	<label for="username" class="inner-wrap">Username</label>
-                            <input type="text" id="username" name="username" placeholder="Enter a username" autocomplete="off" autocorrect="off" autocapitalize="off">
-                            <div role="button" data-role="button" data-action="save-username" class="save-settings inner-wrap">Save<div class="submit-icon"></div></div>
+                            <input type="text" id="username" name="username" placeholder="Enter a username" autocomplete="off" autocorrect="off" autocapitalize="off" maxlength="22">
+                            
+                            <label for="useremail" class="inner-wrap">Email</label>
+                            <input type="email" id="useremail" name="useremail" placeholder="Enter an email address" autocomplete="off" autocorrect="off" autocapitalize="off">
+                            
+                            <label for="userpassword" class="inner-wrap">Password</label>
+                            <input type="password" id="userpassword" name="userpassword" placeholder="Enter a password" autocomplete="off" autocorrect="off" autocapitalize="off">
+                            
+                            <div role="button" data-role="button" data-action="save-account" class="settings-button inner-wrap">Save &amp; Register<div class="submit-icon"></div></div>
                         </form>
                     </div>
                     
                     <div class="settings-block">
                     	<h1 class="inner-wrap">Utilities</h1>
-                        <form id="geocode-search">
+                        <form id="postcode-lookup">
                         	<label for="postcode" class="inner-wrap">Postcode Lookup</label>
                         	<input type="text" id="postcode" name="postcode" placeholder="Enter a postcode" autocomplete="off" autocorrect="off" autocapitalize="off">
                             <p class="inner-wrap"><span>Result: </span><span class="geocode-result"></span></p>
-                            <div role="button" data-role="button" data-action="submit-geocode-search" class="submit-geocode-search inner-wrap">Search<div class="go-icon"></div></div>
+                            <div role="button" data-role="button" data-action="submit-postcode-lookup" class="settings-button inner-wrap">Search<div class="submit-icon"></div></div>
                         </form>
                     </div>
                     
                     <div class="settings-block">
                     	<h1 class="inner-wrap">Send Feedback</h1>
-                        <form id="send-feedback" method="post">
+                        <form id="send-feedback" method="post" autocomplete="off">
                         	<label for="name" class="inner-wrap">Name</label>
-                            <input type="text" id="name" name="name" placeholder="Your name" autocomplete="on" autocorrect="on" autocapitalize="on">
+                            <input type="text" id="name" name="name" placeholder="Your name" autocomplete="off" autocorrect="on" autocapitalize="on">
                             
                             <label for="email" class="inner-wrap">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="Your email" autocomplete="on" autocorrect="off" autocapitalize="off">
+                            <input type="email" id="email" name="email" placeholder="Your email" autocomplete="off" autocorrect="off" autocapitalize="off">
                             
                             <label for="message" class="inner-wrap">Message</label>
                             <textarea id="message" name="message" placeholder="Your message" autocorrect="on" autocapitalize="on" rows="3"></textarea>
                             
-                            <div role="button" data-role="button" data-action="send-feedback" class="send-feedback inner-wrap">Send<div class="go-icon"></div></div>
+                            <div role="button" data-role="button" data-action="send-feedback" class="settings-button inner-wrap">Send<div class="submit-icon"></div></div>
                         </form>
                 </div><!--/container - content-->
             </div><!--/settings-->

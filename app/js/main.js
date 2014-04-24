@@ -1,6 +1,11 @@
 //application constructor -> bind events/listeners -> deviceready -> update and display -> report
 //deviceready event handler, the scope of 'this' is the event. In order to call the 'report' function, we must explicity call 'app.report(...);', same for any others
 //app.report is an event handler so the scope is that of the event so we need to call app.report(), and not this.report()
+
+var serverURL = "http://www.martinsherwood.co.uk/visitcheltenham/";
+var searchRadius, travelMode, unitSystem, userName, userEmail, userPassword; //password should be encrypted
+var name, userID; //name is only used for fetching the user ID of the user from the database
+
 var app = {
     initialize: function() {
         this.bindEvents();
@@ -49,11 +54,6 @@ function setStorage() {
 	};
 };
 
-function reloadApp() {
-	location.reload(true); //refresh the app, true tells the app that the restart is valid and not a crash
-};
-
-var searchRadius, travelMode, unitSystem, userName;
 function getSettings() {
 	store.getItem("searchSettings").then(function(value) {
 		searchRadius = parseInt(value[0].searchRadius);
@@ -73,19 +73,35 @@ function getSettings() {
 		};
 	});
 	
-	store.getItem("userName").then(function(value) {
-		userName = value;
+	store.getItem("userAccount").then(function(value) {
+		userName = value[0].userName;
+		userEmail = value[1].userEmail;
+		userPassword = value[2].userPassword;
+		//console.log(userName + userEmail + userPassword);
 	});
 };
 
-function backButton() {
-	console.log("backbutton"); //works
-	navigator.notification.confirm("Exit?", function(button) { // :(
-		if (button == 1) {
-			navigator.app.exitApp();
-		};
-	}, "Exit", "Yes, No");
-};
+store.getItem("userAccount").then(function(value) {
+	name = value[0].userName;
+	//console.log("name from store: " + name);
+});
+	
+$.ajax({
+	type: "POST",
+	data: {username: name},
+	url: serverURL + "getuser.php",
+	async: false,
+	success: function(id, status) {
+		userID = id; //if no name is sent, then it returns 0 to validate new users
+	},
+	error: function() {
+		console.log("Failed to get user id, probably there is no match for the given username in the database.");
+	}
+});
+	
+console.log("User ID: " + userID);
+
+//--------------------
 
 /*-----------------------------------------------------------------------------------------*/
 
@@ -150,8 +166,8 @@ $(function(navigationalHandles) {
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		$currentPage = $("#app > *:first-child").addClass("current");
-		//$currentPage = $("#settings").addClass("current"); //FOR DEV-REMOVE LATER
+		//$currentPage = $("#app > *:first-child").addClass("current");
+		$currentPage = $("#places").addClass("current"); //FOR DEV-REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	};
@@ -549,15 +565,21 @@ $(function(navigationalHandles) {
 		$(".results-names").hammer().on("tap", "#add-place", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			placeName = $(this).data("placename");
-			console.log(placeName);
 			
-			//var addPlace = [{id: placeID}, {placeName: placeName}];
+			$.ajax({
+				type: "POST",
+				data: {userid: userID, placename: placeName},	
+				url: serverURL + "favourite.php",
+				beforeSend: function() {
+					console.log("adding to favourites");
+				},
+				success: function() {
+					console.log("added");
+				},
+			});
 			
-			//store.setItem("favouritedPlaces", addPlace).then(function(value) {
-				//here
-			//});
 			
-		});
+		});//add place
 		
 		$(".results-names").hammer().on("tap", "#get-directions", function(e) {
 			e.stopPropagation(); e.preventDefault();
@@ -586,13 +608,55 @@ $(function(navigationalHandles) {
 				$("#directions-box").remove();
 				$("#home").addClass("current");
 			});
-		});
+		});//get direction
 	});
 })(); //end map scope
 
+
+/*Favourited places list page
+-----------------------------------------------------------------------------------------*/
+$(function(favouritedPlaces) {
+	var userFavourites;
+	
+	$.ajax({
+		type: "POST",
+		data: {userid: userID},
+		url: serverURL + "getfavourites.php",
+		
+		//dataType: "jsonp",
+		//jsonp: "favouritescallback",
+		
+		async: false,
+		success: function(placenames, status) {
+			userFavourites = placenames;
+			//console.log(userFavourites);
+			
+			objects = JSON.parse(userFavourites);
+			//console.log(objects);
+			
+			$.each(objects, function(i, place){ 
+				console.log(place);
+				$(".favourites-list").append("<li>" + place + "</li>");
+				
+				//html(userFavourites);
+			});
+			
+			
+			
+			
+			//more here
+		},
+		error: function() {
+			console.log("oh no");
+		}
+	});
+});
+
 /*Settings and options functionality
 -----------------------------------------------------------------------------------------*/
-$(function(userSettings) {
+$(function(appSettings) {
+	//we need to get the settings again here, as earlier we made them into int from the stored strings
+	
 	$(function(searchSettings) {
 		store.getItem("searchSettings").then(function(value) {
 			//console.log(value);
@@ -603,11 +667,16 @@ $(function(userSettings) {
 		
 		$("[data-action=\"save-settings\"]").hammer().on("tap", function(e) {
 			e.stopPropagation(); e.preventDefault();
+			$("#search-settings").submit();
+		});
+		
+		$("#search-settings").submit(function(e) {
+			e.stopPropagation(); e.preventDefault();
 			//console.log(this, e + "saved");
 			
-			var searchRadius = $("#search-radius").val(),
-				travelMode   = $("#travel-mode").val(),
-				unitSystem   = $("#unit-system").val()
+			searchRadius = $("#search-radius").val(),
+			travelMode   = $("#travel-mode").val(),
+			unitSystem   = $("#unit-system").val()
 				
 			var searchSettings = [{searchRadius: searchRadius}, {travelMode: travelMode}, {unitSystem: unitSystem}];
 			
@@ -777,46 +846,70 @@ $(function(userSettings) {
 	});
 	/* ----- */
 	
-	$(function(manualName) {
-		store.getItem("userName").then(function(value) {
-			$("#username").val(value);
+	$(function(userAccount) {
+		store.getItem("userAccount").then(function(value) {
+			$("#username").val(value[0].userName);
+			$("#useremail").val(value[1].userEmail);
+			$("#userpassword").val(value[2].userPassword);
 		});
 		
-		$("[data-action=\"save-username\"]").hammer().on("tap", function(e) {
+		$("[data-action=\"save-account\"]").hammer().on("tap", function(e) {
 			e.stopPropagation(); e.preventDefault();
-			$("#user").submit();
+			$("#user-account").submit();
 		});
 		
-		$("#user").submit(function(e) {
+		$("#user-account").submit(function(e) {
 			e.stopPropagation(); e.preventDefault();
-			var username = $("#username").val()
 			
-			if (username == "") {
-				$("#username").attr("placeholder", "No username entered") && $("#username").addClass("plc-warning"); //jazzy
+			userName 	 = $("#username").val()
+			userEmail	 = $("#useremail").val()
+			userPassword = $("#userpassword").val()
+			
+			var userAccount = [{userName: userName}, {userEmail: userEmail}, {userPassword: userPassword}]; //password needs encyrpting
+			var userRegistration = $(this).serialize(); //used for db
+			
+			if (userName == "" || userEmail == "" || userPassword == "") {
+				$("#user-account").append("<p class=\"message warning prominent timed\">All fields are required.</p>");
 				setTimeout(function() {
-					$("#username").attr("placeholder", "Enter a username") && $("#username").removeClass("plc-warning");;
-				}, 2800);
+					$(".timed").remove();
+				}, 3500);
+				return false;
+			} else if (userID != 0) { //if the userID is set (from the database) then they have already made an account
+				console.log("creation failed");
+				$("#user-account").append("<p class=\"message warning prominent timed\">You have already made an account.</p>");
+				setTimeout(function() {
+					$(".timed").remove();
+				}, 3500);
 				return false;
 			} else {
-				store.setItem("userName", username).then(function(value) {
-					$("#user").append("<p class=\"message success prominent timed\">Username has been saved.</p>");
-					setTimeout(function() {
-						$(".timed").remove();
-						$("#username").val(username);
-						getSettings();
-					}, 3500);
+				store.setItem("userAccount", userAccount).then(function(value) {
+					$.ajax({
+						type: "POST",
+						data: userRegistration,		
+						url: serverURL + "register.php",
+						beforeSend: function() {
+							$("#user-account").append("<p class=\"message success prominent creating\">Creating...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>");
+						},
+						success: function() {
+							$(".creating").remove();
+							$("#user-account").append("<p class=\"message success prominent timed\">Your account has been registed and saved.</p>");
+							setTimeout(function() {
+								$(".timed").remove();
+							}, 3500);
+						},
+					});
 				});
-			};
+			}
 		});
 	});
 	
 	$(function(postcodeLookup) {
-		$("[data-action=\"submit-geocode-search\"]").hammer().on("tap", function(e) {
+		$("[data-action=\"submit-postcode-lookup\"]").hammer().on("tap", function(e) {
 			e.stopPropagation(); e.preventDefault();
-			$("#geocode-search").submit();
+			$("#postcode-lookup").submit();
 		});
 		
-		$("#geocode-search").submit(function(e) {
+		$("#postcode-lookup").submit(function(e) {
 			e.stopPropagation(); e.preventDefault();
 			if ($("#postcode").val() == "") {
 				$("#postcode").focus();
@@ -858,21 +951,20 @@ $(function(userSettings) {
 				$("#send-feedback").append("<p class=\"message warning prominent timed\">Please fill out all fields.</p>");
 				setTimeout(function() {
 					$(".timed").remove();
-					//$("#username").val(username);
 				}, 3500);
 			} else {
 				var feedback = $(this).serialize();
 				$.ajax({
 					type: "POST",
 					data: feedback,		
-					url: "http://martinsherwood.co.uk/visitcheltenham/feedback.php", //feedback.php sends the mail
+					url: serverURL + "feedback.php", //feedback.php sends the mail
 					beforeSend: function() {
-						$("#send-feedback").append("<p class=\"message success prominent sending\">Sending...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>"); //finish styling this
+						$("#send-feedback").append("<p class=\"message success prominent sending\">Sending...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>");
 					},
 					success: function() {
 						$(".sending").remove();
 						//console.log(feedback);
-						$("#send-feedback").append("<p class=\"message success prominent timed\">Thanks for the feedback!</p>"); //finish styling this
+						$("#send-feedback").append("<p class=\"message success prominent timed\">Thanks for the feedback!</p>");
 						setTimeout(function() {
 							$(".timed").remove();
 							$("#name").val("") && $("#email").val("") && $("#message").val("");
@@ -883,6 +975,9 @@ $(function(userSettings) {
 		});
 	});
 });
+
+
+
 
 /*Offers and redemption
 -----------------------------------------------------------------------------------------*/
@@ -922,3 +1017,20 @@ $(function(prefetch) {
 String.prototype.capitalise = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+/*Back button handler to exit app
+-----------------------------------------------------------------------------------------*/
+function backButton() {
+	console.log("backbutton"); //this works
+	navigator.notification.confirm("Exit?", function(button) { //this doesn't
+		if (button == 1) {
+			navigator.app.exitApp();
+		};
+	}, "Exit", "Yes, No");
+};
+
+/*Reload app function, it just reloads the index.html page
+-----------------------------------------------------------------------------------------*/
+function reloadApp() {
+	location.reload(true); //refresh the app, true tells the app that the restart is valid and not a crash
+};

@@ -1616,7 +1616,7 @@ h1 {
   user-select: none;
   cursor: pointer;
 }
-#place-search .search-button:active {
+#place-search .search-button:active, #place-search .search-button:hover {
   opacity: .85;
 }
 
@@ -1712,7 +1712,7 @@ h1 {
     width: 99%;
   }
 }
-#settings .save-settings, #settings .submit-geocode-search, #settings .send-feedback {
+#settings .settings-button {
   width: 100%;
   height: 50px;
   position: relative;
@@ -1721,19 +1721,16 @@ h1 {
   background: #454545;
   color: #fffffa;
 }
-#settings .save-settings:active, #settings .save-settings:hover, #settings .submit-geocode-search:active, #settings .submit-geocode-search:hover, #settings .send-feedback:active, #settings .send-feedback:hover {
+#settings .settings-button:active, #settings .settings-button:hover {
   opacity: .85;
 }
-#settings .save-settings:before, #settings .save-settings:after, #settings .submit-geocode-search:before, #settings .submit-geocode-search:after, #settings .send-feedback:before, #settings .send-feedback:after {
+#settings .settings-button:before, #settings .settings-button:after {
   content: "\0020";
   display: table;
   /*or block*/
 }
-#settings .save-settings:after, #settings .submit-geocode-search:after, #settings .send-feedback:after {
+#settings .settings-button:after {
   clear: both;
-}
-#settings .save-settings {
-  border-bottom: 1px solid #fffffa;
 }
 #settings .submit-icon, #settings .go-icon {
   width: 36px;
@@ -1753,9 +1750,9 @@ h1 {
 #settings .go-icon {
   background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA1MCA0MTIgNDEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDUwIDUwIDQxMiA0MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImFycm93LTI4LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik05MCwyNTZjMCw5MS44LDc0LjMsMTY2LDE2NiwxNjZjOTEuOCwwLDE2Ni03NC4zLDE2Ni0xNjZjMC05MS44LTc0LjMtMTY2LTE2Ni0xNjYNCglDMTY0LjIsOTAsOTAsMTY0LjMsOTAsMjU2eiBNNDYyLDI1NmMwLDExMy44LTkyLjIsMjA2LTIwNiwyMDZTNTAsMzY5LjgsNTAsMjU2UzE0Mi4yLDUwLDI1Niw1MFM0NjIsMTQyLjIsNDYyLDI1NnogTTIwMCwxNjguNg0KCWwzMi4zLTMyLjFMMzUyLjIsMjU3TDIzMi4yLDM3Ny41TDIwMCwzNDUuNGw4OC04OC40TDIwMCwxNjguNnoiLz4NCjwvc3ZnPg0K");
 }
-#settings #geocode-search p {
+#settings #postcode-lookup p {
   font-size: 1.1rem;
-  margin-bottom: 1rem;
+  margin-bottom: .8rem;
 }
 #settings #google-login {
   display: block;
