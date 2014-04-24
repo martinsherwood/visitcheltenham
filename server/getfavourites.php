@@ -18,14 +18,14 @@
 				$records[] = $placename;
 			}
 			
-			$stmt->close();
+			$stmt -> close();
 		
 		} else {
 			echo "Error: " . $db -> error;
 			$stmt -> close();
 		}
 		
-		$db->close();
+		$db -> close();
 	}
 	
 	echo json_encode($records);

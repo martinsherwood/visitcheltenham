@@ -142,14 +142,6 @@
         "7c23f569"
       ]
     },
-    "812bb21d": {
-      "id": "812bb21d",
-      "pid": "cc820037",
-      "path": "css\\sass\\_animations.scss",
-      "parents": [
-        "7c23f569"
-      ]
-    },
     "09d6abfa": {
       "id": "09d6abfa",
       "pid": "cc820037",
@@ -170,6 +162,14 @@
       "id": "d4d7a55f",
       "pid": "cc820037",
       "path": "css\\sass\\partials\\_header.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "fb6068df": {
+      "id": "fb6068df",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_animations.scss",
       "parents": [
         "7c23f569"
       ]

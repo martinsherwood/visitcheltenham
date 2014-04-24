@@ -111,7 +111,7 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                     "<nav role=\"navigation\" data-role=\"navbar\" class=\"main-menu menu-closed\">" +
                     	"<div class=\"nav-links\">" +
                         	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
-                            "<a data-goto=\"#places\" data-push=\"page\"><i class=\"fa fa-border fa-location-arrow\"></i>My Places</a>" +
+                            "<a data-goto=\"#places\" data-push=\"page\"><i class=\"fa fa-border fa-bookmark\"></i>My Places</a>" +
                             "<a data-goto=\"#offers\" data-push=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span class=\"offer-count\">0</span></a>" +
                             "<a data-goto=\"#settings\" data-push=\"page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
                         "</div>" +
@@ -166,8 +166,8 @@ $(function(navigationalHandles) {
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		//$currentPage = $("#app > *:first-child").addClass("current");
-		$currentPage = $("#places").addClass("current"); //FOR DEV-REMOVE LATER
+		$currentPage = $("#app > *:first-child").addClass("current");
+		//$currentPage = $("#places").addClass("current"); //FOR DEV-REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	};
@@ -305,8 +305,8 @@ $(function(navigationalHandles) {
 								
 								"<div class=\"options\">" +
 									"<div class=\"opt\"><div data-destination=\"" + place.formatted_address + "\" id=\"get-directions\" class=\"directions-button\"></div></div>" +
-									"<div class=\"opt\"><div data-placename=\"" + place.name + "\" id=\"add-place\" class=\"favourite-button\"></div></div>" +
-								"</div></li>"); 
+									"<div class=\"opt\"><div data-dbname=\"\" data-placename=\"" + place.name + "\" id=\"add-place\" class=\"favourite-button\"></div></div>" +
+								"</div></li>");
 								
 								/* ---------- */
 								
@@ -554,6 +554,25 @@ $(function(navigationalHandles) {
 									"<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Directions<i class=\"fa fa-times close-directions\"></i></h1>" +
 									"<div id=\"directions-list\"></div>" +
 								"</div>"
+		
+		/*$.ajax({
+			type: "POST",
+			data: {userid: userID},
+			url: serverURL + "getfavourites.php",
+			async: true, //might have to be false
+			success: function(placenames, status) {
+				x = JSON.parse(placenames);
+				
+				$.each(x, function(i, place){ 
+					console.log(place);
+					$(".results-names #add-place").data("dbname", place)
+				});
+
+			},
+			error: function() {
+				console.log("oh no");
+			}
+		});*/
 								
 		$(".results-names").hammer().on("swipeleft tap", "li", function(e) {
 			e.stopPropagation(); e.preventDefault();
@@ -562,6 +581,9 @@ $(function(navigationalHandles) {
 			$(this).children("div").toggleClass("shown"); //options div
 		});
 		
+		
+		//FINISH THIS, WITH HIGHLIGHT COLOUR AND BETTER MESSAGE + VALIDATION
+		//a check needs to be in place to prevent the same place being added twice, here or in php
 		$(".results-names").hammer().on("tap", "#add-place", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			placeName = $(this).data("placename");
@@ -574,12 +596,38 @@ $(function(navigationalHandles) {
 					console.log("adding to favourites");
 				},
 				success: function() {
-					console.log("added");
+					console.log("added " + placeName + " to favourites");
 				},
 			});
 			
+			//I can't figure out how get back that if a user has added the place before, to change these depending of what they have added already
+			//getting the list of favourites and comparing to the data value didn't work
+			$(this).attr("id", "remove-place");
+			$(this).addClass("remove-favourite");
 			
 		});//add place
+		
+		//remove a favourite
+		$(".results-names").hammer().on("tap", "#remove-place", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			placeName = $(this).data("placename");
+			
+			$.ajax({
+				type: "POST",
+				data: {userid: userID, placename: placeName},	
+				url: serverURL + "removefavourite.php",
+				beforeSend: function() {
+					console.log("deleting from favourites");
+				},
+				success: function() {
+					console.log("deleted " + placeName + " from favourites");
+				},
+			});
+			
+			$(this).attr("id", "add-place");
+			$(this).removeClass("remove-favourite");
+			
+		});//remove place
 		
 		$(".results-names").hammer().on("tap", "#get-directions", function(e) {
 			e.stopPropagation(); e.preventDefault();
@@ -617,16 +665,13 @@ $(function(navigationalHandles) {
 -----------------------------------------------------------------------------------------*/
 $(function(favouritedPlaces) {
 	var userFavourites;
+	var favouriteCount = 1;
 	
 	$.ajax({
 		type: "POST",
 		data: {userid: userID},
 		url: serverURL + "getfavourites.php",
-		
-		//dataType: "jsonp",
-		//jsonp: "favouritescallback",
-		
-		async: false,
+		async: true, //might have to be false
 		success: function(placenames, status) {
 			userFavourites = placenames;
 			//console.log(userFavourites);
@@ -636,20 +681,33 @@ $(function(favouritedPlaces) {
 			
 			$.each(objects, function(i, place){ 
 				console.log(place);
-				$(".favourites-list").append("<li>" + place + "</li>");
-				
-				//html(userFavourites);
+				$(".favourites-list").append("<li><span class=\"fav-count\">" + favouriteCount + "</span>" + place + "</li>");
+				favouriteCount++;
 			});
-			
-			
-			
-			
-			//more here
 		},
 		error: function() {
 			console.log("oh no");
 		}
 	});
+	
+	//more here, add delete function and more styling
+	
+	//delete
+	/*$(".results-names").hammer().on("tap", "#delete-favourite", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		$.ajax({
+			type: "POST",
+			data: {userid: userID, placename: placeName},	
+			url: serverURL + "removefavourite.php",
+			beforeSend: function() {
+				console.log("deleting from favourites");
+			},
+			success: function() {
+				console.log("deleted " + placeName + " from favourites");
+			},
+		});
+	});*/
+	
 });
 
 /*Settings and options functionality

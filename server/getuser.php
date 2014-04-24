@@ -13,7 +13,7 @@
 			
 			echo json_encode($id);
 			
-			$stmt->close();
+			$stmt -> close();
 		
 		} else {
 			echo "Error: " . $db -> error;
