@@ -752,3 +752,12 @@
 	-o-animation: slideLeftIn ease-in .4s;
 	animation: slideLeftIn ease-in .4s;
 }
+
+[data-animate="favourites"] {
+	z-index: 10;
+	-webkit-animation: slideLeftIn ease-in .4s;
+	-moz-animation: slideLeftIn ease-in .4s;
+	-ms-animation: slideLeftIn ease-in .4s;
+	-o-animation: slideLeftIn ease-in .4s;
+	animation: slideLeftIn ease-in .4s;
+}

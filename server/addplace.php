@@ -4,10 +4,13 @@
 	require "includes/connect.php";
 	
 	if (isset($_POST)) {
-		$placename = ($_POST["placename"]);
+		//$placename = ($_POST["placename"]);
+		$placename = htmlentities($_POST["placename"], ENT_QUOTES);
+		$placename = $db -> real_escape_string($placename);
+		
 		$userid = ($_POST["userid"]);
 		
-		if ($stmt = $db -> prepare("INSERT INTO user_favourites (userid, placename) VALUES (?, ?)")) {
+		if ($stmt = $db -> prepare("INSERT INTO user_places (userid, placename) VALUES (?, ?)")) {
 			$stmt -> bind_param("is", $userid, $placename);
 			$stmt -> execute();
 			$stmt -> close();

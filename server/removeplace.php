@@ -5,11 +5,12 @@
 	
 	if (isset($_POST)) {
 		$userid = $_POST["userid"];
-		$placename = $_POST["placename"];
+		//$placename = $_POST["placename"];
 		
-		//"SELECT id FROM users WHERE username = '" . $username . "'"
+		$placename = htmlentities($_POST["placename"], ENT_QUOTES);
+		$placename = $db -> real_escape_string($placename);
 		
-		if ($stmt = $db -> prepare("DELETE FROM user_favourites WHERE userid = '" . $userid . "'" . " AND placename = '" . $placename . "' LIMIT 1")) {
+		if ($stmt = $db -> prepare("DELETE FROM user_places WHERE userid = '" . $userid . "'" . " AND placename = '" . $placename . "' LIMIT 1")) {
 			$stmt -> bind_param("is", $id, $placename); 
 			$stmt -> execute();
 			$stmt -> close();
@@ -19,5 +20,5 @@
 			$stmt -> close();
 		}
 		
-		$db->close();
+		$db -> close();
 	}

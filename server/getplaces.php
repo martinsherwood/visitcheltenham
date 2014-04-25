@@ -8,7 +8,7 @@
 		$userid = $_POST["userid"];
 		//$userid = 15; //testing
 		
-		if ($stmt = $db -> prepare("SELECT placename FROM user_favourites WHERE userid = '" . $userid . "'")) {
+		if ($stmt = $db -> prepare("SELECT placename FROM user_places WHERE userid = '" . $userid . "'")) {
 			$stmt -> execute();
 			$stmt -> bind_result($placename);
 			

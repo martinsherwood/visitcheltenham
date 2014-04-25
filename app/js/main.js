@@ -81,25 +81,28 @@ function getSettings() {
 	});
 };
 
-store.getItem("userAccount").then(function(value) {
-	name = value[0].userName;
-	//console.log("name from store: " + name);
+$(function(getUserID) {
+	store.getItem("userAccount").then(function(value) {
+		name = value[0].userName;
+		//console.log("name from store: " + name);
+	});
+		
+	$.ajax({
+		type: "POST",
+		data: {username: name},
+		url: serverURL + "getuser.php",
+		async: false,
+		success: function(id, status) {
+			userID = id; //if no name is sent, then it returns 0 to validate new users
+		},
+		error: function() {
+			console.log("Failed to get user id, probably there is no match for the given username in the database.");
+		}
+	});
+	console.log("User ID: " + userID);
 });
 	
-$.ajax({
-	type: "POST",
-	data: {username: name},
-	url: serverURL + "getuser.php",
-	async: false,
-	success: function(id, status) {
-		userID = id; //if no name is sent, then it returns 0 to validate new users
-	},
-	error: function() {
-		console.log("Failed to get user id, probably there is no match for the given username in the database.");
-	}
-});
-	
-console.log("User ID: " + userID);
+
 
 //--------------------
 
@@ -110,8 +113,8 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                 	"<div role=\"button\" data-role=\"button\" class=\"menu-stack push\"></div>" +
                     "<nav role=\"navigation\" data-role=\"navbar\" class=\"main-menu menu-closed\">" +
                     	"<div class=\"nav-links\">" +
-                        	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
-                            "<a data-goto=\"#places\" data-push=\"page\"><i class=\"fa fa-border fa-bookmark\"></i>My Places</a>" +
+                        	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\" data-user=\"userid\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
+                            "<a data-goto=\"#places\" data-push=\"page\" data-get=\"favourites\"><i class=\"fa fa-border fa-bookmark\"></i>My Places</a>" +
                             "<a data-goto=\"#offers\" data-push=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span class=\"offer-count\">0</span></a>" +
                             "<a data-goto=\"#settings\" data-push=\"page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
                         "</div>" +
@@ -301,12 +304,12 @@ $(function(navigationalHandles) {
 								
 								nameList.append("<li data-animate=\"place-name\" data-placename=\"" + place.name + "\">" + 
 								
-								"<span class=\"placename\">" + place.name + "</span>" +
-								
-								"<div class=\"options\">" +
-									"<div class=\"opt\"><div data-destination=\"" + place.formatted_address + "\" id=\"get-directions\" class=\"directions-button\"></div></div>" +
-									"<div class=\"opt\"><div data-dbname=\"\" data-placename=\"" + place.name + "\" id=\"add-place\" class=\"favourite-button\"></div></div>" +
-								"</div></li>");
+									"<span class=\"placename\">" + place.name + "</span>" +
+									
+									"<div class=\"options\">" +
+										"<div class=\"opt\"><div data-destination=\"" + place.formatted_address + "\" id=\"get-directions\" class=\"directions-button\"></div></div>" +
+										"<div class=\"opt\"><div data-placename=\"" + place.name + "\" data-address=\"" + place.formatted_address + "\" id=\"add-favourite\" class=\"add-place-button\"></div></div>" +
+									"</div></li>");
 								
 								/* ---------- */
 								
@@ -554,25 +557,6 @@ $(function(navigationalHandles) {
 									"<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Directions<i class=\"fa fa-times close-directions\"></i></h1>" +
 									"<div id=\"directions-list\"></div>" +
 								"</div>"
-		
-		/*$.ajax({
-			type: "POST",
-			data: {userid: userID},
-			url: serverURL + "getfavourites.php",
-			async: true, //might have to be false
-			success: function(placenames, status) {
-				x = JSON.parse(placenames);
-				
-				$.each(x, function(i, place){ 
-					console.log(place);
-					$(".results-names #add-place").data("dbname", place)
-				});
-
-			},
-			error: function() {
-				console.log("oh no");
-			}
-		});*/
 								
 		$(".results-names").hammer().on("swipeleft tap", "li", function(e) {
 			e.stopPropagation(); e.preventDefault();
@@ -581,17 +565,16 @@ $(function(navigationalHandles) {
 			$(this).children("div").toggleClass("shown"); //options div
 		});
 		
-		
 		//FINISH THIS, WITH HIGHLIGHT COLOUR AND BETTER MESSAGE + VALIDATION
 		//a check needs to be in place to prevent the same place being added twice, here or in php
-		$(".results-names").hammer().on("tap", "#add-place", function(e) {
+		$(".results-names").hammer().on("tap", "#add-favourite", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			placeName = $(this).data("placename");
 			
 			$.ajax({
 				type: "POST",
 				data: {userid: userID, placename: placeName},	
-				url: serverURL + "favourite.php",
+				url: serverURL + "addplace.php",
 				beforeSend: function() {
 					console.log("adding to favourites");
 				},
@@ -602,20 +585,20 @@ $(function(navigationalHandles) {
 			
 			//I can't figure out how get back that if a user has added the place before, to change these depending of what they have added already
 			//getting the list of favourites and comparing to the data value didn't work
-			$(this).attr("id", "remove-place");
-			$(this).addClass("remove-favourite");
+			$(this).attr("id", "remove-favourite");
+			$(this).addClass("remove-place-button");
 			
 		});//add place
 		
 		//remove a favourite
-		$(".results-names").hammer().on("tap", "#remove-place", function(e) {
+		$(".results-names").hammer().on("tap", "#remove-favourite", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			placeName = $(this).data("placename");
 			
 			$.ajax({
 				type: "POST",
 				data: {userid: userID, placename: placeName},	
-				url: serverURL + "removefavourite.php",
+				url: serverURL + "removeplace.php",
 				beforeSend: function() {
 					console.log("deleting from favourites");
 				},
@@ -624,8 +607,8 @@ $(function(navigationalHandles) {
 				},
 			});
 			
-			$(this).attr("id", "add-place");
-			$(this).removeClass("remove-favourite");
+			$(this).attr("id", "add-favourite");
+			$(this).removeClass("remove-place-button");
 			
 		});//remove place
 		
@@ -664,49 +647,83 @@ $(function(navigationalHandles) {
 /*Favourited places list page
 -----------------------------------------------------------------------------------------*/
 $(function(favouritedPlaces) {
-	var userFavourites;
-	var favouriteCount = 1;
+	var favouritesList = $(".favourites-list");
+	var count = 1;
+	var place;
 	
-	$.ajax({
-		type: "POST",
-		data: {userid: userID},
-		url: serverURL + "getfavourites.php",
-		async: true, //might have to be false
-		success: function(placenames, status) {
-			userFavourites = placenames;
-			//console.log(userFavourites);
-			
-			objects = JSON.parse(userFavourites);
-			//console.log(objects);
-			
-			$.each(objects, function(i, place){ 
-				console.log(place);
-				$(".favourites-list").append("<li><span class=\"fav-count\">" + favouriteCount + "</span>" + place + "</li>");
-				favouriteCount++;
-			});
-		},
-		error: function() {
-			console.log("oh no");
-		}
-	});
-	
-	//more here, add delete function and more styling
-	
-	//delete
-	/*$(".results-names").hammer().on("tap", "#delete-favourite", function(e) {
-		e.stopPropagation(); e.preventDefault();
+	function getFavourites() {
 		$.ajax({
 			type: "POST",
-			data: {userid: userID, placename: placeName},	
-			url: serverURL + "removefavourite.php",
+			data: {userid: userID},
+			url: serverURL + "getplaces.php",
+			async: true, //might have to be false
+			success: function(placenames, status) {
+				//userFavourites = placenames;
+				objects = JSON.parse(placenames);
+				
+				$.each(objects, function(i, place) { 
+					console.log(place);
+					favouritesList.append("<li class=\"entry\" data-animate=\"favourites\" data-place=\"" + place + "\">" +
+					
+											"<span class=\"place-count\">" + count + "</span>" +
+											
+											"<span class=\"place\">" + place + "</span>" +
+											
+											"<div class=\"more\">" +
+												"<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"share-place\" class=\"share-place-button\"></div></div>" +
+												"<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"delete-place\" class=\"delete-place-button\"></div></div>" +
+											"</div>" +
+										"</li>");
+					
+					count++;
+				});
+			},
+			error: function() {
+				console.log("oh no");
+			}
+		});
+	};
+	
+	getFavourites();
+	
+	favouritesList.hammer().on("swipeleft tap", "li", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		$(this).children("span").toggleClass("swiped");
+		$(this).children("div").toggleClass("shown"); //more div
+	});
+
+	favouritesList.hammer().on("tap", "#share-place", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		place = $(this).data("place");
+		window.location.href = "mailto:?subject=Check this place out!&body=Hey, I found this really good place, it's called, " + place + ".";
+	});
+	
+	favouritesList.hammer().on("tap", "#delete-place", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		place = $(this).data("place");
+		
+		$.ajax({
+			type: "POST",
+			data: {userid: userID, placename: place},	
+			url: serverURL + "removeplace.php",
 			beforeSend: function() {
 				console.log("deleting from favourites");
 			},
 			success: function() {
-				console.log("deleted " + placeName + " from favourites");
+				console.log("deleted " + place + " from favourites");
 			},
 		});
-	});*/
+		
+		$(this).parents("div div li").remove();
+		
+	});
+	
+	$("[data-get=\"favourites\"]").hammer().on("tap", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		favouritesList.html("");
+		count = 1;
+		getFavourites();
+	});
 	
 });
 
@@ -941,10 +958,17 @@ $(function(appSettings) {
 				return false;
 			} else {
 				store.setItem("userAccount", userAccount).then(function(value) {
+					
+					store.getItem("userAccount").then(function(value) {
+						name = value[0].userName;
+						console.log("name from store: " + name);
+					});
+					
 					$.ajax({
 						type: "POST",
 						data: userRegistration,		
 						url: serverURL + "register.php",
+						async: false,
 						beforeSend: function() {
 							$("#user-account").append("<p class=\"message success prominent creating\">Creating...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>");
 						},
@@ -957,7 +981,7 @@ $(function(appSettings) {
 						},
 					});
 				});
-			}
+			};
 		});
 	});
 	
@@ -1031,6 +1055,24 @@ $(function(appSettings) {
 				});
 			};
 		});
+	});
+	
+	//get userif when going back home
+	$("[data-user=\"userid\"]").hammer().on("tap", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		$.ajax({
+			type: "POST",
+			data: {username: name},
+			url: serverURL + "getuser.php",
+			async: false,
+			success: function(id, status) {
+				userID = id; //if no name is sent, then it returns 0 to validate new users
+			},
+			error: function() {
+				console.log("Failed to get user id, probably there is no match for the given username in the database.");
+			}
+		});
+		console.log("User ID: " + userID);
 	});
 });
 
