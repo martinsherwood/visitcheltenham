@@ -114,7 +114,7 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                     "<nav role=\"navigation\" data-role=\"navbar\" class=\"main-menu menu-closed\">" +
                     	"<div class=\"nav-links\">" +
                         	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\" data-user=\"userid\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
-                            "<a data-goto=\"#places\" data-push=\"page\" data-get=\"favourites\"><i class=\"fa fa-border fa-bookmark\"></i>My Places</a>" +
+                            "<a data-goto=\"#places\" data-push=\"page\" data-get=\"favourites\" data-user=\"userid\"><i class=\"fa fa-border fa-bookmark\"></i>My Places</a>" +
                             "<a data-goto=\"#offers\" data-push=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span class=\"offer-count\">0</span></a>" +
                             "<a data-goto=\"#settings\" data-push=\"page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
                         "</div>" +
@@ -169,8 +169,8 @@ $(function(navigationalHandles) {
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		$currentPage = $("#app > *:first-child").addClass("current");
-		//$currentPage = $("#places").addClass("current"); //FOR DEV-REMOVE LATER
+		//$currentPage = $("#app > *:first-child").addClass("current");
+		$currentPage = $("#places").addClass("current"); //FOR DEV-REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	};
@@ -308,7 +308,7 @@ $(function(navigationalHandles) {
 									
 									"<div class=\"options\">" +
 										"<div class=\"opt\"><div data-destination=\"" + place.formatted_address + "\" id=\"get-directions\" class=\"directions-button\"></div></div>" +
-										"<div class=\"opt\"><div data-placename=\"" + place.name + "\" data-address=\"" + place.formatted_address + "\" id=\"add-favourite\" class=\"add-place-button\"></div></div>" +
+										"<div class=\"opt\"><div data-placename=\"" + place.name + "\" data-address=\"" + place.formatted_address + "\" id=\"add-favourite\" class=\"add-favourite-button\"></div></div>" +
 									"</div></li>");
 								
 								/* ---------- */
@@ -551,8 +551,7 @@ $(function(navigationalHandles) {
 	
 	//options for search results - favourite and get directions
 	$(function(doMore) {
-		var placeName;
-		var directionsTo;
+		var placeName, placeAddress, directionsTo;
 		var directionsOverlay = "<div id=\"directions-box\">" +
 									"<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Directions<i class=\"fa fa-times close-directions\"></i></h1>" +
 									"<div id=\"directions-list\"></div>" +
@@ -570,10 +569,13 @@ $(function(navigationalHandles) {
 		$(".results-names").hammer().on("tap", "#add-favourite", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			placeName = $(this).data("placename");
+			placeAddress = $(this).data("address");
+			
+			alert(placeAddress);
 			
 			$.ajax({
 				type: "POST",
-				data: {userid: userID, placename: placeName},	
+				data: {userid: userID, placename: placeName, placeaddress: placeAddress},	
 				url: serverURL + "addplace.php",
 				beforeSend: function() {
 					console.log("adding to favourites");
@@ -586,7 +588,7 @@ $(function(navigationalHandles) {
 			//I can't figure out how get back that if a user has added the place before, to change these depending of what they have added already
 			//getting the list of favourites and comparing to the data value didn't work
 			$(this).attr("id", "remove-favourite");
-			$(this).addClass("remove-place-button");
+			$(this).addClass("remove-favourite-button");
 			
 		});//add place
 		
@@ -608,7 +610,7 @@ $(function(navigationalHandles) {
 			});
 			
 			$(this).attr("id", "add-favourite");
-			$(this).removeClass("remove-place-button");
+			$(this).removeClass("remove-favourite-button");
 			
 		});//remove place
 		
@@ -657,24 +659,23 @@ $(function(favouritedPlaces) {
 			data: {userid: userID},
 			url: serverURL + "getplaces.php",
 			async: true, //might have to be false
+			beforeSend: function() {
+				favouritesList.append("<p class=\"message getting\">Getting your places...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>")
+			},
 			success: function(placenames, status) {
-				//userFavourites = placenames;
+				$(".getting").remove();
 				objects = JSON.parse(placenames);
 				
 				$.each(objects, function(i, place) { 
 					console.log(place);
-					favouritesList.append("<li class=\"entry\" data-animate=\"favourites\" data-place=\"" + place + "\">" +
-					
-											"<span class=\"place-count\">" + count + "</span>" +
-											
-											"<span class=\"place\">" + place + "</span>" +
-											
-											"<div class=\"more\">" +
-												"<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"share-place\" class=\"share-place-button\"></div></div>" +
-												"<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"delete-place\" class=\"delete-place-button\"></div></div>" +
-											"</div>" +
-										"</li>");
-					
+					//FIND ICON FOR OPEN PLACE BUTTON, BUILD THE DISPLAY, DO GEOFENCES, OFFERS
+					favouritesList.append("<li class=\"entry\" data-animate=\"favourites\" data-place=\"" + place + "\"><span class=\"place-count\">" + count + "</span><span class=\"place\">" + place + "</span>" +					
+											  "<div class=\"more\">" +
+											  	  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"open-place\" class=\"open-place-button\"></div></div>" +
+												  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"share-place\" class=\"share-place-button\"></div></div>" +
+												  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"delete-place\" class=\"delete-place-button\"></div></div>" +
+											  "</div>" +
+										  "</li>");
 					count++;
 				});
 			},
@@ -684,7 +685,7 @@ $(function(favouritedPlaces) {
 		});
 	};
 	
-	getFavourites();
+	getFavourites(); //can't see a point of running the function right away, because its reloaded when they navigate to the page anyway
 	
 	favouritesList.hammer().on("swipeleft tap", "li", function(e) {
 		e.stopPropagation(); e.preventDefault();
@@ -695,7 +696,7 @@ $(function(favouritedPlaces) {
 	favouritesList.hammer().on("tap", "#share-place", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		place = $(this).data("place");
-		window.location.href = "mailto:?subject=Check this place out!&body=Hey, I found this really good place, it's called, " + place + ".";
+		window.location.href = "mailto:?subject=Check this place out!&body=Hey, I found this really good place called, " + place + "."; //should open the devices default mail client
 	});
 	
 	favouritesList.hammer().on("tap", "#delete-place", function(e) {
@@ -713,9 +714,7 @@ $(function(favouritedPlaces) {
 				console.log("deleted " + place + " from favourites");
 			},
 		});
-		
-		$(this).parents("div div li").remove();
-		
+		$(this).parents("div div li.entry").remove(); //remove the list item
 	});
 	
 	$("[data-get=\"favourites\"]").hammer().on("tap", function(e) {
@@ -958,7 +957,7 @@ $(function(appSettings) {
 				return false;
 			} else {
 				store.setItem("userAccount", userAccount).then(function(value) {
-					
+					//get the username and store ready for getting the id
 					store.getItem("userAccount").then(function(value) {
 						name = value[0].userName;
 						console.log("name from store: " + name);
@@ -1057,14 +1056,14 @@ $(function(appSettings) {
 		});
 	});
 	
-	//get userif when going back home
+	//get userid when going back home
 	$("[data-user=\"userid\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		$.ajax({
 			type: "POST",
 			data: {username: name},
 			url: serverURL + "getuser.php",
-			async: false,
+			async: false, //important
 			success: function(id, status) {
 				userID = id; //if no name is sent, then it returns 0 to validate new users
 			},

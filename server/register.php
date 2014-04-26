@@ -9,8 +9,8 @@
 		//$password = ($_POST["userpassword"]);
 		
 		$username = htmlentities($_POST["username"], ENT_QUOTES);
-		$email = htmlentities($_POST["email"], ENT_QUOTES);
-		$password = htmlentities($_POST["password"], ENT_QUOTES);
+		$email = htmlentities($_POST["useremail"], ENT_QUOTES);
+		$password = htmlentities($_POST["userpassword"], ENT_QUOTES);
 		
 		$username = $db -> real_escape_string($username);
 		$email = $db -> real_escape_string($email);

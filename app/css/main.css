@@ -1550,7 +1550,7 @@ h1 {
   user-select: none;
   cursor: pointer;
 }
-.searches .results .options .add-place-button {
+.searches .results .options .add-favourite-button {
   width: 48px;
   height: 46px;
   position: absolute;
@@ -1563,7 +1563,7 @@ h1 {
   user-select: none;
   cursor: pointer;
 }
-.searches .results .options .remove-place-button {
+.searches .results .options .remove-favourite-button {
   background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA2MC4xIDQxMiAzOTEuOCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1MCA2MC4xIDQxMiAzOTEuOCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8cGF0aCBpZD0iYm9va21hcmstMjQtaWNvbiIgZmlsbD0iI0ZGRkZGQSIgZD0iTTM3Ny4zLDE0OC43Yy00Ni44LDAtODQuNywzNy45LTg0LjcsODQuN2MwLDQ2LjgsMzcuOSw4NC43LDg0LjcsODQuNw0KCXM4NC43LTM3LjksODQuNy04NC43QzQ2MiwxODYuNiw0MjQuMSwxNDguNywzNzcuMywxNDguN3ogTTQyOS40LDI0OC43SDMyNy44di0yOC4zaDEwMS42VjI0OC43eiBNMzY0LjYsMzQ3LjNsMTguNywxMDQuNkwyNTYsMzgzLjgNCglsLTEyNy4zLDY4LjFsMjUuNC0xNDIuMUw1MCwyMDkuN0wxOTMsMTkwbDYzLTEyOS45bDQzLjMsODkuM2MtMjMuOCwyMi4yLTM2LjYsNTIuMy0zNi42LDg0YzAsMzAuNiwxMS45LDU5LjQsMzMuNiw4MS4xDQoJQzMxNC45LDMzMywzMzguOCwzNDQuNSwzNjQuNiwzNDcuM3oiLz4NCjwvc3ZnPg0K");
 }
 .searches .results .shown {
@@ -1692,12 +1692,15 @@ h1 {
 #places .favourites-list {
   position: relative;
 }
+#places .favourites-list .getting {
+  margin-top: 1rem;
+}
 #places .favourites-list li {
   height: 64px;
   position: relative;
   display: block;
   padding: 1rem 14px;
-  border-bottom: 1px solid #e2e2e2;
+  border-bottom: 1px solid #ced0d4;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1718,21 +1721,21 @@ h1 {
   margin-right: 1rem;
 }
 #places .favourites-list .more {
-  width: 120px;
+  width: 180px;
   height: 64px;
   position: absolute;
   top: 0;
   right: 0;
   background: #f0f0f0;
-  -webkit-transform: translate3d(120px, 0, 0);
-  -ms-transform: translate3d(120px, 0, 0);
-  transform: translate3d(120px, 0, 0);
+  -webkit-transform: translate3d(180px, 0, 0);
+  -ms-transform: translate3d(180px, 0, 0);
+  transform: translate3d(180px, 0, 0);
   -webkit-transition: -webkit-transform ease-in-out .4s;
   -ms-transition: -ms-transform ease-in-out 0.4s;
   transition: transform ease-in-out .4s;
 }
 #places .favourites-list .more .p-action {
-  width: 50%;
+  width: 33.333%;
   height: 64px;
   display: inline-block;
   position: relative;
@@ -1740,6 +1743,9 @@ h1 {
 #places .favourites-list .more .p-action:first-of-type {
   border-right: 1px solid #454545;
   border-left: 1px solid #454545;
+}
+#places .favourites-list .more .p-action:nth-of-type(2) {
+  border-right: 1px solid #454545;
 }
 #places .favourites-list .more .share-place-button {
   width: 40px;
@@ -1773,9 +1779,9 @@ h1 {
   transform: translate3d(0, 0, 0);
 }
 #places .favourites-list .swiped {
-  -webkit-transform: translate3d(-120px, 0, 0);
-  -ms-transform: translate3d(-120px, 0, 0);
-  transform: translate3d(-120px, 0, 0);
+  -webkit-transform: translate3d(-180px, 0, 0);
+  -ms-transform: translate3d(-180px, 0, 0);
+  transform: translate3d(-180px, 0, 0);
   -webkit-transition: -webkit-transform ease-in-out .4s;
   -ms-transition: -ms-transform ease-in-out .4s;
   transition: transform ease-in-out .4s;

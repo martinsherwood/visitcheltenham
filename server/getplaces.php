@@ -1,6 +1,5 @@
 <?php
 	header("Access-Control-Allow-Origin: *");
-	//header("Content-type: application/json");
 	
 	require "includes/connect.php";
 	
@@ -8,7 +7,7 @@
 		$userid = $_POST["userid"];
 		//$userid = 15; //testing
 		
-		if ($stmt = $db -> prepare("SELECT placename FROM user_places WHERE userid = '" . $userid . "'")) {
+		if ($stmt = $db -> prepare("SELECT placename FROM user_places WHERE userid = '" . $userid . "' ORDER BY placename")) {
 			$stmt -> execute();
 			$stmt -> bind_result($placename);
 			
