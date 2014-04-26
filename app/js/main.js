@@ -25,6 +25,7 @@ var app = {
     },
 };
 
+
 /*Sets up the device storage environment to use, automatically selects the best library
 /*depending what is supported by the device. Uses store.js, based on Mozilla LocalStorage.
 -----------------------------------------------------------------------------------------*/
@@ -53,6 +54,7 @@ function setStorage() {
 		description : "Config settings and other application data"
 	};
 };
+
 
 function getSettings() {
 	store.getItem("searchSettings").then(function(value) {
@@ -101,10 +103,7 @@ $(function(getUserID) {
 	});
 	console.log("User ID: " + userID);
 });
-	
 
-
-//--------------------
 
 /*-----------------------------------------------------------------------------------------*/
 
@@ -113,8 +112,8 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                 	"<div role=\"button\" data-role=\"button\" class=\"menu-stack push\"></div>" +
                     "<nav role=\"navigation\" data-role=\"navbar\" class=\"main-menu menu-closed\">" +
                     	"<div class=\"nav-links\">" +
-                        	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\" data-user=\"userid\"><i class=\"fa fa-border fa-home\"></i>Home</a>" +
-                            "<a data-goto=\"#places\" data-push=\"page\" data-get=\"favourites\" data-user=\"userid\"><i class=\"fa fa-border fa-bookmark\"></i>My Places</a>" +
+                        	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\" data-user=\"userid\"><i class=\"fa fa-border fa-search\"></i>Search</a>" +
+                            "<a data-goto=\"#favourites\" data-push=\"page\" data-get=\"favourites\" data-user=\"userid\"><i class=\"fa fa-border fa-star\"></i>Favourites</a>" +
                             "<a data-goto=\"#offers\" data-push=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span class=\"offer-count\">0</span></a>" +
                             "<a data-goto=\"#settings\" data-push=\"page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
                         "</div>" +
@@ -123,6 +122,7 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                 "</header>";
 							
 $("body").prepend(header); //or wherever we want on different pages
+
 
 /*Pull out menu, using 3dtransforms (remade from the absolute positioned using left)
 -----------------------------------------------------------------------------------------*/
@@ -170,7 +170,7 @@ $(function(navigationalHandles) {
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
 		//$currentPage = $("#app > *:first-child").addClass("current");
-		$currentPage = $("#places").addClass("current"); //FOR DEV-REMOVE LATER
+		$currentPage = $("#favourites").addClass("current"); //FOR DEV, REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	};
@@ -196,6 +196,7 @@ $(function(navigationalHandles) {
 	});
 });
 
+
 /*Main location and map based services
 -----------------------------------------------------------------------------------------*/
 (function() { //begin main map scope
@@ -212,7 +213,7 @@ $(function(navigationalHandles) {
 	var origin; //this is used for the distance matrix function
 	var mapStyles = [{featureType:"road",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"poi",elementType:"labels",stylers:[{visibility:"simplified"}]},{featureType:"transit",elementType:"labels.text",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#a2daf2"}]},{featureType:"landscape.man_made",elementType:"geometry",stylers:[{color:"#f7f1df"}]},{featureType:"landscape.natural",elementType:"geometry",stylers:[{color:"#d0e3b4"}]},{featureType:"landscape.natural.terrain",elementType:"geometry",stylers:[{visibility:"off"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#bde6ab"}]},{featureType:"poi.medical",elementType:"geometry",stylers:[{color:"#fbd3da"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{color:"#ffe15f"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#efd151"}]},{featureType:"road.arterial",elementType:"geometry.fill",stylers:[{color:"#ffffff"}]},{featureType:"road.local",elementType:"geometry.fill",stylers:[{color:"black"}]},{featureType:"transit.station.airport",elementType:"geometry.fill",stylers:[{color:"#cfb2db"}]}];
 	
-	getSettings();
+	getSettings(); //this always fires, but we call it here because we need direct access to the vars which control the search
 	
 	//get the location of the user and store in currentLocation var
 	$(function(initialLocate) {
@@ -549,7 +550,7 @@ $(function(navigationalHandles) {
 		};
 	});//placesMap
 	
-	//options for search results - favourite and get directions
+	//options for search results
 	$(function(doMore) {
 		var placeName, placeAddress, directionsTo;
 		var directionsOverlay = "<div id=\"directions-box\">" +
@@ -564,54 +565,58 @@ $(function(navigationalHandles) {
 			$(this).children("div").toggleClass("shown"); //options div
 		});
 		
-		//FINISH THIS, WITH HIGHLIGHT COLOUR AND BETTER MESSAGE + VALIDATION
 		//a check needs to be in place to prevent the same place being added twice, here or in php
 		$(".results-names").hammer().on("tap", "#add-favourite", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			placeName = $(this).data("placename");
 			placeAddress = $(this).data("address");
 			
-			alert(placeAddress);
-			
 			$.ajax({
+				context: this,
 				type: "POST",
 				data: {userid: userID, placename: placeName, placeaddress: placeAddress},	
-				url: serverURL + "addplace.php",
+				url: serverURL + "addfavourite.php",
 				beforeSend: function() {
 					console.log("adding to favourites");
 				},
 				success: function() {
+					$(this).attr("id", "remove-favourite");
+					$(this).addClass("remove-favourite-button");
 					console.log("added " + placeName + " to favourites");
+				},
+				error: function() {
+					alert("There was a problem processing your request.");
 				},
 			});
 			
 			//I can't figure out how get back that if a user has added the place before, to change these depending of what they have added already
-			//getting the list of favourites and comparing to the data value didn't work
-			$(this).attr("id", "remove-favourite");
-			$(this).addClass("remove-favourite-button");
+			//getting the list of favourites and comparing to the data value didn't work, would be difficult as google regularly make updates to the place pages
 			
 		});//add place
 		
 		//remove a favourite
 		$(".results-names").hammer().on("tap", "#remove-favourite", function(e) {
 			e.stopPropagation(); e.preventDefault();
+			//var thisOne = $(this);
 			placeName = $(this).data("placename");
 			
 			$.ajax({
+				context: this,
 				type: "POST",
 				data: {userid: userID, placename: placeName},	
-				url: serverURL + "removeplace.php",
+				url: serverURL + "removefavourite.php",
 				beforeSend: function() {
 					console.log("deleting from favourites");
 				},
 				success: function() {
+					$(this).attr("id", "add-favourite");
+					$(this).removeClass("remove-favourite-button");
 					console.log("deleted " + placeName + " from favourites");
 				},
+				error: function() {
+					alert("There was a problem processing your request.");
+				},
 			});
-			
-			$(this).attr("id", "add-favourite");
-			$(this).removeClass("remove-favourite-button");
-			
 		});//remove place
 		
 		$(".results-names").hammer().on("tap", "#get-directions", function(e) {
@@ -642,8 +647,8 @@ $(function(navigationalHandles) {
 				$("#home").addClass("current");
 			});
 		});//get direction
-	});
-})(); //end map scope
+	});//do more
+})();//end map scope
 
 
 /*Favourited places list page
@@ -653,11 +658,16 @@ $(function(favouritedPlaces) {
 	var count = 1;
 	var place;
 	
+	var commentsOverlay = "<div id=\"comments\">" +
+						      "<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Comments<i class=\"fa fa-times close-comments\"></i></h1>" +
+						      "<div id=\"comments-list\"></div>" +
+						  "</div>"
+	
 	function getFavourites() {
 		$.ajax({
 			type: "POST",
 			data: {userid: userID},
-			url: serverURL + "getplaces.php",
+			url: serverURL + "getfavourites.php",
 			async: true, //might have to be false
 			beforeSend: function() {
 				favouritesList.append("<p class=\"message getting\">Getting your places...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>")
@@ -667,11 +677,11 @@ $(function(favouritedPlaces) {
 				objects = JSON.parse(placenames);
 				
 				$.each(objects, function(i, place) { 
-					console.log(place);
+					//console.log(place);
 					//FIND ICON FOR OPEN PLACE BUTTON, BUILD THE DISPLAY, DO GEOFENCES, OFFERS
 					favouritesList.append("<li class=\"entry\" data-animate=\"favourites\" data-place=\"" + place + "\"><span class=\"place-count\">" + count + "</span><span class=\"place\">" + place + "</span>" +					
 											  "<div class=\"more\">" +
-											  	  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"open-place\" class=\"open-place-button\"></div></div>" +
+											  	  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"comment-place\" class=\"comment-place-button\"></div></div>" +
 												  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"share-place\" class=\"share-place-button\"></div></div>" +
 												  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"delete-place\" class=\"delete-place-button\"></div></div>" +
 											  "</div>" +
@@ -692,6 +702,44 @@ $(function(favouritedPlaces) {
 		$(this).children("span").toggleClass("swiped");
 		$(this).children("div").toggleClass("shown"); //more div
 	});
+	
+	//get comments
+	favouritesList.hammer().on("tap", "#comment-place", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		//console.log(userName);
+		
+		place = $(this).data("place");
+		
+		$("#favourites").removeClass("current");
+		$("body").prepend(commentsOverlay); //sometimes this doesn't render properly on the display
+		
+		$.ajax({
+			type: "POST",
+			data: {placename: place},
+			url: serverURL + "getcomments.php",
+			async: true, //might have to be false
+			beforeSend: function() {
+				$("#comments-list").append("<p class=\"message getting\">Getting comments...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>")
+			},
+			success: function(comments, status) {
+				$(".getting").remove();
+				objects = JSON.parse(comments);
+				
+				$.each(objects, function(i, comments) { 
+					console.log(comments);
+					//$("#comments-list").append("");
+				});
+			},
+			error: function() {
+				console.log("oh no");
+			}
+		});
+		
+		$(".close-comments").hammer().on("tap", function(e) {
+			$("#comments").remove();
+			$("#favourites").addClass("current");
+		});	
+	});
 
 	favouritesList.hammer().on("tap", "#share-place", function(e) {
 		e.stopPropagation(); e.preventDefault();
@@ -704,17 +752,18 @@ $(function(favouritedPlaces) {
 		place = $(this).data("place");
 		
 		$.ajax({
+			context: this,
 			type: "POST",
 			data: {userid: userID, placename: place},	
-			url: serverURL + "removeplace.php",
+			url: serverURL + "removefavourite.php",
 			beforeSend: function() {
 				console.log("deleting from favourites");
 			},
 			success: function() {
+				$(this).parents("div div li.entry").remove(); //remove the list item
 				console.log("deleted " + place + " from favourites");
 			},
 		});
-		$(this).parents("div div li.entry").remove(); //remove the list item
 	});
 	
 	$("[data-get=\"favourites\"]").hammer().on("tap", function(e) {
@@ -725,6 +774,14 @@ $(function(favouritedPlaces) {
 	});
 	
 });
+
+
+/*Offers and redemption
+-----------------------------------------------------------------------------------------*/
+$(function(getOffers) {
+	
+});
+
 
 /*Settings and options functionality
 -----------------------------------------------------------------------------------------*/
@@ -1078,11 +1135,6 @@ $(function(appSettings) {
 
 
 
-/*Offers and redemption
------------------------------------------------------------------------------------------*/
-$(function(getOffers) {
-	
-});
 
 /*Prefetching - add class "prefetch" to any links
 -----------------------------------------------------------------------------------------*/

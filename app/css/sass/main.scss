@@ -321,17 +321,18 @@
 
 /*-----------------------------------------------------------------*/
 
-#places {
+#favourites {
 	display: block;
+	
+	.getting {
+		margin-top: 1rem;
+	}
 	
 		.favourites-list {
 			position: relative;
 			
-				.getting {
-					margin-top: 1rem;
-				}
-			
 				li {
+					width: 100%;
 					height: 64px;
 					position: relative;
 					display: block;
@@ -341,21 +342,29 @@
   					overflow: hidden;
   					text-overflow: ellipsis;
 						
-						.place {
-							display: inline-block;
-							-webkit-transition: -webkit-transform ease-in-out .4s;
-							-ms-transition: -ms-transform ease-in-out .4s ;
-							transition: transform ease-in-out .4s;
-						}
-						
 						.place-count {
-							display: inline-block;
+							position: absolute;
+							line-height: 32px;
+							//top: 25%;
+							//left: .8rem;
 							-webkit-transition: -webkit-transform ease-in-out .4s;
 							-ms-transition: -ms-transform ease-in-out .4s ;
 							transition: transform ease-in-out .4s;
 							font-size: 1.100rem;
 							color: $grey;
-							margin-right: 1rem;
+						}
+						
+						.place {
+							width: 80%;
+							display: block;
+							line-height: 32px;
+							margin-left: 1.8rem;
+							white-space: nowrap;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							-webkit-transition: -webkit-transform ease-in-out .4s;
+							-ms-transition: -ms-transform ease-in-out .4s ;
+							transition: transform ease-in-out .4s;
 						}
 				}
 				
@@ -387,6 +396,18 @@
 								&:nth-of-type(2) {
 									border-right: 1px solid $black;
 								}
+						}
+						
+						.comment-place-button {
+							width: 38px;
+							height: 38px;
+							position: absolute;
+							top: .80rem;
+							left: .68rem;
+							background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA1My4zIDQxMiA0MDUuMyIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyA1MCA1My4zIDQxMiA0MDUuMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+DQo8cGF0aCBpZD0ic3BlZWNoLWJ1YmJsZS0xNC1pY29uIiBmaWxsPSIjNDQ0NDQ0IiBkPSJNNDQwLjcsMzkxLjhjMTMuNi0xNi40LDIxLjMtMzcuNiwyMS4zLTU5LjFjMC0zNS4zLTE5LjktNjUtNDkuNC04My44DQoJYzQuMi0xMy4xLDYuNC0yNi42LDYuNC00MC4zYzAtOTAuMi04Ny42LTE1NS4zLTE4NC41LTE1NS4zQzEzNyw1My4zLDUwLDExOC45LDUwLDIwOC42YzAsMzEuOCwxMS40LDYzLjEsMzEuNSw4Ny4zDQoJYzAuOCwyOC40LTE1LjcsNjkuMi0zMC42LDk4LjhjNDAtNy4zLDk2LjktMjMuNCwxMjIuNy0zOS40YzE1LjEsMy43LDI5LjgsNiw0NCw3LjFjMTcuOSw1MC42LDgwLjIsODkuMywxNjAuOSw2OS41DQoJYzE3LjUsMTAuOCw1NS45LDIxLjcsODMsMjYuNkM0NTEuMyw0MzguNiw0NDAuMSw0MTEsNDQwLjcsMzkxLjh6IE0xNzIuNCwzMThjLTM0LjYsMjAuMi02NSwyOC4zLTY1LDI4LjNzMTAuMy0yNy44LDE0LjYtNTkuNw0KCWMtMjEuMS0yMS41LTM2LTQzLjMtMzYtNzhjMC02NS44LDY2LjYtMTE5LjQsMTQ4LjYtMTE5LjRjODEuOSwwLDE0OC42LDUzLjYsMTQ4LjYsMTE5LjRDMzgzLDI3Ni44LDMwNC43LDM1My4xLDE3Mi40LDMxOHoNCgkgTTQxOC45LDQyMS41YzAsMC0xOS42LTUuMi00MS44LTE4LjJjLTY1LjcsMTcuNC0xMTAuNy03LjktMTI3LjctNDAuNWM3MC40LTQuMSwxMjQuOC00MCwxNTEuNS04Ny4xYzE5LjYsMTQuMSwzMS45LDM0LjUsMzEuOSw1Ny4yDQoJYzAsMjIuMy05LjYsMzYuMy0yMy4yLDUwLjFDNDEyLjIsNDAzLjYsNDE4LjksNDIxLjUsNDE4LjksNDIxLjV6Ii8+DQo8L3N2Zz4NCg==");
+							background-size: cover;
+							@include no-select;
+							cursor: pointer;
 						}
 						
 						.share-place-button {
@@ -428,6 +449,36 @@
 					-ms-transition: -ms-transform ease-in-out .4s;
 					transition: transform ease-in-out .4s;
 				}
+		}
+}
+
+#comments {
+	width: 100%;
+	height: auto;
+	min-width: 100%;
+	z-index: 101;
+	background: $white;
+	position: absolute;
+	top: 0;
+	left: 0;
+	font-size: 1rem;
+	
+		#comments-list {
+			position: absolute;
+			top: 50px;
+			background: $white;
+		}
+	
+		> h1 {
+			width: 100%;
+			position: fixed;
+			border-bottom: none;
+			z-index: 102;
+		}
+	
+		.close-comments {
+			float: right;
+			font-size: 3rem;
 		}
 }
 

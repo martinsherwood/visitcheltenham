@@ -4,17 +4,16 @@
 	require "includes/connect.php";
 	
 	if (isset($_POST)) {
-		$userid = $_POST["userid"];
-		//$userid = 15; //testing
+		$placename = $_POST["placename"];
 		
-		if ($stmt = $db -> prepare("SELECT placename FROM user_places WHERE userid = '" . $userid . "' ORDER BY placename")) {
+		if ($stmt = $db -> prepare("SELECT comment FROM user_comments WHERE placename = '" . $placename . "' ORDER BY datemade")) {
 			$stmt -> execute();
-			$stmt -> bind_result($placename);
+			$stmt -> bind_result($comments);
 			
 			$records = array();
 			
 			while ($stmt -> fetch()) {
-				$records[] = $placename;
+				$records[] = $comments;
 			}
 			
 			$stmt -> close();
