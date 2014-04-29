@@ -59,7 +59,7 @@
             
             <div id="favourites" data-role="page">
             	<div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
-                	<h1 class="inner-wrap">Favourites</h1>
+                	<h1 class="inner-wrap">Favourites<i id="refresh-favourites" class="fa fa-refresh"></i></h1>
                 	
                     <ul class="favourites-list">
                     </ul>
@@ -73,78 +73,88 @@
                 <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
                 
                     <div class="settings-block">
-                        <h1 class="inner-wrap">Search Settings</h1>
-                        
-                        <form id="search-settings" autocomplete="off">
-                            <label for="search-radius" class="inner-wrap">Search Radius <span>(metres)</span></label>
-                            <input type="text" id="search-radius" name="search-radius" class="inner-wrap" autocomplete="off" autocorrect="off" autocapitalize="off">
-                            
-                            <label for="travel-mode" class="inner-wrap">Travel Mode <span>(tell us if you have a car)</span></label>
-                            <select id="travel-mode" name="travel-mode">
-                                <option value="walking">Walking</option>
-                                <option value="bicycling">Bicycling</option>
-                                <option value="driving">Driving</option>
-                            </select>
-                            
-                            <label for="unit-system" class="inner-wrap">Unit System <span>(distances and durations)</span></label>
-                            <select id="unit-system" name="unit-system">
-                                <option value="imperial">Imperial</option>
-                                <option value="metric">Metric</option>
-                            </select>
-                            <div role="button" data-role="button" data-action="save-settings" class="settings-button inner-wrap">Save<div class="submit-icon"></div></div>
-                        </form>
-                    </div>
-                    
-                    <div class="settings-block">
-                    	<h1 class="inner-wrap">User Account</h1>
-                        <div id="google-login">
-                        	<div role="button" data-role="button" data-action="google-signin" class="google-signin"></div>
-                            <p class="inner-wrap warning"></p>
+                        <h1 class="inner-wrap show-settings" data-show="search-settings">Search Settings <i class="fa fa-angle-down"></i></h1>
+                        <div id="search-settings" class="settings-content" data-transition="slide-down-in">
+                            <form id="search-settings" autocomplete="off">
+                                <label for="search-radius" class="inner-wrap">Search Radius <span>(metres)</span></label>
+                                <input type="text" id="search-radius" name="search-radius" class="inner-wrap" autocorrect="off" autocapitalize="off">
+                                
+                                <label for="travel-mode" class="inner-wrap">Travel Mode <span>(tell us if you have a car)</span></label>
+                                <select id="travel-mode" name="travel-mode">
+                                    <option value="walking">Walking</option>
+                                    <option value="bicycling">Bicycling</option>
+                                    <option value="driving">Driving</option>
+                                </select>
+                                
+                                <label for="unit-system" class="inner-wrap">Unit System <span>(distances and durations)</span></label>
+                                <select id="unit-system" name="unit-system">
+                                    <option value="imperial">Imperial</option>
+                                    <option value="metric">Metric</option>
+                                </select>
+                                <div role="button" data-role="button" data-action="save-settings" class="settings-button inner-wrap">Save<div class="submit-icon"></div></div>
+                            </form>
                         </div>
+                    </div>
+                    
+                    <div class="settings-block">
+                    	<h1 class="inner-wrap show-settings" data-show="user-settings">User Account <i class="fa fa-angle-down"></i></h1>
                         
-                        <div id="google-login-success">
-                        	<span class="settings-label inner-wrap">You are signed in as:</span>
-                            <p class="inner-wrap signed-in-name"></p>
+                        <div id="user-settings" class="settings-content" data-transition="slide-down-in">
+                            <div id="google-login">
+                                <div role="button" data-role="button" data-action="google-signin" class="google-signin"></div>
+                                <p class="inner-wrap warning"></p>
+                            </div>
+                            
+                            <div id="google-login-success">
+                                <span class="settings-label inner-wrap">You are signed in as:</span>
+                                <p class="inner-wrap signed-in-name"></p>
+                            </div>
+                            
+                            <form id="user-account" method="post" autocomplete="off">
+                                <label for="username" class="inner-wrap">Username</label>
+                                <input type="text" id="username" name="username" placeholder="Enter a username" autocorrect="off" autocapitalize="off" maxlength="22">
+                                
+                                <label for="useremail" class="inner-wrap">Email</label>
+                                <input type="email" id="useremail" name="useremail" placeholder="Enter an email address" autocorrect="off" autocapitalize="off">
+                                
+                                <label for="userpassword" class="inner-wrap">Password</label>
+                                <input type="password" id="userpassword" name="userpassword" placeholder="Enter a password" autocorrect="off" autocapitalize="off">
+                                
+                                <div role="button" data-role="button" data-action="save-account" class="settings-button inner-wrap">Save &amp; Register<div class="submit-icon"></div></div>
+                            </form>
                         </div>
-                        
-                        <form id="user-account" method="post" autocomplete="off">
-                        	<label for="username" class="inner-wrap">Username</label>
-                            <input type="text" id="username" name="username" placeholder="Enter a username" autocomplete="off" autocorrect="off" autocapitalize="off" maxlength="22">
-                            
-                            <label for="useremail" class="inner-wrap">Email</label>
-                            <input type="email" id="useremail" name="useremail" placeholder="Enter an email address" autocomplete="off" autocorrect="off" autocapitalize="off">
-                            
-                            <label for="userpassword" class="inner-wrap">Password</label>
-                            <input type="password" id="userpassword" name="userpassword" placeholder="Enter a password" autocomplete="off" autocorrect="off" autocapitalize="off">
-                            
-                            <div role="button" data-role="button" data-action="save-account" class="settings-button inner-wrap">Save &amp; Register<div class="submit-icon"></div></div>
-                        </form>
                     </div>
                     
                     <div class="settings-block">
-                    	<h1 class="inner-wrap">Utilities</h1>
-                        <form id="postcode-lookup">
-                        	<label for="postcode" class="inner-wrap">Postcode Lookup</label>
-                        	<input type="text" id="postcode" name="postcode" placeholder="Enter a postcode" autocomplete="off" autocorrect="off" autocapitalize="off">
-                            <p class="inner-wrap"><span>Result: </span><span class="geocode-result"></span></p>
-                            <div role="button" data-role="button" data-action="submit-postcode-lookup" class="settings-button inner-wrap">Search<div class="submit-icon"></div></div>
-                        </form>
+                    	<h1 class="inner-wrap show-settings" data-show="util-settings">Utilities <i class="fa fa-angle-down"></i></h1>
+                        <div id="util-settings" class="settings-content" data-transition="slide-down-in">
+                            <form id="postcode-lookup" autocomplete="off">
+                                <label for="postcode" class="inner-wrap">Postcode Lookup</label>
+                                <input type="text" id="postcode" name="postcode" placeholder="Enter a postcode" autocorrect="off" autocapitalize="off">
+                                <p class="inner-wrap"><span>Result: </span><span class="geocode-result"></span></p>
+                                <div role="button" data-role="button" data-action="submit-postcode-lookup" class="settings-button inner-wrap">Search<div class="submit-icon"></div></div>
+                            </form>
+                        </div>
                     </div>
                     
                     <div class="settings-block">
-                    	<h1 class="inner-wrap">Send Feedback</h1>
-                        <form id="send-feedback" method="post" autocomplete="off">
-                        	<label for="name" class="inner-wrap">Name</label>
-                            <input type="text" id="name" name="name" placeholder="Your name" autocomplete="off" autocorrect="on" autocapitalize="on">
-                            
-                            <label for="email" class="inner-wrap">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="Your email" autocomplete="off" autocorrect="off" autocapitalize="off">
-                            
-                            <label for="message" class="inner-wrap">Message</label>
-                            <textarea id="message" name="message" placeholder="Your message" autocorrect="on" autocapitalize="on" rows="3"></textarea>
-                            
-                            <div role="button" data-role="button" data-action="send-feedback" class="settings-button inner-wrap">Send<div class="submit-icon"></div></div>
-                        </form>
+                    	<h1 class="inner-wrap show-settings" data-show="feedback-settings">Send Feedback <i class="fa fa-angle-down"></i></h1>
+                        <div id="feedback-settings" class="settings-content" data-transition="slide-down-in">
+                            <form id="send-feedback" method="post" autocomplete="off">
+                                <label for="name" class="inner-wrap">Name</label>
+                                <input type="text" id="name" name="name" placeholder="Your name" autocorrect="on" autocapitalize="on">
+                                
+                                <label for="email" class="inner-wrap">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="Your email" autocorrect="off" autocapitalize="off">
+                                
+                                <label for="message" class="inner-wrap">Message</label>
+                                <textarea id="message" name="message" placeholder="Your message" autocorrect="on" autocapitalize="on" rows="3"></textarea>
+                                
+                                <div role="button" data-role="button" data-action="send-feedback" class="settings-button inner-wrap">Send<div class="submit-icon"></div></div>
+                            </form>
+                        </div>
+                    </div>
+                    
                 </div><!--/container - content-->
             </div><!--/settings-->
             

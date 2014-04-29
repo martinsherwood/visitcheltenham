@@ -173,6 +173,22 @@
       "parents": [
         "7c23f569"
       ]
+    },
+    "d07246c0": {
+      "id": "d07246c0",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_modals.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "955e4d60": {
+      "id": "955e4d60",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_loadingspinner.scss",
+      "parents": [
+        "7c23f569"
+      ]
     }
   },
   "images": {
@@ -234,6 +250,16 @@
       "name": "powered-by-google.png",
       "type": "Png",
       "initialSize": 6971,
+      "status": "NOT_OPTIMIZED"
+    },
+    "e796c869": {
+      "id": "e796c869",
+      "pid": "cc820037",
+      "path": "icon.png",
+      "size": 21714,
+      "name": "icon.png",
+      "type": "Png",
+      "initialSize": 21714,
       "status": "NOT_OPTIMIZED"
     }
   },

@@ -149,10 +149,12 @@ $(function(navigationalHandles) {
 	
 	if (Modernizr.csstransforms3d) {
 		menuButton.hammer().on("tap", function(e) {
+			e.stopPropagation(); e.preventDefault();
 			toggleMenu();
 		});
 		
 		overlay.hammer().on("tap", function(e) {
+			e.stopPropagation(); e.preventDefault();
 			toggleMenu();
 		});
 		
@@ -367,6 +369,8 @@ $(function(navigationalHandles) {
 								}
 								
 								map.addMarker({
+
+
 									lat: place.geometry.location.lat(),
 									lng: place.geometry.location.lng(),
 									icon: image,
@@ -553,8 +557,8 @@ $(function(navigationalHandles) {
 	//options for search results
 	$(function(doMore) {
 		var placeName, placeAddress, directionsTo;
-		var directionsOverlay = "<div id=\"directions-box\">" +
-									"<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Directions<i class=\"fa fa-times close-directions\"></i></h1>" +
+		var directionsOverlay = "<div id=\"directions-box\" class=\"modal-window\">" +
+									"<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Directions<div id=\"close-directions\" class=\"close-modal\"></div></h1>" +
 									"<div id=\"directions-list\"></div>" +
 								"</div>"
 								
@@ -642,11 +646,13 @@ $(function(navigationalHandles) {
 				dirDisp.setDirections(result);
 			});
 			
-			$(".close-directions").hammer().on("tap", function(e) {
+			$("#close-directions").hammer().on("tap", function(e) {
+				e.stopPropagation(); e.preventDefault();
 				$("#directions-box").remove();
 				$("#home").addClass("current");
 			});
 		});//get direction
+		
 	});//do more
 })();//end map scope
 
@@ -658,9 +664,15 @@ $(function(favouritedPlaces) {
 	var count = 1;
 	var place;
 	
-	var commentsOverlay = "<div id=\"comments\">" +
-						      "<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Comments<i class=\"fa fa-times close-comments\"></i></h1>" +
-						      "<div id=\"comments-list\"></div>" +
+	var commentsOverlay = "<div id=\"comments-box\" class=\"modal-window\">" +
+						      "<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Comments<div id=\"close-comments\" class=\"close-modal\"></div></h1>" +
+							  "<div class=\"add-comment\">" +
+							      "<form id=\"place-comment\" method=\"post\">" +
+							          "<textarea id=\"comment\" name=\"comment\" placeholder=\"Type a comment\" autocorrect=\"on\" autocapitalize=\"on\" maxlength=\"180\"></textarea>" +
+									  "<div id=\"post-comment\" class=\"comments-button inner-wrap\">Post Comment<div class=\"submit-icon\"></div></div>" +
+								  "</form>" +
+							  "</div>" +
+						      "<div id=\"comments-list\" class=\"inner-wrap\"></div>" +
 						  "</div>"
 	
 	function getFavourites() {
@@ -670,7 +682,7 @@ $(function(favouritedPlaces) {
 			url: serverURL + "getfavourites.php",
 			async: true, //might have to be false
 			beforeSend: function() {
-				favouritesList.append("<p class=\"message getting\">Getting your places...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>")
+				favouritesList.append("<p class=\"message getting\">Getting your favourites...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>")
 			},
 			success: function(placenames, status) {
 				$(".getting").remove();
@@ -678,12 +690,11 @@ $(function(favouritedPlaces) {
 				
 				$.each(objects, function(i, place) { 
 					//console.log(place);
-					//FIND ICON FOR OPEN PLACE BUTTON, BUILD THE DISPLAY, DO GEOFENCES, OFFERS
-					favouritesList.append("<li class=\"entry\" data-animate=\"favourites\" data-place=\"" + place + "\"><span class=\"place-count\">" + count + "</span><span class=\"place\">" + place + "</span>" +					
+					favouritesList.append("<li class=\"entry\" data-animate=\"favourite\" data-place=\"" + place + "\"><span class=\"place-count\">" + count + "</span><span class=\"place\">" + place + "</span>" +					
 											  "<div class=\"more\">" +
 											  	  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"comment-place\" class=\"comment-place-button\"></div></div>" +
 												  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"share-place\" class=\"share-place-button\"></div></div>" +
-												  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"delete-place\" class=\"delete-place-button\"></div></div>" +
+												  "<div class=\"p-action\"><div data-place=\"" + place + "\" id=\"delete-favourite\" class=\"delete-place-button\"></div></div>" +
 											  "</div>" +
 										  "</li>");
 					count++;
@@ -695,7 +706,14 @@ $(function(favouritedPlaces) {
 		});
 	};
 	
-	getFavourites(); //can't see a point of running the function right away, because its reloaded when they navigate to the page anyway
+	getFavourites(); //testing
+	
+	$("#refresh-favourites").hammer().on("tap", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		console.log("refreshing");
+		clearFavs();
+		getFavourites();
+	});
 	
 	favouritesList.hammer().on("swipeleft tap", "li", function(e) {
 		e.stopPropagation(); e.preventDefault();
@@ -703,7 +721,6 @@ $(function(favouritedPlaces) {
 		$(this).children("div").toggleClass("shown"); //more div
 	});
 	
-	//get comments
 	favouritesList.hammer().on("tap", "#comment-place", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		//console.log(userName);
@@ -723,11 +740,17 @@ $(function(favouritedPlaces) {
 			},
 			success: function(comments, status) {
 				$(".getting").remove();
+				
 				objects = JSON.parse(comments);
 				
 				$.each(objects, function(i, comments) { 
-					console.log(comments);
-					//$("#comments-list").append("");
+					$("#comments-list").append("<div data-animate=\"comment\" class=\"comment\"><p>" + comments + "</p></div>");
+				});
+				
+				//due to the way the comment is fetched we adjust the firstword, which is the username to standout (a bit hacky but it works alright, and we enforce no spaces on users so it should be fine)
+				$("#comments-list .comment p").each(function(e) {
+					var me = $(this);
+					me.html(me.text().replace(/(^\w+)/,"<span class=\"by\">$1" + "</span>"));
 				});
 			},
 			error: function() {
@@ -735,19 +758,36 @@ $(function(favouritedPlaces) {
 			}
 		});
 		
-		$(".close-comments").hammer().on("tap", function(e) {
-			$("#comments").remove();
+		$("#post-comment").hammer().on("tap", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			console.log("post comment button");
+			$("#place-comment").submit();
+		});
+		
+		$("#place-comment").submit(function(e) {
+			e.stopPropagation(); e.preventDefault();
+			console.log("form submitted");
+		});
+		
+		$("#comments-list").hammer().on("tap", ".comment p", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			$(this).toggleClass("expanded");
+		});
+		
+		$("#close-comments").hammer().on("tap", function(e) {
+			e.stopPropagation(); e.preventDefault();
+			$("#comments-box").remove();
 			$("#favourites").addClass("current");
-		});	
+		});
 	});
-
+	
 	favouritesList.hammer().on("tap", "#share-place", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		place = $(this).data("place");
 		window.location.href = "mailto:?subject=Check this place out!&body=Hey, I found this really good place called, " + place + "."; //should open the devices default mail client
 	});
 	
-	favouritesList.hammer().on("tap", "#delete-place", function(e) {
+	favouritesList.hammer().on("tap", "#delete-favourite", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		place = $(this).data("place");
 		
@@ -768,11 +808,14 @@ $(function(favouritedPlaces) {
 	
 	$("[data-get=\"favourites\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
-		favouritesList.html("");
-		count = 1;
+		clearFavs();
 		getFavourites();
 	});
 	
+	function clearFavs() {
+		favouritesList.html("");
+		count = 1;
+	};
 });
 
 
@@ -786,8 +829,13 @@ $(function(getOffers) {
 /*Settings and options functionality
 -----------------------------------------------------------------------------------------*/
 $(function(appSettings) {
-	//we need to get the settings again here, as earlier we made them into int from the stored strings
+	$(".show-settings").hammer().on("tap", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		var show = $(this).data("show");
+		$("#" + show).toggleClass("settings-shown");
+	});
 	
+	//we need to get the settings again here, as earlier we made them into int from the stored strings
 	$(function(searchSettings) {
 		store.getItem("searchSettings").then(function(value) {
 			//console.log(value);
@@ -924,6 +972,7 @@ $(function(appSettings) {
 				$("[data-action=\"google-signin\"]").hammer().on("tap", function(e) {
 					signIn.LoginButton();
 				});
+
 				
 				//check if a valid token exists or get new
 				googleAPI.getToken({
@@ -1164,6 +1213,7 @@ $(function(prefetch) {
 });
 
 /*Capatilise first letter in a string
+
 -----------------------------------------------------------------------------------------*/
 String.prototype.capitalise = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);

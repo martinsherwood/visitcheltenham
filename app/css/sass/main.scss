@@ -37,6 +37,10 @@
 
 @import "partials/_header.scss";
 
+@import "partials/_modals.scss";
+
+/*@import "partials/_loadingspinner.scss";*/
+
 /*-----------------------------------------------------------------*/
 
 .location-map {
@@ -211,7 +215,6 @@
 					-ms-transition: -ms-transform ease-in-out .4s;
 					transition: transform ease-in-out .4s;
 				}
-				
 			@include clearfix;
 		}
 	@include clearfix;
@@ -258,32 +261,12 @@
 /*-----------------------------------------------------------------*/
 
 #directions-box {
-	width: 100%;
-	height: auto;
-	min-width: 100%;
-	z-index: 101;
-	background: $white;
-	position: absolute;
-	top: 0;
-	left: 0;
-	font-size: 1rem;
+	font-size: 1.1rem;
 	
 		#directions-list {
 			position: absolute;
 			top: 50px;
 			background: $white;
-		}
-	
-		> h1 {
-			width: 100%;
-			position: fixed;
-			border-bottom: none;
-			z-index: 102;
-		}
-	
-		.close-directions {
-			float: right;
-			font-size: 3rem;
 		}
 		
 		.adp-placemark {
@@ -324,9 +307,19 @@
 #favourites {
 	display: block;
 	
-	.getting {
-		margin-top: 1rem;
-	}
+		h1 i {
+			font-size: 2.6rem;
+			float: right;
+			line-height: 50px;
+		}
+	
+		.getting {
+			margin-top: 1rem;
+			
+				i {
+					margin-top: .5rem;
+				}
+		}
 	
 		.favourites-list {
 			position: relative;
@@ -452,33 +445,86 @@
 		}
 }
 
-#comments {
-	width: 100%;
-	height: auto;
-	min-width: 100%;
-	z-index: 101;
-	background: $white;
-	position: absolute;
-	top: 0;
-	left: 0;
-	font-size: 1rem;
-	
-		#comments-list {
+/*-----------------------------------------------------------------*/
+
+#comments-box {
+		.add-comment {
+			width: 100%;
+			height: 190px;
 			position: absolute;
 			top: 50px;
-			background: $white;
+			border-bottom: 1px solid $grey;
+			
+				textarea {
+					width: 100%;
+					height: 140px;
+					float: left;
+					display: block;
+					border: none;
+					padding: .6rem $sidePadding .6rem $sidePadding;
+				}
+				
+				.comments-button {
+					width: 100%;
+					height: 50px;
+					position: relative;
+					display: inline-block;
+					line-height: 50px;
+					background: $black;
+					color: $white;
+					
+						&:active, &:hover {
+							@include tapped;
+						}
+						
+					@include clearfix;
+				}
 		}
 	
-		> h1 {
+		#comments-list {
 			width: 100%;
-			position: fixed;
-			border-bottom: none;
-			z-index: 102;
-		}
-	
-		.close-comments {
-			float: right;
-			font-size: 3rem;
+			position: absolute;
+			top: 240px;
+			background: $white;
+			
+				.getting {
+					margin-top: 1rem;
+					
+						i {
+							margin-top: .5rem;
+						}
+				}
+			
+				.comment {
+					width: 100%;
+					margin: 14px 0;
+					padding: .5rem;
+					background: #f0f0f0;
+					
+						p {
+							max-height: 100px;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							-webkit-transition: max-height linear .4s;
+							-ms-transition: max-height linear .4s;
+							transition: max-height linear .4s;
+						}
+						
+						.expanded {
+							max-height: 400px;
+							-webkit-transition: max-height linear .4s;
+							-ms-transition: max-height linear .4s;
+							transition: max-height linear .4s;
+						}
+					
+						.by {
+							display: block;
+							font-family: "Roboto Bold", sans-serif;
+							font-weight: 700;
+							font-size: 1rem;
+							text-transform: uppercase;
+						}
+				}
 		}
 }
 
@@ -491,13 +537,23 @@
 			position: relative;
 			padding-bottom: 14px;
 			
-				> h1 {
-					margin-bottom: 0.2rem;
+				h1 i {
+					font-size: 2.6rem;
+					float: right;
+					line-height: 50px;
 				}
 			
 				&:last-of-type {
 					padding-bottom: 0;
 				}
+		}
+		
+		.settings-content {
+			display: none;
+		}
+		
+		.settings-shown {
+			display: block;
 		}
 	
 		label, .settings-label {
@@ -542,25 +598,6 @@
 				}
 				
 			@include clearfix;
-		}
-
-		.submit-icon, .go-icon {
-			width: 36px;
-			height: 36px;
-			display: inline-block;
-			float: right;
-			margin-top: 6.5px;
-			background-size: cover;
-			@include no-select;
-			cursor: pointer;
-		}
-		
-		.submit-icon {
-			background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI3MSA3MSAzNzAgMzcwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDcxIDcxIDM3MCAzNzAiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImNoZWNrYm94LTE0LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik0yMjQuOSwzNDIuM2wtNzcuNC03Ny40bDMzLTMzbDQ0LjQsNDQuNWwxMDIuNi0xMDIuNmwzMywzMi45TDIyNC45LDM0Mi4zeiBNMjU2LDExMQ0KCWMzOC43LDAsNzUuMSwxNS4xLDEwMi41LDQyLjVTNDAxLDIxNy4zLDQwMSwyNTZzLTE1LjEsNzUuMS00Mi41LDEwMi41UzI5NC43LDQwMSwyNTYsNDAxcy03NS4xLTE1LjEtMTAyLjUtNDIuNVMxMTEsMjk0LjcsMTExLDI1Ng0KCXMxNS4xLTc1LjEsNDIuNS0xMDIuNVMyMTcuMywxMTEsMjU2LDExMXogTTI1Niw3MUMxNTMuOCw3MSw3MSwxNTMuOCw3MSwyNTZzODIuOCwxODUsMTg1LDE4NWMxMDIuMiwwLDE4NS04Mi44LDE4NS0xODUNCglTMzU4LjIsNzEsMjU2LDcxeiIvPg0KPC9zdmc+DQo=");
-		}
-		
-		.go-icon {
-			background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA1MCA0MTIgNDEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDUwIDUwIDQxMiA0MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImFycm93LTI4LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik05MCwyNTZjMCw5MS44LDc0LjMsMTY2LDE2NiwxNjZjOTEuOCwwLDE2Ni03NC4zLDE2Ni0xNjZjMC05MS44LTc0LjMtMTY2LTE2Ni0xNjYNCglDMTY0LjIsOTAsOTAsMTY0LjMsOTAsMjU2eiBNNDYyLDI1NmMwLDExMy44LTkyLjIsMjA2LTIwNiwyMDZTNTAsMzY5LjgsNTAsMjU2UzE0Mi4yLDUwLDI1Niw1MFM0NjIsMTQyLjIsNDYyLDI1NnogTTIwMCwxNjguNg0KCWwzMi4zLTMyLjFMMzUyLjIsMjU3TDIzMi4yLDM3Ny41TDIwMCwzNDUuNGw4OC04OC40TDIwMCwxNjguNnoiLz4NCjwvc3ZnPg0K");
 		}
 		
 		#postcode-lookup p {
