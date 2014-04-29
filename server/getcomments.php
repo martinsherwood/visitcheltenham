@@ -6,14 +6,14 @@
 	if (isset($_POST)) {
 		$placename = $_POST["placename"];
 		
-		if ($stmt = $db -> prepare("SELECT comment FROM user_comments WHERE placename = '" . $placename . "' ORDER BY datemade")) {
+		if ($stmt = $db -> prepare("SELECT username, comment FROM user_comments WHERE placename = '" . $placename . "' ORDER BY datemade")) {
 			$stmt -> execute();
-			$stmt -> bind_result($comments);
+			$stmt -> bind_result($usernames, $comments);
 			
 			$records = array();
 			
-			while ($stmt -> fetch()) {
-				$records[] = $comments;
+			while ($row = $stmt -> fetch()) {
+				$records[] = $usernames . " " . $comments;
 			}
 			
 			$stmt -> close();
