@@ -30,7 +30,7 @@
         
     	<div id="app" role="main" class="main">
         
-            <div id="home" data-role="page">
+            <div id="search" data-role="page">
                 <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
                     <div class="location-map">
                     	<div id="map-container">
@@ -69,12 +69,24 @@
             
             <!--###-->
             
+            <div id="offers" data-role="page">
+            	<div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
+                	<h1 class="inner-wrap">Offers</h1>
+                    <!--<p class="inner-wrap">The offers section is in beta development stages, expect bugs.</p>-->
+                	
+                    
+                	
+            	</div><!--/container - content-->
+            </div><!--/offers-->
+            
+            <!--###-->
+            
             <div id="settings" data-role="page">
                 <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
                 
                     <div class="settings-block">
-                        <h1 class="inner-wrap show-settings" data-show="search-settings">Search Settings <i class="fa fa-angle-down"></i></h1>
-                        <div id="search-settings" class="settings-content" data-transition="slide-down-in">
+                        <h1 class="inner-wrap show-settings" data-show="search-settings">Search<i class="fa fa-angle-down"></i></h1>
+                        <div id="search-settings" class="settings-content" data-transition="slide-left-in">
                             <form id="search-settings" autocomplete="off">
                                 <label for="search-radius" class="inner-wrap">Search Radius <span>(metres)</span></label>
                                 <input type="text" id="search-radius" name="search-radius" class="inner-wrap" autocorrect="off" autocapitalize="off">
@@ -97,9 +109,9 @@
                     </div>
                     
                     <div class="settings-block">
-                    	<h1 class="inner-wrap show-settings" data-show="user-settings">User Account <i class="fa fa-angle-down"></i></h1>
+                    	<h1 class="inner-wrap show-settings" data-show="user-settings">User Account<i class="fa fa-angle-down"></i></h1>
                         
-                        <div id="user-settings" class="settings-content" data-transition="slide-down-in">
+                        <div id="user-settings" class="settings-content" data-transition="slide-left-in">
                             <div id="google-login">
                                 <div role="button" data-role="button" data-action="google-signin" class="google-signin"></div>
                                 <p class="inner-wrap warning"></p>
@@ -126,8 +138,8 @@
                     </div>
                     
                     <div class="settings-block">
-                    	<h1 class="inner-wrap show-settings" data-show="util-settings">Utilities <i class="fa fa-angle-down"></i></h1>
-                        <div id="util-settings" class="settings-content" data-transition="slide-down-in">
+                    	<h1 class="inner-wrap show-settings" data-show="util-settings">Utilities<i class="fa fa-angle-down"></i></h1>
+                        <div id="util-settings" class="settings-content" data-transition="slide-left-in">
                             <form id="postcode-lookup" autocomplete="off">
                                 <label for="postcode" class="inner-wrap">Postcode Lookup</label>
                                 <input type="text" id="postcode" name="postcode" placeholder="Enter a postcode" autocorrect="off" autocapitalize="off">
@@ -138,8 +150,8 @@
                     </div>
                     
                     <div class="settings-block">
-                    	<h1 class="inner-wrap show-settings" data-show="feedback-settings">Send Feedback <i class="fa fa-angle-down"></i></h1>
-                        <div id="feedback-settings" class="settings-content" data-transition="slide-down-in">
+                    	<h1 class="inner-wrap show-settings" data-show="feedback-settings">Send Feedback<i class="fa fa-angle-down"></i></h1>
+                        <div id="feedback-settings" class="settings-content" data-transition="slide-left-in">
                             <form id="send-feedback" method="post" autocomplete="off">
                                 <label for="name" class="inner-wrap">Name</label>
                                 <input type="text" id="name" name="name" placeholder="Your name" autocorrect="on" autocapitalize="on">
@@ -152,6 +164,19 @@
                                 
                                 <div role="button" data-role="button" data-action="send-feedback" class="settings-button inner-wrap">Send<div class="submit-icon"></div></div>
                             </form>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-block">
+                    	<h1 class="inner-wrap show-settings" data-show="delete-data">Delete Data &amp; Reset<i class="fa fa-angle-down"></i></h1>
+                        <div id="delete-data" class="settings-content" data-transition="slide-left-in">
+                        	<p class="inner-wrap">You can use this setting to permanently delete all application data and your user account.</p>
+                            <p class="inner-wrap">Are you sure?</p>
+                            <div class="confirm-delete checkbox inner-wrap">
+                            	<input type="checkbox" id="confirm-delete" name="confirm-delete" value="confirm-delete">
+                                <label for="confirm-delete"><span class="ui"></span></label>
+                            </div>
+                            <div role="button" data-role="button" data-action="delete-data" class="delete-button">Delete Data<div class="submit-icon"></div></div>
                         </div>
                     </div>
                     

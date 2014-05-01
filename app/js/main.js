@@ -4,6 +4,7 @@
 
 var serverURL = "http://www.martinsherwood.co.uk/visitcheltenham/";
 var searchRadius, travelMode, unitSystem, userName, userEmail, userPassword; //password should be encrypted
+var offerCount = 0;
 var name, userID; //name is only used for fetching the user ID of the user from the database
 
 var app = {
@@ -18,7 +19,6 @@ var app = {
     onDeviceReady: function() {
 		setStorage();
 		getSettings();
-		//default settings should be set here as well
     },
     report: function(id) {
 		console.log("report:" + id);
@@ -112,9 +112,9 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                 	"<div role=\"button\" data-role=\"button\" class=\"menu-stack push\"></div>" +
                     "<nav role=\"navigation\" data-role=\"navbar\" class=\"main-menu menu-closed\">" +
                     	"<div class=\"nav-links\">" +
-                        	"<a data-goto=\"#home\" data-push=\"page\" data-get=\"settings\" data-user=\"userid\"><i class=\"fa fa-border fa-search\"></i>Search</a>" +
+                        	"<a data-goto=\"#search\" data-push=\"page\" data-get=\"settings\" data-user=\"userid\"><i class=\"fa fa-border fa-search\"></i>Search</a>" +
                             "<a data-goto=\"#favourites\" data-push=\"page\" data-get=\"favourites\" data-user=\"userid\"><i class=\"fa fa-border fa-star\"></i>Favourites</a>" +
-                            "<a data-goto=\"#offers\" data-push=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span class=\"offer-count\">0</span></a>" +
+                            "<a data-goto=\"#offers\" data-push=\"page\"><i class=\"fa fa-border fa-shopping-cart\"></i>Offers<span id=\"offer-count\">" + "</span></a>" +
                             "<a data-goto=\"#settings\" data-push=\"page\"><i class=\"fa fa-border fa-cog\"></i>Settings</a>" +
                         "</div>" +
                     "</nav>" +
@@ -171,8 +171,8 @@ $(function(navigationalHandles) {
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		//$currentPage = $("#app > *:first-child").addClass("current");
-		$currentPage = $("#favourites").addClass("current"); //FOR DEV, REMOVE LATER
+		$currentPage = $("#app > *:first-child").addClass("current");
+		//$currentPage = $("#favourites").addClass("current"); //FOR DEV, REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	};
@@ -190,11 +190,6 @@ $(function(navigationalHandles) {
 		
 		//var state = { name: newPage };
 		//history.pushState(state, newPage, newPage.split("#").join(""));
-	}); 
-	
-	$("[data-get=\"settings\"]").hammer().on("tap", function(e) {
-		e.stopPropagation(); e.preventDefault();
-		getSettings();
 	});
 });
 
@@ -386,7 +381,6 @@ $(function(navigationalHandles) {
 								bounds.extend(place.geometry.location); //extend the bounds to show all search results on map
 							}
 							
-							//----------------
 							//experimenting with getting more results after the initial 20
 							/*if (pagination.hasNextPage) {
 								//console.log("more results exist");
@@ -395,7 +389,6 @@ $(function(navigationalHandles) {
 									pagination.nextPage();
 								});
 							};*/
-							//----------------
 							
 							map.fitBounds(bounds); //fit to the new bounds
 							
@@ -438,7 +431,7 @@ $(function(navigationalHandles) {
 						}
 					}//search
 				});
-			}
+			};
 			
 			//allow user to change between showing distance or estimated time to get there via their chosen travel mode
 			detailsList.hammer().on("tap", "li", function(e) {
@@ -457,8 +450,6 @@ $(function(navigationalHandles) {
 			//bias the search results towards places that are within the bounds of the current maps viewport
 			google.maps.event.addListener(map, "bounds_changed", function() {
 				var bounds = map.getBounds();
-				//console.log(bounds);
-				//searchBox.setBounds(bounds);
 				$("#place-query").setBounds(bounds);
 			});
 		});
@@ -601,7 +592,6 @@ $(function(navigationalHandles) {
 		//remove a favourite
 		$(".results-names").hammer().on("tap", "#remove-favourite", function(e) {
 			e.stopPropagation(); e.preventDefault();
-			//var thisOne = $(this);
 			placeName = $(this).data("placename");
 			
 			$.ajax({
@@ -668,7 +658,7 @@ $(function(favouritedPlaces) {
 						      "<h1 class=\"inner-wrap\" data-transition=\"slide-down-in\">Comments<div id=\"close-comments\" class=\"close-modal\"></div></h1>" +
 							  "<div class=\"add-comment\">" +
 							      "<form id=\"place-comment\" method=\"post\">" +
-							          "<textarea id=\"comment\" name=\"comment\" placeholder=\"Type a comment\" autocorrect=\"on\" autocapitalize=\"on\" maxlength=\"180\"></textarea>" +
+							          "<textarea id=\"comment\" name=\"comment\" placeholder=\"Enter a comment\" autocorrect=\"on\" autocapitalize=\"on\" maxlength=\"180\"></textarea>" +
 									  "<div id=\"post-comment\" class=\"comments-button inner-wrap\">Post Comment<div class=\"submit-icon\"></div></div>" +
 								  "</form>" +
 							  "</div>" +
@@ -740,14 +730,12 @@ $(function(favouritedPlaces) {
 			},
 			success: function(comments, status) {
 				$(".getting").remove();
-				
 				objects = JSON.parse(comments);
-				
 				$.each(objects, function(i, comments) { 
 					$("#comments-list").append("<div data-animate=\"comment\" class=\"comment\"><p>" + comments + "</p></div>");
 				});
-				
-				//due to the way the comment is fetched we adjust the firstword, which is the username to standout (a bit hacky but it works alright, and we enforce no spaces on users so it should be fine)
+				//due to the way the comment is fetched we adjust the firstword, which is the username to standout (a bit hacky but it works alright, and we enforce no spaces/special chars on users so it should be fine)
+				//better way would to be fetch the comment and user name differently, but that can be an added improvement later down the line
 				$("#comments-list .comment p").each(function(e) {
 					var me = $(this);
 					me.html(me.text().replace(/(^\w+)/,"<span class=\"by\">$1" + "</span>"));
@@ -758,15 +746,51 @@ $(function(favouritedPlaces) {
 			}
 		});
 		
+		$("#comment").focus(function(e) {
+            $("#comments-list").addClass("making-comment");
+			$("#comment").blur(function(e) {
+				$("#comments-list").removeClass("making-comment");
+			});
+        });
+		
 		$("#post-comment").hammer().on("tap", function(e) {
 			e.stopPropagation(); e.preventDefault();
-			console.log("post comment button");
 			$("#place-comment").submit();
 		});
 		
 		$("#place-comment").submit(function(e) {
 			e.stopPropagation(); e.preventDefault();
-			console.log("form submitted");
+			//console.log(userID + userName + place);
+			var comment = $("#comment").val();
+			
+			if (comment == "") {
+				$("#comment").focus();
+				$("#comment").attr("placeholder", "You didn't enter a comment") && $("#comment").addClass("plc-warning");
+				setTimeout(function() {
+					$("#comment").attr("placeholder", "Enter a comment") && $("#comment").removeClass("plc-warning");;
+				}, 2800);
+				return false;
+			};
+			
+			$.ajax({
+				context: this,
+				type: "POST",
+				data: {userid: userID, username: userName, placename: place, comment: comment},	
+				url: serverURL + "comment.php",
+				async: true,
+				beforeSend: function() {
+					$("#place-comment").append("<p class=\"message success prominent posting\">Posting comment...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>");
+				},
+				success: function() {
+					$(".posting").remove();
+					$("#place-comment").append("<p class=\"message success prominent timed\">Your comment has been posted.</p>");
+					setTimeout(function() {
+						$(".timed").remove();
+						$("#comments-list").prepend("<div data-animate=\"comment\" class=\"comment\"><p>" + "<span class=\"by\">" + userName + "</span>" + comment + "</p></div>");
+						$("#comment").val("");
+					}, 3500);
+				},
+			});
 		});
 		
 		$("#comments-list").hammer().on("tap", ".comment p", function(e) {
@@ -823,6 +847,38 @@ $(function(favouritedPlaces) {
 -----------------------------------------------------------------------------------------*/
 $(function(getOffers) {
 	
+	$.ajax({
+		url: serverURL + "getoffers.php",
+		async: true, //might have to be false
+		beforeSend: function() {
+			console.log("getting offers");
+			//$("#comments-list").append("<p class=\"message getting\">Getting offers...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>")
+		},
+		success: function(offers, status) {
+			$(".getting").remove();
+			
+			//console.log(offers);
+			
+		},
+		error: function() {
+			console.log("oh no");
+		}
+	});
+	
+	
+	//to help prevent layout breaking in the menu we limit the displayed number of offers to 99
+	if (offerCount > 99) {
+		offerCount = 99;
+	} else if (offerCount < 0 || offerCount == 0) {
+		offerCount = 0;
+	}
+	
+	
+	$("#offer-count").html(offerCount); //update count in nav
+	
+	
+	
+	
 });
 
 
@@ -833,6 +889,7 @@ $(function(appSettings) {
 		e.stopPropagation(); e.preventDefault();
 		var show = $(this).data("show");
 		$("#" + show).toggleClass("settings-shown");
+		$("i", this).toggleClass("fa-flip-vertical");
 	});
 	
 	//we need to get the settings again here, as earlier we made them into int from the stored strings
@@ -851,7 +908,6 @@ $(function(appSettings) {
 		
 		$("#search-settings").submit(function(e) {
 			e.stopPropagation(); e.preventDefault();
-			//console.log(this, e + "saved");
 			
 			searchRadius = $("#search-radius").val(),
 			travelMode   = $("#travel-mode").val(),
@@ -1048,8 +1104,15 @@ $(function(appSettings) {
 			var userAccount = [{userName: userName}, {userEmail: userEmail}, {userPassword: userPassword}]; //password needs encyrpting
 			var userRegistration = $(this).serialize(); //used for db
 			
+			//check for spaces = userName.indexOf(" ") != -1) || userName.indexOf(" ") != -1 || userName.indexOf("-") != -1
 			if (userName == "" || userEmail == "" || userPassword == "") {
 				$("#user-account").append("<p class=\"message warning prominent timed\">All fields are required.</p>");
+				setTimeout(function() {
+					$(".timed").remove();
+				}, 3500);
+				return false;
+			} else if (userName.match(/[_\W0-9]/)) { //we could use indexOf() but since we are checking for many characters we just use a quick regular expression
+				$("#user-account").append("<p class=\"message warning prominent timed\">Please only use alphabetical characters in your username, no spaces or special characters.</p>");
 				setTimeout(function() {
 					$(".timed").remove();
 				}, 3500);
@@ -1062,7 +1125,7 @@ $(function(appSettings) {
 				}, 3500);
 				return false;
 			} else {
-				store.setItem("userAccount", userAccount).then(function(value) {
+				store.setItem("userAccount", userAccount).then(function(value) { //we do everything in a promise, because if the promise is met, everything is OK
 					//get the username and store ready for getting the id
 					store.getItem("userAccount").then(function(value) {
 						name = value[0].userName;
@@ -1075,6 +1138,7 @@ $(function(appSettings) {
 						url: serverURL + "register.php",
 						async: false,
 						beforeSend: function() {
+							console.log("creating");
 							$("#user-account").append("<p class=\"message success prominent creating\">Creating...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>");
 						},
 						success: function() {
@@ -1100,7 +1164,7 @@ $(function(appSettings) {
 			e.stopPropagation(); e.preventDefault();
 			if ($("#postcode").val() == "") {
 				$("#postcode").focus();
-				$("#postcode").attr("placeholder", "No postcode entered") && $("#postcode").addClass("plc-warning"); //jazzy
+				$("#postcode").attr("placeholder", "No postcode entered") && $("#postcode").addClass("plc-warning");
 				setTimeout(function() {
 					$("#postcode").attr("placeholder", "Enter a postcode") && $("#postcode").removeClass("plc-warning");;
 				}, 2800);
@@ -1162,6 +1226,55 @@ $(function(appSettings) {
 		});
 	});
 	
+	$(function(deleteData) {
+		$("#confirm-delete").change(function() {
+			var confirmDelete = $(this);
+			if (confirmDelete.prop("checked")) { //yes
+				$(".delete-button").css("display", "block");
+			} else { //no
+				$(".delete-button").css("display", "none");
+			}
+		}).change(function(e) {
+			$("[data-action=\"delete-data\"]").hammer().on("tap", function(e) {
+				e.stopPropagation(); e.preventDefault();
+				
+				if ($("#confirm-delete").prop("checked") === true) {
+					console.log("delete data button hit");
+					
+					store.removeItem("searchSettings");
+					store.removeItem("userAccount");
+					
+					$.ajax({
+						type: "POST",
+						data: {id: userID},
+						url: serverURL + "deleteuser.php",
+						async: false, //important
+						beforeSend: function() {
+							$("#delete-data").append("<p class=\"message success prominent working\">Working...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>");
+						},
+						success: function() {
+							$(".working").remove();
+							$("#delete-data").append("<p class=\"message success prominent done\">Your account and application data have been deleted, the app will now restart.</p>");
+							userID = 0;
+							setTimeout(function() {
+								reloadApp();
+							}, 4000);
+						},
+						error: function() {
+							console.log("Could not complete");
+						}
+					});
+				};
+			});
+		});
+	});
+	
+	//get settings handle
+	$("[data-get=\"settings\"]").hammer().on("tap", function(e) {
+		e.stopPropagation(); e.preventDefault();
+		getSettings();
+	});
+	
 	//get userid when going back home
 	$("[data-user=\"userid\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
@@ -1180,9 +1293,6 @@ $(function(appSettings) {
 		console.log("User ID: " + userID);
 	});
 });
-
-
-
 
 
 /*Prefetching - add class "prefetch" to any links
@@ -1213,11 +1323,23 @@ $(function(prefetch) {
 });
 
 /*Capatilise first letter in a string
-
 -----------------------------------------------------------------------------------------*/
 String.prototype.capitalise = function() {
 	return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+/*Simple method to hash a string, used for making unique place ID's for transactions
+-----------------------------------------------------------------------------------------*/
+String.prototype.hashCode = function() {
+	var hash = 0, i, chr, len;
+	if (this.length == 0) return hash;
+	for (i = 0, len = this.length; i < len; i++) {
+		chr   = this.charCodeAt(i);
+		hash  = ((hash << 5) - hash) + chr;
+		hash |= 0; //convert to 32bit integer
+	}
+	return hash;
+};
 
 /*Back button handler to exit app
 -----------------------------------------------------------------------------------------*/

@@ -4,9 +4,6 @@
 	require "includes/connect.php";
 	
 	if (isset($_POST)) {
-		//$username = ($_POST["username"]);
-		//$email = ($_POST["useremail"]);
-		//$password = ($_POST["userpassword"]);
 		
 		$username = htmlentities($_POST["username"], ENT_QUOTES);
 		$email = htmlentities($_POST["useremail"], ENT_QUOTES);

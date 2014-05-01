@@ -4,17 +4,21 @@
 	require "includes/connect.php";
 	
 	if (isset($_POST)) {
-		/*$placename = htmlentities($_POST["placename"], ENT_QUOTES);
-		$placename = $db -> real_escape_string($placename);
-		
-		$placeaddress = htmlentities($_POST["placeaddress"], ENT_QUOTES);
-		$placeaddress = $db -> real_escape_string($placeaddress);*/
 		
 		$userid = ($_POST["userid"]);
 		
+		$username = htmlentities($_POST["username"], ENT_QUOTES);
+		$username = $db -> real_escape_string($username);
+		
+		$placename = htmlentities($_POST["placename"], ENT_QUOTES);
+		$placename = $db -> real_escape_string($placename);
+		
+		$comment = htmlentities($_POST["comment"], ENT_QUOTES);
+		$comment = $db -> real_escape_string($comment);
+		
 		//we need to get the place id to insert as well
-		if ($stmt = $db -> prepare("INSERT INTO user_comments (placeid, placename, comment) VALUES (?, ?, ?)")) {
-			$stmt -> bind_param("iss", $userid, $placename, $placeaddress);
+		if ($stmt = $db -> prepare("INSERT INTO user_comments (userid, username, placename, comment) VALUES (?, ?, ?, ?)")) {
+			$stmt -> bind_param("isss", $userid, $username, $placename, $comment);
 			$stmt -> execute();
 			$stmt -> close();
 		} else {

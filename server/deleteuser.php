@@ -4,16 +4,11 @@
 	require "includes/connect.php";
 	
 	if (isset($_POST)) {
-		$username = $_POST["username"];
+		$id = $_POST["id"];
 		
-		if ($stmt = $db -> prepare("SELECT id FROM users WHERE username = (?)")) {
-			$stmt -> bind_param("s", $username);
+		if ($stmt = $db -> prepare("DELETE FROM users WHERE id = (?) LIMIT 1")) {
+			$stmt -> bind_param("i", $id); 
 			$stmt -> execute();
-			$stmt -> bind_result($id);
-			$stmt -> fetch();
-			
-			echo json_encode($id);
-			
 			$stmt -> close();
 		
 		} else {

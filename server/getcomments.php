@@ -6,14 +6,15 @@
 	if (isset($_POST)) {
 		$placename = $_POST["placename"];
 		
-		if ($stmt = $db -> prepare("SELECT username, comment FROM user_comments WHERE placename = '" . $placename . "' ORDER BY datemade")) {
+		if ($stmt = $db -> prepare("SELECT username, comment FROM user_comments WHERE placename = (?) ORDER BY datemade DESC")) {
+			$stmt -> bind_param("s", $placename);
 			$stmt -> execute();
 			$stmt -> bind_result($usernames, $comments);
 			
 			$records = array();
 			
 			while ($row = $stmt -> fetch()) {
-				$records[] = $usernames . " " . $comments;
+				$records[] = $usernames . " " . $comments; //try to make proper json
 			}
 			
 			$stmt -> close();

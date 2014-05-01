@@ -5,8 +5,6 @@
 	
 	if (isset($_POST)) {
 		$userid = $_POST["userid"];
-		//$placename = $_POST["placename"];
-		
 		$placename = htmlentities($_POST["placename"], ENT_QUOTES);
 		$placename = $db -> real_escape_string($placename);
 		

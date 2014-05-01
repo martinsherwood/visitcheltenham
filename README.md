@@ -6,7 +6,6 @@ To do:
 
 Add geofences to map
 
-Add offers - do ajax requests for offers
+Add offers - do ajax requests for offers and update count
 
-Finish comments, post to and validate
-
+Check everything
