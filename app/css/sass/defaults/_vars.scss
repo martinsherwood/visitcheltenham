@@ -9,8 +9,13 @@ $errorOrange: hsla(22, 88%, 58%, 1);
 $successGreen: hsla(70, 48%, 50%, 1);
 
 //Typography
-$baseSize: 1.300rem;
+$baseFamily: "Roboto Light", sans-serif;
 $baseWeight: 300;
+
+$baseSize: 1.300rem;
+
+$boldFamily: "Roboto Bold", sans-serif;
+$boldWeight: 700;
 
 //Page Transition
 $pageAnim: .4s cubic-bezier(.16, .68, .43, .99);

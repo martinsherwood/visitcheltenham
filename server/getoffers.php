@@ -10,8 +10,7 @@
 		$records = array();
 		
 		while ($row = $stmt -> fetch()) {
-			//$records[] = $id . ", " . $placename . "; " . $description . "; " . $code . "; " . $expiry;
-			$records[] = array("id"=>$id, "placename"=>$placename, "description"=>$description, "code"=>$code, "expiry"=>$expiry);
+			$records[] = (array("id" => $id, "placename" => $placename, "description" => $description, "code" => $code, "expiry" => $expiry));
 		}
 		
 		$stmt -> close();

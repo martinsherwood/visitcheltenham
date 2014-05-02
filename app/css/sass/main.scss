@@ -62,8 +62,8 @@
 		
 		//information window styles
 		.iw-heading {
-			font-family: "Roboto Bold", sans-serif;
-			font-weight: 700;
+			font-family: $boldFamily;
+			font-weight: $boldWeight;
 			font-size: 1rem;
 			border-bottom: 1px solid $grey;
 		}
@@ -252,7 +252,7 @@
 			@include no-select;
 			cursor: pointer;
 			
-				&:active, &:hover {
+				&:hover {
 					@include tapped;
 				}
 		}
@@ -281,8 +281,8 @@
 		
 		.adp-text {
 			padding: .8rem;
-			font-family: "Roboto Bold", sans-serif;
-			font-weight: 700;
+			font-family: $boldFamily;
+			font-weight: $boldWeight;
 		}
 		
 		.adp-summary {
@@ -479,7 +479,7 @@
 					background: $black;
 					color: $white;
 					
-						&:active, &:hover {
+						&:hover {
 							@include tapped;
 						}
 						
@@ -528,10 +528,17 @@
 					
 						.by {
 							display: block;
-							font-family: "Roboto Bold", sans-serif;
-							font-weight: 700;
+							font-family: $boldFamily;
+							font-weight: $boldWeight;
 							font-size: 1rem;
 							text-transform: uppercase;
+						}
+						
+						.on {
+							color: darken($grey, 20%);
+							margin-left: .6rem;
+							font-weight: $baseWeight;
+							font-size: .8rem;
 						}
 				}
 		}
@@ -606,7 +613,7 @@
 			background: $black;
 			color: $white;
 			
-				&:active, &:hover {
+				&:hover {
 					@include tapped;
 				}
 				
@@ -668,8 +675,8 @@
 				}
 			
 				p:nth-child(2) {
-					font-family: "Roboto Bold", sans-serif;
-					font-weight: 700;
+					font-family: $boldFamily;
+					font-weight: $boldWeight;
 				}
 				
 				.confirm-delete {
@@ -701,7 +708,7 @@
 					width: 99%;
 				}
 				
-				&:active, &:hover {
+				&:hover {
 					@include tapped;
 				}
 		}

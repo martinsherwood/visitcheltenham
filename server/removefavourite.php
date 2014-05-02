@@ -8,8 +8,8 @@
 		$placename = htmlentities($_POST["placename"], ENT_QUOTES);
 		$placename = $db -> real_escape_string($placename);
 		
-		if ($stmt = $db -> prepare("DELETE FROM user_favourites WHERE userid = '" . $userid . "'" . " AND placename = '" . $placename . "' LIMIT 1")) {
-			$stmt -> bind_param("is", $id, $placename); 
+		if ($stmt = $db -> prepare("DELETE FROM user_favourites WHERE userid = (?) AND placename = (?) LIMIT 1")) {
+			$stmt -> bind_param("is", $userid, $placename); 
 			$stmt -> execute();
 			$stmt -> close();
 		

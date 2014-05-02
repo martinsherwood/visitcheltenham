@@ -1821,7 +1821,7 @@ h1 {
   user-select: none;
   cursor: pointer;
 }
-#place-search .search-button:active, #place-search .search-button:hover {
+#place-search .search-button:hover {
   opacity: .85;
 }
 
@@ -2020,7 +2020,7 @@ h1 {
   background: #454545;
   color: #fffffa;
 }
-#comments-box .add-comment .comments-button:active, #comments-box .add-comment .comments-button:hover {
+#comments-box .add-comment .comments-button:hover {
   opacity: .85;
 }
 #comments-box .add-comment .comments-button:before, #comments-box .add-comment .comments-button:after {
@@ -2072,6 +2072,12 @@ h1 {
   font-weight: 700;
   font-size: 1rem;
   text-transform: uppercase;
+}
+#comments-box #comments-list .comment .on {
+  color: #979ca5;
+  margin-left: .6rem;
+  font-weight: 300;
+  font-size: .8rem;
 }
 #comments-box .making-comment {
   top: 242px !important;
@@ -2133,7 +2139,7 @@ h1 {
   background: #454545;
   color: #fffffa;
 }
-#settings .settings-button:active, #settings .settings-button:hover {
+#settings .settings-button:hover {
   opacity: .85;
 }
 #settings .settings-button:before, #settings .settings-button:after {
@@ -2221,7 +2227,7 @@ h1 {
     width: 99%;
   }
 }
-#settings .delete-button:active, #settings .delete-button:hover {
+#settings .delete-button:hover {
   opacity: .85;
 }
 #settings .confirmed {

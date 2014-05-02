@@ -25,24 +25,23 @@ var app = {
     },
 };
 
-
 /*Sets up the device storage environment to use, automatically selects the best library
-/*depending what is supported by the device. Uses store.js, based on Mozilla LocalStorage.
+/*depending what is supported by the device. Uses store.js, based on Mozilla LocalForage.
 -----------------------------------------------------------------------------------------*/
 function setStorage() {
 	var db = indexedDB || window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.OIndexedDB || window.msIndexedDB;
 	
 	if (indexedDB) {
 		store.setDriver("IndexedDBWrapper").then(function() {
-			console.log(store.driver + " IndexedDB");
+			console.log(store.driver + " IndexedDB"); //this is what we want
 		});
-	} else if (window.openDatabase) { // WebSQL is available, so we'll use that.
+	} else if (window.openDatabase) {
 		store.setDriver("WebSQLWrapper").then(function() {
-			console.log(store.driver + " WebSQL");
+			console.log(store.driver + " WebSQL"); //WebSQL is available, so we'll use that
 		});
-	} else { // If nothing else is available, we use localStorage.
+	} else {
 		store.setDriver("localStorageWrapper").then(function() {
-			console.log(store.driver + " LocalStorage");
+			console.log(store.driver + " LocalStorage"); //if nothing else is available, we use localStorage
 		});
 	};
 	
@@ -81,6 +80,28 @@ function getSettings() {
 		userPassword = value[2].userPassword;
 		//console.log(userName + userEmail + userPassword);
 	});
+};
+
+function getID() {
+	store.getItem("userAccount").then(function(value) {
+		name = value[0].userName;
+		//console.log("name from store: " + name);
+	});
+		
+	$.ajax({
+		type: "POST",
+		data: {username: name},
+		url: serverURL + "getuser.php",
+		async: false,
+		success: function(id, status) {
+			userID = id; //if no name is sent, then it returns 0 to validate new users
+		},
+		error: function() {
+			console.log("Failed to get user id, probably there is no match for the given username in the database.");
+		}
+	});
+	
+	console.log("User ID Function: " + userID);
 };
 
 $(function(getUserID) {
@@ -171,8 +192,8 @@ $(function(navigationalHandles) {
 		
 	//determine what the initial view should be
 	if ($("#app > .current").length === 0) {
-		$currentPage = $("#app > *:first-child").addClass("current");
-		//$currentPage = $("#favourites").addClass("current"); //FOR DEV, REMOVE LATER
+		//$currentPage = $("#app > *:first-child").addClass("current");
+		$currentPage = $("#offers").addClass("current"); //FOR DEV, REMOVE LATER
 	} else {
 		$currentPage = $("#app > .current");
 	};
@@ -188,8 +209,7 @@ $(function(navigationalHandles) {
 		$(current).removeClass("current");
 		$(newPage).addClass("current");
 		
-		//var state = { name: newPage };
-		//history.pushState(state, newPage, newPage.split("#").join(""));
+		//var state = { name: newPage };//history.pushState(state, newPage, newPage.split("#").join(""));
 	});
 });
 
@@ -208,7 +228,7 @@ $(function(navigationalHandles) {
 	var cheltenham = new google.maps.LatLng(51.902707,-2.073361);
 	var currentLocation;
 	var origin; //this is used for the distance matrix function
-	var mapStyles = [{featureType:"road",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"poi",elementType:"labels",stylers:[{visibility:"simplified"}]},{featureType:"transit",elementType:"labels.text",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#a2daf2"}]},{featureType:"landscape.man_made",elementType:"geometry",stylers:[{color:"#f7f1df"}]},{featureType:"landscape.natural",elementType:"geometry",stylers:[{color:"#d0e3b4"}]},{featureType:"landscape.natural.terrain",elementType:"geometry",stylers:[{visibility:"off"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#bde6ab"}]},{featureType:"poi.medical",elementType:"geometry",stylers:[{color:"#fbd3da"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{color:"#ffe15f"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#efd151"}]},{featureType:"road.arterial",elementType:"geometry.fill",stylers:[{color:"#ffffff"}]},{featureType:"road.local",elementType:"geometry.fill",stylers:[{color:"black"}]},{featureType:"transit.station.airport",elementType:"geometry.fill",stylers:[{color:"#cfb2db"}]}];
+	var mapStyles = [{featureType:"road",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"poi",elementType:"labels",stylers:[{visibility:"off"}]},{featureType:"transit",elementType:"labels.text",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"geometry",stylers:[{color:"#a2daf2"}]},{featureType:"landscape.man_made",elementType:"geometry",stylers:[{color:"#f7f1df"}]},{featureType:"landscape.natural",elementType:"geometry",stylers:[{color:"#d0e3b4"}]},{featureType:"landscape.natural.terrain",elementType:"geometry",stylers:[{visibility:"off"}]},{featureType:"poi.park",elementType:"geometry",stylers:[{color:"#bde6ab"}]},{featureType:"poi.medical",elementType:"geometry",stylers:[{color:"#fbd3da"}]},{featureType:"road",elementType:"geometry.stroke",stylers:[{visibility:"off"}]},{featureType:"road.highway",elementType:"geometry.fill",stylers:[{color:"#ffe15f"}]},{featureType:"road.highway",elementType:"geometry.stroke",stylers:[{color:"#efd151"}]},{featureType:"road.arterial",elementType:"geometry.fill",stylers:[{color:"#ffffff"}]},{featureType:"road.local",elementType:"geometry.fill",stylers:[{color:"black"}]},{featureType:"transit.station.airport",elementType:"geometry.fill",stylers:[{color:"#cfb2db"}]}];
 	
 	getSettings(); //this always fires, but we call it here because we need direct access to the vars which control the search
 	
@@ -309,8 +329,6 @@ $(function(navigationalHandles) {
 										"<div class=\"opt\"><div data-placename=\"" + place.name + "\" data-address=\"" + place.formatted_address + "\" id=\"add-favourite\" class=\"add-favourite-button\"></div></div>" +
 									"</div></li>");
 								
-								/* ---------- */
-								
 								/*The next section works out the distances and estimated durations to each place from the search results*/
 								
 								origin = currentLocation;
@@ -364,14 +382,11 @@ $(function(navigationalHandles) {
 								}
 								
 								map.addMarker({
-
-
 									lat: place.geometry.location.lat(),
 									lng: place.geometry.location.lng(),
 									icon: image,
 									animation: google.maps.Animation.DROP,
 									title: place.name,
-									
 									//allow tappable information windows with basic information
 									infoWindow: {
 										content: "<h2 class=\"iw-heading\">" + place.name + "</h2>" +
@@ -429,7 +444,7 @@ $(function(navigationalHandles) {
 						} else if (status == google.maps.places.PlacesServiceStatus.INVALID_REQUEST) {
 							console.log(status);
 						}
-					}//search
+					}
 				});
 			};
 			
@@ -439,7 +454,7 @@ $(function(navigationalHandles) {
 				var change = $(this);
 				var dist = $(this).data("distance")
 				var dura = $(this).data("duration")
-				//if distance is shown, show duration else show distance and vice-versa
+				//if distance is shown, show duration else show distance and vice-versa, we start on distance
 				if (change.text() == dist) {
 					change.text(dura);
 				} else {
@@ -454,7 +469,7 @@ $(function(navigationalHandles) {
 			});
 		});
 		
-		//function to locate the user and update the currentLocation variable (could be made cleaner into same function as initialLocate - later if time)
+		//function to locate the user and update the currentLocation variable
 		function locateUser() {
 			if (Modernizr.geolocation) {
 				GMaps.geolocate({
@@ -477,6 +492,7 @@ $(function(navigationalHandles) {
 							icon: "img/location-marker-blue.png",
 							animation: google.maps.Animation.DROP,
 						});
+						
 						map.setCenter(position.lat, position.lng); //I think smooth panning works if the new location is within a certain radius
 						map.setZoom(16);
 						$(".no-results").remove();
@@ -543,7 +559,7 @@ $(function(navigationalHandles) {
 				}
 			});
 		};
-	});//placesMap
+	});
 	
 	//options for search results
 	$(function(doMore) {
@@ -580,14 +596,12 @@ $(function(navigationalHandles) {
 					console.log("added " + placeName + " to favourites");
 				},
 				error: function() {
-					alert("There was a problem processing your request.");
+					console.log("error: " + this);
 				},
 			});
-			
 			//I can't figure out how get back that if a user has added the place before, to change these depending of what they have added already
 			//getting the list of favourites and comparing to the data value didn't work, would be difficult as google regularly make updates to the place pages
-			
-		});//add place
+		});
 		
 		//remove a favourite
 		$(".results-names").hammer().on("tap", "#remove-favourite", function(e) {
@@ -608,10 +622,10 @@ $(function(navigationalHandles) {
 					console.log("deleted " + placeName + " from favourites");
 				},
 				error: function() {
-					alert("There was a problem processing your request.");
+					console.log("There was a problem processing your request.");
 				},
 			});
-		});//remove place
+		});
 		
 		$(".results-names").hammer().on("tap", "#get-directions", function(e) {
 			e.stopPropagation(); e.preventDefault();
@@ -641,8 +655,7 @@ $(function(navigationalHandles) {
 				$("#directions-box").remove();
 				$("#home").addClass("current");
 			});
-		});//get direction
-		
+		});
 	});//do more
 })();//end map scope
 
@@ -664,6 +677,8 @@ $(function(favouritedPlaces) {
 							  "</div>" +
 						      "<div id=\"comments-list\" class=\"inner-wrap\"></div>" +
 						  "</div>"
+						  
+	var commentsList = $("#comments-list");
 	
 	function getFavourites() {
 		$.ajax({
@@ -691,12 +706,12 @@ $(function(favouritedPlaces) {
 				});
 			},
 			error: function() {
-				console.log("oh no");
+				console.log("oh no"); //make better error
 			}
 		});
 	};
 	
-	getFavourites(); //testing
+	//getFavourites(); //testing
 	
 	$("#refresh-favourites").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
@@ -713,7 +728,6 @@ $(function(favouritedPlaces) {
 	
 	favouritesList.hammer().on("tap", "#comment-place", function(e) {
 		e.stopPropagation(); e.preventDefault();
-		//console.log(userName);
 		
 		place = $(this).data("place");
 		
@@ -724,25 +738,24 @@ $(function(favouritedPlaces) {
 			type: "POST",
 			data: {placename: place},
 			url: serverURL + "getcomments.php",
-			async: true, //might have to be false
+			async: true,
 			beforeSend: function() {
 				$("#comments-list").append("<p class=\"message getting\">Getting comments...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>")
 			},
-			success: function(comments, status) {
+			success: function(data, status) {
 				$(".getting").remove();
-				objects = JSON.parse(comments);
-				$.each(objects, function(i, comments) { 
-					$("#comments-list").append("<div data-animate=\"comment\" class=\"comment\"><p>" + comments + "</p></div>");
+				objects = JSON.parse(data);
+				//console.log(objects);
+				
+				$.each(objects, function(i, item) { 
+					$("#comments-list").append("<div data-animate=\"comment\" class=\"comment\"><span class=\"by\">" + item.username + "<span class=\"on\">" + item.date + "</span></span><p>" + item.comment + "</p></div>");
 				});
-				//due to the way the comment is fetched we adjust the firstword, which is the username to standout (a bit hacky but it works alright, and we enforce no spaces/special chars on users so it should be fine)
-				//better way would to be fetch the comment and user name differently, but that can be an added improvement later down the line
-				$("#comments-list .comment p").each(function(e) {
-					var me = $(this);
-					me.html(me.text().replace(/(^\w+)/,"<span class=\"by\">$1" + "</span>"));
-				});
+				
+				
 			},
 			error: function() {
-				console.log("oh no");
+				$("#comments-list").append("<p class=\"warning no-comments\">Sorry, there was an error getting the comments.</p>")
+				console.log("error: " + this);
 			}
 		});
 		
@@ -771,6 +784,8 @@ $(function(favouritedPlaces) {
 				}, 2800);
 				return false;
 			};
+			
+			$(".no-comments").remove();
 			
 			$.ajax({
 				context: this,
@@ -846,6 +861,7 @@ $(function(favouritedPlaces) {
 /*Offers and redemption
 -----------------------------------------------------------------------------------------*/
 $(function(getOffers) {
+	offerCount = 3; //for testing
 	
 	$.ajax({
 		url: serverURL + "getoffers.php",
@@ -854,14 +870,21 @@ $(function(getOffers) {
 			console.log("getting offers");
 			//$("#comments-list").append("<p class=\"message getting\">Getting offers...<br><i class=\"fa fa-2x fa-spinner fa-spin\"></i></p>")
 		},
-		success: function(offers, status) {
-			$(".getting").remove();
+		success: function(data, status) {
 			
-			//console.log(offers);
+			objects = JSON.parse(data);
+			
+			//console.log(objects);
+			
+			//console.log(objects.placename);
+			
+			$.each(objects, function(i, item) {
+				//console.log(item.placename);
+			});
 			
 		},
 		error: function() {
-			console.log("oh no");
+			console.log("failed to get offers");
 		}
 	});
 	
@@ -871,14 +894,9 @@ $(function(getOffers) {
 		offerCount = 99;
 	} else if (offerCount < 0 || offerCount == 0) {
 		offerCount = 0;
-	}
-	
+	};
 	
 	$("#offer-count").html(offerCount); //update count in nav
-	
-	
-	
-	
 });
 
 
@@ -929,7 +947,6 @@ $(function(appSettings) {
 	//the code should get the token from the url in the inappbrowser window (I don't know why it won't work)
 	//you can console.log and get the code before it chucks up the error so I can't see why the code from the
 	//url in the inappbrowser window isn't being retrieved.
-	/* ----- */
 	$(function(googleSignin) {
 		var googleAPI = {
 			setToken: function(data) {
@@ -1076,11 +1093,8 @@ $(function(appSettings) {
 				});
 			}
 		};
-		
 		signIn.init(); //put in device ready
-		/*end*/
-	});
-	/* ----- */
+	});//end google signin
 	
 	$(function(userAccount) {
 		store.getItem("userAccount").then(function(value) {
@@ -1214,7 +1228,6 @@ $(function(appSettings) {
 					},
 					success: function() {
 						$(".sending").remove();
-						//console.log(feedback);
 						$("#send-feedback").append("<p class=\"message success prominent timed\">Thanks for the feedback!</p>");
 						setTimeout(function() {
 							$(".timed").remove();
@@ -1233,7 +1246,7 @@ $(function(appSettings) {
 				$(".delete-button").css("display", "block");
 			} else { //no
 				$(".delete-button").css("display", "none");
-			}
+			};
 		}).change(function(e) {
 			$("[data-action=\"delete-data\"]").hammer().on("tap", function(e) {
 				e.stopPropagation(); e.preventDefault();
@@ -1269,7 +1282,7 @@ $(function(appSettings) {
 		});
 	});
 	
-	//get settings handle
+	//get settings when going back home
 	$("[data-get=\"settings\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		getSettings();
@@ -1278,7 +1291,8 @@ $(function(appSettings) {
 	//get userid when going back home
 	$("[data-user=\"userid\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
-		$.ajax({
+		getID();
+		/*$.ajax({
 			type: "POST",
 			data: {username: name},
 			url: serverURL + "getuser.php",
@@ -1290,7 +1304,7 @@ $(function(appSettings) {
 				console.log("Failed to get user id, probably there is no match for the given username in the database.");
 			}
 		});
-		console.log("User ID: " + userID);
+		console.log("User ID: " + userID);*/
 	});
 });
 
