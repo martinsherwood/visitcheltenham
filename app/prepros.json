@@ -17,20 +17,6 @@
         "sourcemaps": false
       }
     },
-    "50ef0fa9": {
-      "id": "50ef0fa9",
-      "pid": "cc820037",
-      "name": "main.js",
-      "input": "js\\main.js",
-      "customOutput": false,
-      "type": "Js",
-      "config": {
-        "autoCompile": true,
-        "uglify": true,
-        "mangle": true,
-        "sourcemaps": true
-      }
-    },
     "703ed662": {
       "id": "703ed662",
       "pid": "cc820037",
@@ -90,6 +76,20 @@
         "fullCompass": false,
         "outputStyle": "expanded",
         "autoprefixer": false
+      }
+    },
+    "50ef0fa9": {
+      "id": "50ef0fa9",
+      "pid": "cc820037",
+      "name": "main.js",
+      "input": "js\\main.js",
+      "customOutput": false,
+      "type": "Js",
+      "config": {
+        "autoCompile": true,
+        "uglify": true,
+        "mangle": true,
+        "sourcemaps": false
       }
     }
   },
@@ -192,35 +192,15 @@
     }
   },
   "images": {
-    "3397b453": {
-      "id": "3397b453",
-      "pid": "cc820037",
-      "path": "img\\touchicons\\apple-touch-icon-precomposed.png",
-      "size": 21714,
-      "name": "apple-touch-icon-precomposed.png",
-      "type": "Png",
-      "initialSize": 21714,
-      "status": "NOT_OPTIMIZED"
-    },
-    "0a698b77": {
-      "id": "0a698b77",
-      "pid": "cc820037",
-      "path": "img\\touchicons\\favicon.png",
-      "size": 19666,
-      "name": "favicon.png",
-      "type": "Png",
-      "initialSize": 19666,
-      "status": "NOT_OPTIMIZED"
-    },
     "a6294c2d": {
       "id": "a6294c2d",
       "pid": "cc820037",
       "path": "img\\google-signin.png",
-      "size": 125966,
+      "size": 20093,
       "name": "google-signin.png",
       "type": "Png",
       "initialSize": 125966,
-      "status": "NOT_OPTIMIZED"
+      "status": "OPTIMIZED"
     },
     "3cbf2cec": {
       "id": "3cbf2cec",
@@ -230,7 +210,7 @@
       "name": "location-marker-blue.png",
       "type": "Png",
       "initialSize": 15622,
-      "status": "NOT_OPTIMIZED"
+      "status": "OPTIMIZED"
     },
     "ca3121b6": {
       "id": "ca3121b6",
@@ -240,7 +220,7 @@
       "name": "location-marker-pink.png",
       "type": "Png",
       "initialSize": 15189,
-      "status": "NOT_OPTIMIZED"
+      "status": "OPTIMIZED"
     },
     "d08feef6": {
       "id": "d08feef6",
@@ -250,7 +230,7 @@
       "name": "powered-by-google.png",
       "type": "Png",
       "initialSize": 6971,
-      "status": "NOT_OPTIMIZED"
+      "status": "OPTIMIZED"
     },
     "e796c869": {
       "id": "e796c869",
@@ -260,7 +240,37 @@
       "name": "icon.png",
       "type": "Png",
       "initialSize": 21714,
-      "status": "NOT_OPTIMIZED"
+      "status": "OPTIMIZED"
+    },
+    "d580a262": {
+      "id": "d580a262",
+      "pid": "cc820037",
+      "path": "img\\touch\\apple-touch-icon-precomposed.png",
+      "size": 21714,
+      "name": "apple-touch-icon-precomposed.png",
+      "type": "Png",
+      "initialSize": 21714,
+      "status": "OPTIMIZED"
+    },
+    "82c4b529": {
+      "id": "82c4b529",
+      "pid": "cc820037",
+      "path": "img\\touch\\favicon.png",
+      "size": 19666,
+      "name": "favicon.png",
+      "type": "Png",
+      "initialSize": 19666,
+      "status": "OPTIMIZED"
+    },
+    "a29f96fb": {
+      "id": "a29f96fb",
+      "pid": "cc820037",
+      "path": "img\\starbucks.png",
+      "size": 43749,
+      "name": "starbucks.png",
+      "type": "Png",
+      "initialSize": 43749,
+      "status": "FAILED"
     }
   },
   "config": {

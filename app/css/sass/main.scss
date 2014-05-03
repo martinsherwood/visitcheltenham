@@ -313,14 +313,6 @@
 			line-height: 50px;
 		}
 	
-		.getting {
-			margin-top: 1rem;
-			
-				i {
-					margin-top: .5rem;
-				}
-		}
-	
 		.favourites-list {
 			position: relative;
 			
@@ -496,14 +488,6 @@
 			-ms-transition: top linear .4s;
 			transition: top linear .4s;
 			
-				.getting {
-					margin-top: 1rem;
-					
-						i {
-							margin-top: .5rem;
-						}
-				}
-			
 				.comment {
 					width: 100%;
 					margin: 14px 0;
@@ -512,6 +496,7 @@
 					
 						p {
 							max-height: 100px;
+							word-wrap: break-word;
 							overflow: hidden;
 							text-overflow: ellipsis;
 							-webkit-transition: max-height linear .4s;
@@ -546,6 +531,36 @@
 		.making-comment {
 			top: 242px !important;
 		}
+}
+
+/*-----------------------------------------------------------------*/
+
+.offer-roll {
+	width: 100%;
+	position: relative;
+	margin-top: 40%;
+	//white-space: nowrap;
+	//overflow-x: hidden;
+	
+		.offer-container {
+			width: 100%;
+			display: inline-block;
+			position: relative;
+			border: 1px solid $grey;
+			background: aliceblue;
+			
+				h2 {
+					font-size: 1.3rem;
+					font-family: $boldFamily;
+					font-weight: $boldWeight;
+				}
+			
+				img.offer-logo {
+					display: block;
+					margin: 0 auto;
+				}
+		}
+	
 }
 
 /*-----------------------------------------------------------------*/

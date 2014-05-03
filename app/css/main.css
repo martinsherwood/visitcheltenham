@@ -523,7 +523,7 @@ textarea {
   color: #a8bd42;
 }
 
-.no-results {
+.no-results, .comment-error {
   padding-top: 10px;
 }
 
@@ -540,6 +540,14 @@ textarea {
   transform: translateY(-50%);
   background: rgba(0, 0, 0, 0.85);
   padding: 0.5rem;
+}
+
+.getting {
+  padding-top: 1rem;
+  overflow: hidden;
+}
+.getting i {
+  padding-top: .5rem;
 }
 
 /* Page Transition Animations */
@@ -1869,12 +1877,6 @@ h1 {
   float: right;
   line-height: 50px;
 }
-#favourites .getting {
-  margin-top: 1rem;
-}
-#favourites .getting i {
-  margin-top: .5rem;
-}
 #favourites .favourites-list {
   position: relative;
 }
@@ -2040,12 +2042,6 @@ h1 {
   -ms-transition: top linear .4s;
   transition: top linear .4s;
 }
-#comments-box #comments-list .getting {
-  margin-top: 1rem;
-}
-#comments-box #comments-list .getting i {
-  margin-top: .5rem;
-}
 #comments-box #comments-list .comment {
   width: 100%;
   margin: 14px 0;
@@ -2054,6 +2050,7 @@ h1 {
 }
 #comments-box #comments-list .comment p {
   max-height: 100px;
+  word-wrap: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-transition: max-height linear .4s;
@@ -2081,6 +2078,29 @@ h1 {
 }
 #comments-box .making-comment {
   top: 242px !important;
+}
+
+/*-----------------------------------------------------------------*/
+.offer-roll {
+  width: 100%;
+  position: relative;
+  margin-top: 40%;
+}
+.offer-roll .offer-container {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  border: 1px solid #ced0d4;
+  background: aliceblue;
+}
+.offer-roll .offer-container h2 {
+  font-size: 1.3rem;
+  font-family: "Roboto Bold", sans-serif;
+  font-weight: 700;
+}
+.offer-roll .offer-container img.offer-logo {
+  display: block;
+  margin: 0 auto;
 }
 
 /*-----------------------------------------------------------------*/

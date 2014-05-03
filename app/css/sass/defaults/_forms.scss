@@ -131,7 +131,7 @@ textarea {
 	color: $successGreen;
 }
 
-.no-results {
+.no-results, .comment-error {
 	padding-top: 10px;
 }
 
@@ -148,4 +148,13 @@ textarea {
 	transform: translateY(-50%);
 	background: hsla(0,0%,0%,0.85);
 	padding: 0.5rem;
+}
+
+.getting {
+	padding-top: 1rem;
+	overflow: hidden;
+	
+		i {
+			padding-top: .5rem;
+		}
 }
