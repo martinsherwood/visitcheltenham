@@ -2081,26 +2081,91 @@ h1 {
 }
 
 /*-----------------------------------------------------------------*/
-.offer-roll {
+#offers h1:first-of-type {
+  border-bottom: none;
+}
+#offers .offer-roll {
   width: 100%;
   position: relative;
-  margin-top: 40%;
+  -webkit-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
-.offer-roll .offer-container {
+#offers .offer-roll .slide-container, #offers .offer-roll .slide-wrapper {
+  height: 368px !important;
+}
+@media screen and (min-width: 37.5em) {
+  #offers .offer-roll .slide-container, #offers .offer-roll .slide-wrapper {
+    height: 569px !important;
+  }
+}
+#offers .offer-roll .offer-container {
   width: 100%;
+  height: 368px !important;
   display: inline-block;
+  float: left;
   position: relative;
-  border: 1px solid #ced0d4;
-  background: aliceblue;
 }
-.offer-roll .offer-container h2 {
-  font-size: 1.3rem;
-  font-family: "Roboto Bold", sans-serif;
-  font-weight: 700;
-}
-.offer-roll .offer-container img.offer-logo {
+#offers .offer-roll .offer-container .offer-image {
+  width: 100%;
+  height: 180px;
+  background-size: cover;
   display: block;
+}
+@media screen and (min-width: 37.5em) {
+  #offers .offer-roll .offer-container .offer-image {
+    height: 360px;
+  }
+}
+#offers .offer-roll .offer-container h2 {
+  height: 40px;
+  line-height: 40px;
+  background: #454545;
+  color: #fffffa;
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+#offers .offer-roll .offer-container p {
+  font-size: 1.8rem;
+  margin: .8rem 0;
+  text-align: center;
+}
+#offers .offer-roll .offer-container .redeem {
+  width: 180px;
+  height: 50px;
   margin: 0 auto;
+  line-height: 50px;
+  background: #76bb2b;
+  color: #fffffa;
+  text-align: center;
+  margin-bottom: .8rem;
+}
+#offers .offer-roll .offer-container span {
+  width: 50%;
+  float: left;
+  border-top: 1px solid #ced0d4;
+  border-bottom: 1px solid #ced0d4;
+  font-size: .8rem;
+  color: #979ca5;
+}
+#offers .offer-roll .offer-container .code {
+  padding-left: 14px;
+}
+#offers .offer-roll .offer-container .code:before {
+  content: "Code: ";
+}
+#offers .offer-roll .offer-container .expiry {
+  text-align: right;
+  padding-right: 14px;
+}
+#offers .offer-roll .offer-container .expiry:before {
+  content: "Expires: ";
+}
+#offers .offer-roll wp8-horizontal {
+  -ms-touch-action: pan-y;
+}
+#offers .offer-roll wp8-vertical {
+  -ms-touch-action: pan-x;
 }
 
 /*-----------------------------------------------------------------*/

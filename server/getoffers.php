@@ -3,14 +3,14 @@
 	
 	require "includes/connect.php";
 		
-	if ($stmt = $db -> prepare("SELECT id, placename, description, code, expiry FROM offers")) {
+	if ($stmt = $db -> prepare("SELECT id, placename, description, imagename, code, expiry FROM offers")) {
 		$stmt -> execute();
-		$stmt -> bind_result($id, $placename, $description, $code, $expiry);
+		$stmt -> bind_result($id, $placename, $description, $imagename, $code, $expiry);
 		
 		$records = array();
 		
 		while ($row = $stmt -> fetch()) {
-			$records[] = (array("id" => $id, "placename" => $placename, "description" => $description, "code" => $code, "expiry" => $expiry));
+			$records[] = (array("id" => $id, "placename" => $placename, "description" => $description, "imagename" => $imagename, "code" => $code, "expiry" => $expiry));
 		}
 		
 		$stmt -> close();

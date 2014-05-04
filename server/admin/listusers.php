@@ -60,7 +60,7 @@
     <h1>All Users</h1>
 
 	<?php
-        require "includes/connect.php";
+        require "../includes/connect.php";
         
         //list all users
         if ($stmt = $db -> prepare("SELECT * FROM users ORDER BY id")) {

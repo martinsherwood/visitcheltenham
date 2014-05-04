@@ -91,6 +91,20 @@
         "mangle": true,
         "sourcemaps": false
       }
+    },
+    "364f540d": {
+      "id": "364f540d",
+      "pid": "cc820037",
+      "name": "offersroll.js",
+      "input": "js\\offersroll.js",
+      "customOutput": false,
+      "type": "Js",
+      "config": {
+        "autoCompile": true,
+        "uglify": true,
+        "mangle": true,
+        "sourcemaps": false
+      }
     }
   },
   "imports": {
@@ -142,6 +156,22 @@
         "7c23f569"
       ]
     },
+    "fb6068df": {
+      "id": "fb6068df",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_animations.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "26042bb7": {
+      "id": "26042bb7",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_helpers.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
     "09d6abfa": {
       "id": "09d6abfa",
       "pid": "cc820037",
@@ -166,26 +196,10 @@
         "7c23f569"
       ]
     },
-    "fb6068df": {
-      "id": "fb6068df",
-      "pid": "cc820037",
-      "path": "css\\sass\\defaults\\_animations.scss",
-      "parents": [
-        "7c23f569"
-      ]
-    },
     "d07246c0": {
       "id": "d07246c0",
       "pid": "cc820037",
       "path": "css\\sass\\partials\\_modals.scss",
-      "parents": [
-        "7c23f569"
-      ]
-    },
-    "26042bb7": {
-      "id": "26042bb7",
-      "pid": "cc820037",
-      "path": "css\\sass\\defaults\\_helpers.scss",
       "parents": [
         "7c23f569"
       ]

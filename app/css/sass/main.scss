@@ -535,32 +535,108 @@
 
 /*-----------------------------------------------------------------*/
 
-.offer-roll {
-	width: 100%;
-	position: relative;
-	margin-top: 40%;
-	//white-space: nowrap;
-	//overflow-x: hidden;
+#offers {
 	
-		.offer-container {
+		h1:first-of-type {
+			border-bottom: none;
+		}
+		
+		.offer-roll {
 			width: 100%;
-			display: inline-block;
 			position: relative;
-			border: 1px solid $grey;
-			background: aliceblue;
+			//overflow:hidden;
+			-webkit-backface-visibility: hidden;
+			-ms-backface-visibility: hidden;
+			backface-visibility: hidden;
 			
-				h2 {
-					font-size: 1.3rem;
-					font-family: $boldFamily;
-					font-weight: $boldWeight;
+				.slide-container, .slide-wrapper {
+					height: 368px !important;
+					
+						@include breakpoint(tablet) {
+							height: 569px !important;
+						}
 				}
 			
-				img.offer-logo {
-					display: block;
-					margin: 0 auto;
+				.offer-container {
+					width: 100%;
+					height: 368px !important;
+					display: inline-block;
+					float: left;
+					position: relative;
+					
+						.offer-image {
+							width: 100%;
+							height: 180px;
+							background-size: cover;
+							display: block;
+							
+								@include breakpoint(tablet) {
+									height: 360px;
+								}
+						}
+						
+						h2 {
+							height: 40px;
+							line-height: 40px;
+							background: $black;
+							color: $white;
+							font-size: 1.4rem;
+							font-weight: $baseWeight;
+						}
+						
+						p {
+							font-size: 1.8rem;
+							margin: .8rem 0;
+							text-align: center;
+						}
+						
+						.redeem {
+							width: 180px;
+							height: 50px;
+							margin: 0 auto;
+							line-height: 50px;
+							background: darken(#8fd445, 10%);
+							color: $white;
+							text-align: center;
+							margin-bottom: .8rem;
+						}
+						
+						span {
+							width: 50%;
+							float: left;
+							border-top: 1px solid $grey;
+							border-bottom: 1px solid $grey;
+							font-size: .8rem;
+							color: darken($grey, 20%);
+						}
+						
+						.code {
+							padding-left: $sidePadding;
+							
+								&:before {
+									content: "Code: ";
+								}
+						}
+						
+						.expiry {
+							text-align: right;
+							padding-right: $sidePadding;
+							
+								&:before {
+									content: "Expires: ";
+								}
+						}
+				}
+				
+				//Windows Phone 8 fix
+				wp8-horizontal {
+					-ms-touch-action: pan-y;
+				}
+				
+				wp8-vertical {
+					-ms-touch-action: pan-x;
 				}
 		}
-	
 }
 
 /*-----------------------------------------------------------------*/
