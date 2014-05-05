@@ -86,11 +86,11 @@ var offerRoll = function (selector, params) {
         offsetSlidesBefore : 0,
         offsetSlidesAfter : 0,
         centeredSlides: false,
-        autoResize : true,
+        autoResize : false,
         resizeReInit : false,
-        slideElement: 'div',
-        slideClass: 'offer-container',
-        wrapperClass: 'roller',
+        slideElement: "div",
+        slideClass: "offer-container",
+        wrapperClass: "roller",
     };
     params = params || {};
     for (var prop in defaults) {
@@ -106,9 +106,7 @@ var offerRoll = function (selector, params) {
         }
     }
     _this.params = params;
-    if (params.loop) {
-        params.resistance = '100%';
-    }
+	
     var isH = params.mode === 'horizontal';
 
     /*=========================
@@ -285,138 +283,7 @@ var offerRoll = function (selector, params) {
             _this.calcSlides(forceCalcSlides);
         }
 
-        if (params.slidesPerView === 'auto') {
-            //Auto mode
-            var slidesWidth = 0;
-            var slidesHeight = 0;
-
-            //Unset Styles
-            if (params.slidesOffset > 0) {
-                wrapper.style.paddingLeft = '';
-                wrapper.style.paddingRight = '';
-                wrapper.style.paddingTop = '';
-                wrapper.style.paddingBottom = '';
-            }
-            wrapper.style.width = '';
-            wrapper.style.height = '';
-            if (params.offsetPxBefore > 0) {
-                if (isH) _this.wrapperLeft = params.offsetPxBefore;
-                else _this.wrapperTop = params.offsetPxBefore;
-            }
-            if (params.offsetPxAfter > 0) {
-                if (isH) _this.wrapperRight = params.offsetPxAfter;
-                else _this.wrapperBottom = params.offsetPxAfter;
-            }
-
-            if (params.centeredSlides) {
-                if (isH) {
-                    _this.wrapperLeft = (containerSize - this.slides[0].getWidth(true, params.roundLengths)) / 2;
-                    _this.wrapperRight = (containerSize - _this.slides[_this.slides.length - 1].getWidth(true, params.roundLengths)) / 2;
-                }
-                else {
-                    _this.wrapperTop = (containerSize - _this.slides[0].getHeight(true, params.roundLengths)) / 2;
-                    _this.wrapperBottom = (containerSize - _this.slides[_this.slides.length - 1].getHeight(true, params.roundLengths)) / 2;
-                }
-            }
-
-            if (isH) {
-                if (_this.wrapperLeft >= 0) wrapper.style.paddingLeft = _this.wrapperLeft + 'px';
-                if (_this.wrapperRight >= 0) wrapper.style.paddingRight = _this.wrapperRight + 'px';
-            }
-            else {
-                if (_this.wrapperTop >= 0) wrapper.style.paddingTop = _this.wrapperTop + 'px';
-                if (_this.wrapperBottom >= 0) wrapper.style.paddingBottom = _this.wrapperBottom + 'px';
-            }
-            slideLeft = 0;
-            var centeredSlideLeft = 0;
-            _this.snapGrid = [];
-            _this.slidesGrid = [];
-
-            slideMaxHeight = 0;
-            for (i = 0; i < _this.slides.length; i++) {
-                slideWidth = _this.slides[i].getWidth(true, params.roundLengths);
-                slideHeight = _this.slides[i].getHeight(true, params.roundLengths);
-                if (params.calculateHeight) {
-                    slideMaxHeight = Math.max(slideMaxHeight, slideHeight);
-                }
-                var _slideSize = isH ? slideWidth : slideHeight;
-                if (params.centeredSlides) {
-                    var nextSlideWidth = i === _this.slides.length - 1 ? 0 : _this.slides[i + 1].getWidth(true, params.roundLengths);
-                    var nextSlideHeight = i === _this.slides.length - 1 ? 0 : _this.slides[i + 1].getHeight(true, params.roundLengths);
-                    var nextSlideSize = isH ? nextSlideWidth : nextSlideHeight;
-                    if (_slideSize > containerSize) {
-                        if (params.slidesPerViewFit) {
-                            _this.snapGrid.push(slideLeft + _this.wrapperLeft);
-                            _this.snapGrid.push(slideLeft + _slideSize - containerSize + _this.wrapperLeft);
-                        }
-                        else {
-                            for (var j = 0; j <= Math.floor(_slideSize / (containerSize + _this.wrapperLeft)); j++) {
-                                if (j === 0) _this.snapGrid.push(slideLeft + _this.wrapperLeft);
-                                else _this.snapGrid.push(slideLeft + _this.wrapperLeft + containerSize * j);
-                            }
-                        }
-                        _this.slidesGrid.push(slideLeft + _this.wrapperLeft);
-                    }
-                    else {
-                        _this.snapGrid.push(centeredSlideLeft);
-                        _this.slidesGrid.push(centeredSlideLeft);
-                    }
-                    centeredSlideLeft += _slideSize / 2 + nextSlideSize / 2;
-                }
-                else {
-                    if (_slideSize > containerSize) {
-                        if (params.slidesPerViewFit) {
-                            _this.snapGrid.push(slideLeft);
-                            _this.snapGrid.push(slideLeft + _slideSize - containerSize);
-                        }
-                        else {
-                            if (containerSize !== 0) {
-                                for (var k = 0; k <= Math.floor(_slideSize / containerSize); k++) {
-                                    _this.snapGrid.push(slideLeft + containerSize * k);
-                                }
-                            }
-                            else {
-                                _this.snapGrid.push(slideLeft);
-                            }
-                        }
-                            
-                    }
-                    else {
-                        _this.snapGrid.push(slideLeft);
-                    }
-                    _this.slidesGrid.push(slideLeft);
-                }
-
-                slideLeft += _slideSize;
-
-                slidesWidth += slideWidth;
-                slidesHeight += slideHeight;
-            }
-            if (params.calculateHeight) _this.height = slideMaxHeight;
-            if (isH) {
-                wrapperSize = slidesWidth + _this.wrapperRight + _this.wrapperLeft;
-                wrapper.style.width = (slidesWidth) + 'px';
-                wrapper.style.height = (_this.height) + 'px';
-            }
-            else {
-                wrapperSize = slidesHeight + _this.wrapperTop + _this.wrapperBottom;
-                wrapper.style.width = (_this.width) + 'px';
-                wrapper.style.height = (slidesHeight) + 'px';
-            }
-
-        }
-        else if (params.scrollContainer) {
-            //Scroll Container
-            wrapper.style.width = '';
-            wrapper.style.height = '';
-            wrapperWidth = _this.slides[0].getWidth(true, params.roundLengths);
-            wrapperHeight = _this.slides[0].getHeight(true, params.roundLengths);
-            wrapperSize = isH ? wrapperWidth : wrapperHeight;
-            wrapper.style.width = wrapperWidth + 'px';
-            wrapper.style.height = wrapperHeight + 'px';
-            slideSize = isH ? wrapperWidth : wrapperHeight;
-
-        }
+        
         else {
             //For usual slides
             if (params.calculateHeight) {
@@ -451,40 +318,6 @@ var offerRoll = function (selector, params) {
             wrapperWidth = isH ? _this.slides.length * slideWidth : _this.width;
             slideSize = isH ? slideWidth : slideHeight;
 
-            if (params.offsetSlidesBefore > 0) {
-                if (isH) _this.wrapperLeft = slideSize * params.offsetSlidesBefore;
-                else _this.wrapperTop = slideSize * params.offsetSlidesBefore;
-            }
-            if (params.offsetSlidesAfter > 0) {
-                if (isH) _this.wrapperRight = slideSize * params.offsetSlidesAfter;
-                else _this.wrapperBottom = slideSize * params.offsetSlidesAfter;
-            }
-            if (params.offsetPxBefore > 0) {
-                if (isH) _this.wrapperLeft = params.offsetPxBefore;
-                else _this.wrapperTop = params.offsetPxBefore;
-            }
-            if (params.offsetPxAfter > 0) {
-                if (isH) _this.wrapperRight = params.offsetPxAfter;
-                else _this.wrapperBottom = params.offsetPxAfter;
-            }
-            if (params.centeredSlides) {
-                if (isH) {
-                    _this.wrapperLeft = (containerSize - slideSize) / 2;
-                    _this.wrapperRight = (containerSize - slideSize) / 2;
-                }
-                else {
-                    _this.wrapperTop = (containerSize - slideSize) / 2;
-                    _this.wrapperBottom = (containerSize - slideSize) / 2;
-                }
-            }
-            if (isH) {
-                if (_this.wrapperLeft > 0) wrapper.style.paddingLeft = _this.wrapperLeft + 'px';
-                if (_this.wrapperRight > 0) wrapper.style.paddingRight = _this.wrapperRight + 'px';
-            }
-            else {
-                if (_this.wrapperTop > 0) wrapper.style.paddingTop = _this.wrapperTop + 'px';
-                if (_this.wrapperBottom > 0) wrapper.style.paddingBottom = _this.wrapperBottom + 'px';
-            }
 
             wrapperSize = isH ? wrapperWidth + _this.wrapperRight + _this.wrapperLeft : wrapperHeight + _this.wrapperTop + _this.wrapperBottom;
             if (!params.cssWidthAndHeight) {
@@ -495,6 +328,7 @@ var offerRoll = function (selector, params) {
                     wrapper.style.height = wrapperHeight + 'px';
                 }
             }
+			
             slideLeft = 0;
             _this.snapGrid = [];
             _this.slidesGrid = [];
@@ -1054,22 +888,6 @@ offerRoll.prototype = {
             el = a.wrapper,
             events = ['webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'MSTransitionEnd', 'msTransitionEnd'],
             i;
-
-        function fireCallBack() {
-            callback(a);
-            if (a.params.queueEndCallbacks) a._queueEndCallbacks = false;
-            if (!permanent) {
-                for (i = 0; i < events.length; i++) {
-                    a.h.removeEventListener(el, events[i], fireCallBack);
-                }
-            }
-        }
-
-        if (callback) {
-            for (i = 0; i < events.length; i++) {
-                a.h.addEventListener(el, events[i], fireCallBack);
-            }
-        }
     },
 
     getWrapperTranslate : function (axis) {
@@ -1211,20 +1029,6 @@ offerRoll.prototype = {
                 el.attachEvent('on' + event, listener);
             }
         },
-
-        removeEventListener : function (el, event, listener, useCapture) {
-            'use strict';
-            if (typeof useCapture === 'undefined') {
-                useCapture = false;
-            }
-
-            if (el.removeEventListener) {
-                el.removeEventListener(event, listener, useCapture);
-            }
-            else if (el.detachEvent) {
-                el.detachEvent('on' + event, listener);
-            }
-        }
     },
 	
     setTransform : function (el, transform) {

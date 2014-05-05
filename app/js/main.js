@@ -869,6 +869,20 @@ $(function(favouritedPlaces) {
 -----------------------------------------------------------------------------------------*/
 $(function(offersFeatures) {
 	
+	var offerImagesURL = "http://www.martinsherwood.co.uk/visitcheltenham/offerimages/";
+	
+	/*var offerContainer = "<div class=\"offer-container\">" +
+                                "<div class=\"offer-image\" style=\"background:url(" + offerImagesURL + item.imagename  + "); background-size: cover\"></div>" +
+                            	
+                                "<h2 class=\"inner-wrap\">" + item.placename + "</h2>" +
+                                "<p>" + item.description + "</p>" +
+                                
+                                "<div data-action=\"redeem-offer\" class=\"redeem\" data-code=\"" +  + "\" "">Get Offer</div>" +
+                                
+                                "<span class=\"code\">" + item.code + "</span>" +
+                                "<span class=\"expiry\">" + item.expiry + "</span>" +
+                            "</div>"*/
+	
 	function getOffers() {
 		return $.ajax({
 			url: serverURL + "getoffers.php",
@@ -889,7 +903,7 @@ $(function(offersFeatures) {
 
 	function handleData(data) {
 		objects = JSON.parse(data);
-		//console.log(objects);
+		
 		$.each(objects, function(i, item) {
 			offerCount++;
 			
@@ -900,30 +914,29 @@ $(function(offersFeatures) {
 			};
 			
 			console.log(item);
-		});	
+			
+			$(".roller").append("<div class=\"offer-container\">" +
+									"<div class=\"offer-image\" style=\"background:url(" + offerImagesURL + item.imagename  + "); background-size: cover\"></div>" +
+									
+									"<h2 class=\"inner-wrap\">" + item.placename + "</h2>" +
+									"<p>" + item.description + "</p>" +
+									
+									"<div data-action=\"redeem-offer\" class=\"redeem\" data-code=\"" + item.code + "\">Get Offer</div>" +
+									
+									"<span class=\"code\">" + item.code + "</span>" +
+									"<span class=\"expiry\">" + item.expiry + "</span>" +
+								"</div>");
+		});
+		
 		$("#offer-count").html(offerCount); //update count in nav
 	};
 	
 	getOffers().done(handleData);
 	
 	//---
-	
-	/*(function worker() {
-		$.ajax({
-			url: 'ajax/test.html', 
-			success: function(data) {
-				$('.result').html(data);
-			},
-			complete: function() {
-				setTimeout(worker, 5000); //schedule the next request when the current one's complete
-			}
-		});
-	})();*/
-	
 	$.getScript("js/min/offersroll.min.js").done(function(script, textStatus) {
-		//console.log(textStatus);
 		
-		//construct the plugin
+		//construct the roller
 		(function ($) {
 			"use strict";
 			$.fn.offerRoll = function (params) {
@@ -940,15 +953,14 @@ $(function(offersFeatures) {
 			});
 		});
 		
-	}).fail(function(jqxhr, settings, exception) {
-		console.log(exception);
+		}).fail(function(jqxhr, settings, exception) {console.log(exception);
 	});
 	
 	
 	
 
 	
-	$(".redeem").hammer().on("tap", function(e) {
+	$(".roller").hammer().on("tap", ".redeem", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		//var code = $(this).data("code");
 		console.log("here");
