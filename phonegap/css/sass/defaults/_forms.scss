@@ -1,0 +1,160 @@
+label {
+	display: block;
+	font-size: 1.180rem;
+}
+
+input, textarea, select {
+	padding: .6rem;
+	outline: none;
+	resize: none;
+	line-height: 2.00rem;
+	border: 3px solid $black;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	color: $black;
+	margin: 0 auto;
+	background: transparent;
+	@include letter-spacing;
+	
+		&:focus {
+			outline: none;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+		}
+}
+
+textarea {
+    resize: none;
+}
+
+.checkbox {
+	[type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+		position: absolute;
+		left: -9999px;
+	}
+	
+	[type="checkbox"]:not(:checked) + label, [type="checkbox"]:checked + label {
+		position: relative;
+		cursor: pointer;
+	}
+	
+	[type="checkbox"]:not(:checked) + label:before, [type="checkbox"]:checked + label:before, [type="checkbox"]:not(:checked) + label:after, [type="checkbox"]:checked + label:after {
+		position: absolute;
+		content: "";
+	}
+	
+	//the toggle bar that moves
+	[type="checkbox"]:not(:checked) + label:before, [type="checkbox"]:checked + label:before {
+		width: 100px;
+		height: 46px;
+		top: -3px;
+		left: 0;
+		background: $black;
+		-webkit-transition: background 2s;
+		-ms-transition: background 2s;
+		transition: background .2s;
+	}
+	
+	[type="checkbox"]:not(:checked) + label:after, [type="checkbox"]:checked + label:after {
+		width: 20px;
+		height: 46px;
+		top: -3px;
+		left: 0;
+		background: #00adef;
+		-webkit-transition: all 2s;
+		-ms-transition: all 2s;
+		transition: all .2s;
+	}
+	
+	//checked styles
+	[type="checkbox"]:checked + label:before {
+		background: lighten($black, 6%); 
+	}
+	
+	[type="checkbox"]:checked + label:after {
+		top: -3px;
+		left: 80px;
+	}
+	
+	[type="checkbox"]:checked + label .ui, [type="checkbox"]:not(:checked) + label .ui:before, [type="checkbox"]:checked + label .ui:after {
+		position: absolute;
+		left: .2rem;
+		font-size: 1.180rem;
+		line-height: 40px;
+		-webkit-transition: all 2s;
+		-ms-transition: all 2s;
+		transition: all .2s;
+	}
+	
+	[type="checkbox"]:not(:checked) + label .ui:before {
+		left: 4.4rem;
+		content: "No";
+	}
+	
+	[type="checkbox"]:checked + label .ui:after {
+		color: $white;
+		content: "Yes";
+	}
+}
+
+.submit-icon, .go-icon {
+	width: 36px;
+	height: 36px;
+	display: inline-block;
+	float: right;
+	margin-top: 6.5px;
+	background-size: cover;
+	@include no-select;
+	cursor: pointer;
+}
+
+.submit-icon {
+	background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI3MSA3MSAzNzAgMzcwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDcxIDcxIDM3MCAzNzAiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImNoZWNrYm94LTE0LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik0yMjQuOSwzNDIuM2wtNzcuNC03Ny40bDMzLTMzbDQ0LjQsNDQuNWwxMDIuNi0xMDIuNmwzMywzMi45TDIyNC45LDM0Mi4zeiBNMjU2LDExMQ0KCWMzOC43LDAsNzUuMSwxNS4xLDEwMi41LDQyLjVTNDAxLDIxNy4zLDQwMSwyNTZzLTE1LjEsNzUuMS00Mi41LDEwMi41UzI5NC43LDQwMSwyNTYsNDAxcy03NS4xLTE1LjEtMTAyLjUtNDIuNVMxMTEsMjk0LjcsMTExLDI1Ng0KCXMxNS4xLTc1LjEsNDIuNS0xMDIuNVMyMTcuMywxMTEsMjU2LDExMXogTTI1Niw3MUMxNTMuOCw3MSw3MSwxNTMuOCw3MSwyNTZzODIuOCwxODUsMTg1LDE4NWMxMDIuMiwwLDE4NS04Mi44LDE4NS0xODUNCglTMzU4LjIsNzEsMjU2LDcxeiIvPg0KPC9zdmc+DQo=");
+}
+
+.go-icon {
+	background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNy4xLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB2aWV3Qm94PSI1MCA1MCA0MTIgNDEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDUwIDUwIDQxMiA0MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHBhdGggaWQ9ImFycm93LTI4LWljb24iIGZpbGw9IiNGRkZGRkEiIGQ9Ik05MCwyNTZjMCw5MS44LDc0LjMsMTY2LDE2NiwxNjZjOTEuOCwwLDE2Ni03NC4zLDE2Ni0xNjZjMC05MS44LTc0LjMtMTY2LTE2Ni0xNjYNCglDMTY0LjIsOTAsOTAsMTY0LjMsOTAsMjU2eiBNNDYyLDI1NmMwLDExMy44LTkyLjIsMjA2LTIwNiwyMDZTNTAsMzY5LjgsNTAsMjU2UzE0Mi4yLDUwLDI1Niw1MFM0NjIsMTQyLjIsNDYyLDI1NnogTTIwMCwxNjguNg0KCWwzMi4zLTMyLjFMMzUyLjIsMjU3TDIzMi4yLDM3Ny41TDIwMCwzNDUuNGw4OC04OC40TDIwMCwxNjguNnoiLz4NCjwvc3ZnPg0K");
+}
+
+//error and user messages
+.message {
+	text-align: center;
+}
+
+.warning {
+	@extend .message;
+	color: $errorOrange
+}
+
+.success {
+	@extend .message;
+	color: $successGreen;
+}
+
+.no-results, .comment-error {
+	padding-top: 10px;
+}
+
+.plc-warning::-webkit-input-placeholder {
+	color: $errorOrange;
+}
+
+.no-geo, .prominent {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	background: hsla(0,0%,0%,0.85);
+	padding: 0.5rem;
+}
+
+.getting {
+	padding-top: 1rem;
+	overflow: hidden;
+	
+		i {
+			padding-top: .5rem;
+		}
+}

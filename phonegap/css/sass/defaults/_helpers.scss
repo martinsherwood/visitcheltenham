@@ -1,0 +1,72 @@
+/*prevent callout*/
+.nocallout {
+    -webkit-touch-callout: none;
+}
+
+.pressed {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/*specifies that an entire element should be draggable instead of its contents*/
+.nodrag { /*no dragging at all*/
+	-webkit-user-drag: none;
+}
+
+.elementdrag { /*drags entire element, not the text/selection*/
+	-webkit-user-drag: element;
+}
+
+/*hack for HTML5 contenteditable attribute on mobile*/
+textarea[contenteditable] {
+    -webkit-appearance: none;
+}
+
+/*image replacement*/
+.ir {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: 0;
+    direction: ltr;
+    display: block;
+    overflow: hidden;
+    text-align: left;
+    text-indent: -999em;
+}
+
+.ir br {
+    display: none;
+}
+
+/*hide from both screenreaders and browsers*/
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+/*hide only visually, but have it available for screenreaders*/
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+/*extends the .visuallyhidden class to allow the element to be focusable when navigated to via the keyboard*/
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+}
+
+/*hide visually and from screenreaders, but maintain layout*/
+.invisible {
+    visibility: hidden;
+}

@@ -1,0 +1,355 @@
+{
+  "id": "cc820037",
+  "cfgVersion": 1,
+  "name": "visitcheltenham",
+  "files": {
+    "8583184e": {
+      "id": "8583184e",
+      "pid": "cc820037",
+      "name": "modernizr.js",
+      "input": "js\\libs\\modernizr.js",
+      "customOutput": false,
+      "type": "Js",
+      "config": {
+        "autoCompile": false,
+        "uglify": true,
+        "mangle": true,
+        "sourcemaps": false
+      }
+    },
+    "703ed662": {
+      "id": "703ed662",
+      "pid": "cc820037",
+      "name": "maps.js",
+      "input": "js\\maps.js",
+      "customOutput": false,
+      "type": "Js",
+      "config": {
+        "autoCompile": true,
+        "uglify": true,
+        "mangle": true,
+        "sourcemaps": false
+      }
+    },
+    "7e86ce19": {
+      "id": "7e86ce19",
+      "pid": "cc820037",
+      "name": "storage.js",
+      "input": "js\\storage.js",
+      "customOutput": false,
+      "type": "Js",
+      "config": {
+        "autoCompile": true,
+        "uglify": true,
+        "mangle": true,
+        "sourcemaps": false
+      }
+    },
+    "87f5c6f0": {
+      "id": "87f5c6f0",
+      "pid": "cc820037",
+      "name": "hammer.js",
+      "input": "js\\hammer.js",
+      "customOutput": false,
+      "type": "Js",
+      "config": {
+        "autoCompile": true,
+        "uglify": true,
+        "mangle": true,
+        "sourcemaps": false
+      }
+    },
+    "7c23f569": {
+      "id": "7c23f569",
+      "pid": "cc820037",
+      "name": "main.scss",
+      "input": "css\\sass\\main.scss",
+      "customOutput": "css\\main.css",
+      "type": "Scss",
+      "config": {
+        "autoCompile": true,
+        "lineNumbers": false,
+        "unixNewlines": false,
+        "sourcemaps": true,
+        "debug": false,
+        "compass": false,
+        "fullCompass": false,
+        "outputStyle": "expanded",
+        "autoprefixer": false
+      }
+    },
+    "50ef0fa9": {
+      "id": "50ef0fa9",
+      "pid": "cc820037",
+      "name": "main.js",
+      "input": "js\\main.js",
+      "customOutput": false,
+      "type": "Js",
+      "config": {
+        "autoCompile": true,
+        "uglify": true,
+        "mangle": true,
+        "sourcemaps": false
+      }
+    },
+    "364f540d": {
+      "id": "364f540d",
+      "pid": "cc820037",
+      "name": "offersroll.js",
+      "input": "js\\offersroll.js",
+      "customOutput": false,
+      "type": "Js",
+      "config": {
+        "autoCompile": true,
+        "uglify": true,
+        "mangle": true,
+        "sourcemaps": false
+      }
+    }
+  },
+  "imports": {
+    "84597581": {
+      "id": "84597581",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_base.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "0dd6b665": {
+      "id": "0dd6b665",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_normalize.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "b2f13fcf": {
+      "id": "b2f13fcf",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_vars.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "ed97a1f6": {
+      "id": "ed97a1f6",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_mixins.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "3fd31db6": {
+      "id": "3fd31db6",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_typography.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "fa00d7ee": {
+      "id": "fa00d7ee",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_forms.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "fb6068df": {
+      "id": "fb6068df",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_animations.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "26042bb7": {
+      "id": "26042bb7",
+      "pid": "cc820037",
+      "path": "css\\sass\\defaults\\_helpers.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "09d6abfa": {
+      "id": "09d6abfa",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_layout.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "51df75c2": {
+      "id": "51df75c2",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_appwrapper.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "d4d7a55f": {
+      "id": "d4d7a55f",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_header.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "d07246c0": {
+      "id": "d07246c0",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_modals.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "29a06abe": {
+      "id": "29a06abe",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_searches.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "6609572d": {
+      "id": "6609572d",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_favourites.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "241970e5": {
+      "id": "241970e5",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_settings.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    },
+    "e49f39b1": {
+      "id": "e49f39b1",
+      "pid": "cc820037",
+      "path": "css\\sass\\partials\\_offers.scss",
+      "parents": [
+        "7c23f569"
+      ]
+    }
+  },
+  "images": {
+    "a6294c2d": {
+      "id": "a6294c2d",
+      "pid": "cc820037",
+      "path": "img\\google-signin.png",
+      "size": 20093,
+      "name": "google-signin.png",
+      "type": "Png",
+      "initialSize": 125966,
+      "status": "OPTIMIZED"
+    },
+    "3cbf2cec": {
+      "id": "3cbf2cec",
+      "pid": "cc820037",
+      "path": "img\\location-marker-blue.png",
+      "size": 15622,
+      "name": "location-marker-blue.png",
+      "type": "Png",
+      "initialSize": 15622,
+      "status": "OPTIMIZED"
+    },
+    "ca3121b6": {
+      "id": "ca3121b6",
+      "pid": "cc820037",
+      "path": "img\\location-marker-pink.png",
+      "size": 15189,
+      "name": "location-marker-pink.png",
+      "type": "Png",
+      "initialSize": 15189,
+      "status": "OPTIMIZED"
+    },
+    "d08feef6": {
+      "id": "d08feef6",
+      "pid": "cc820037",
+      "path": "img\\powered-by-google.png",
+      "size": 6971,
+      "name": "powered-by-google.png",
+      "type": "Png",
+      "initialSize": 6971,
+      "status": "OPTIMIZED"
+    },
+    "e796c869": {
+      "id": "e796c869",
+      "pid": "cc820037",
+      "path": "icon.png",
+      "size": 21714,
+      "name": "icon.png",
+      "type": "Png",
+      "initialSize": 21714,
+      "status": "OPTIMIZED"
+    },
+    "d580a262": {
+      "id": "d580a262",
+      "pid": "cc820037",
+      "path": "img\\touch\\apple-touch-icon-precomposed.png",
+      "size": 21714,
+      "name": "apple-touch-icon-precomposed.png",
+      "type": "Png",
+      "initialSize": 21714,
+      "status": "OPTIMIZED"
+    },
+    "82c4b529": {
+      "id": "82c4b529",
+      "pid": "cc820037",
+      "path": "img\\touch\\favicon.png",
+      "size": 19666,
+      "name": "favicon.png",
+      "type": "Png",
+      "initialSize": 19666,
+      "status": "OPTIMIZED"
+    },
+    "a29f96fb": {
+      "id": "a29f96fb",
+      "pid": "cc820037",
+      "path": "img\\starbucks.png",
+      "size": 43749,
+      "name": "starbucks.png",
+      "type": "Png",
+      "initialSize": 43749,
+      "status": "FAILED"
+    }
+  },
+  "config": {
+    "watch": true,
+    "liveRefresh": true,
+    "liveRefreshDelay": 0,
+    "filterPatterns": "",
+    "useCustomServer": false,
+    "customServerUrl": "",
+    "cssPath": "css/",
+    "jsPath": "js/",
+    "htmlPath": "html/",
+    "minJsPath": "min/",
+    "htmlExtension": ".html",
+    "cssPathType": "REPLACE_TYPE",
+    "htmlPathType": "REPLACE_TYPE",
+    "jsPathType": "REPLACE_TYPE",
+    "minJsPathType": "RELATIVE_FILEDIR",
+    "htmlTypes": "jade, haml, slim, markdown, md",
+    "cssTypes": "less, sass, stylus, scss, styl",
+    "jsTypes": "coffee, coffeescript, coffeescripts, ls, livescript, livescripts",
+    "cssPreprocessorPath": "",
+    "htmlPreprocessorPath": "",
+    "jsPreprocessorPath": "",
+    "minJsPreprocessorPath": "",
+    "autoprefixerBrowsers": "",
+    "ftpHost": "",
+    "ftpPort": "21",
+    "ftpRemotePath": "",
+    "ftpIgnorePreprocessorFiles": true,
+    "ftpType": "FTP",
+    "ftpExcludePatterns": "",
+    "ftpPassword": "",
+    "ftpUsername": ""
+  }
+}

@@ -1,0 +1,25 @@
+.container {
+	width: 100%;
+	min-width: 100%;
+}
+
+.inner-wrap {
+	padding-right: $sidePadding;
+	padding-left: $sidePadding;
+}
+
+.centre {
+	margin: 0 auto;
+}
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+.behind {
+	z-index: -1 !important;
+}

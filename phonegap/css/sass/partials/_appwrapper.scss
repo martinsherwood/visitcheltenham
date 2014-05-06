@@ -1,0 +1,28 @@
+//App Wrapper
+
+#app {
+	width: 100%;
+	//min-height: 100%;
+	display: block;
+	position: absolute;
+	top: 40px;
+	left: 0;
+	overflow-x: hidden;
+}
+
+.overflow {
+	overflow-x: visible;
+}
+
+#app > .current {
+	display: block;
+	z-index: 10;
+}
+
+#app > :not(.current) {
+	display: none;
+}
+
+[data-role="page"] {
+	position: relative;
+}

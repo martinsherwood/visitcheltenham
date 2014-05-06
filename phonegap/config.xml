@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    <widget xmlns   	= "http://www.w3.org/ns/widgets"
+        xmlns:gap  	 	= "http://phonegap.com/ns/1.0"
+		xmlns:android   = "http://schemas.android.com/apk/res/android"
+        id          	= "com.visitcheltenham.app"
+        version     	= "1.0.0" >
+
+    <name>Visit Cheltenham</name>
+
+    <description>
+        Travel &amp; Tourism application for the town of Cheltenham.
+    </description>
+
+    <author href="http://martinsherwood.co.uk/" email="mail@martinsherwood.co.uk">
+        Martin Sherwood &amp; Leanne Williams
+    </author>
+	
+	<!--Build For---->
+	<gap:platform name="ios" />
+	<gap:platform name="android" />
+	<gap:platform name="winphone" />
+	
+	<!--Multi-->
+	<preference name="orientation" value="portrait" />
+	<preference name="fullscreen" value="false" />
+	<!--<preference name="phonegap-version" value="3.3.0" />-->
+	
+	<!--iOS-->
+	<preference name="target-device" value="universal" />
+	<preference name="prerendered-icon" value="true" />
+	<preference name="ios-statusbarstyle" value="black-opaque" />
+	<preference name="detect-data-types" value="false" />
+	<preference name="exit-on-suspend" value="false" />
+	<preference name="WebViewBounce" value="false" />
+	
+	<!--Android-->
+	<preference name="android-installLocation" value="auto" />
+	
+	<!--Access-->
+	<access origin="*" />
+
+</widget>

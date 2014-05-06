@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="dns-prefetch" href="//maps.googleapis.com">
+        
+        <title>Visit Cheltenham</title>
+        
+        <meta name="description" content="Travel &amp; Tourism App for Cheltenham, United Kingdom">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, width=device-width">
+		<meta name="format-detection" content="telephone=no">
+        
+		<link rel="shortcut icon" href="img/touch/favicon.ico">
+		<link rel="apple-touch-icon-precomposed" href="img/touch/apple-touch-icon-precomposed.png">
+        
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="Visit Cheltenham">
+        
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/fontawesome.css">
+        
+        <script src="js/libs/modernizr.js"></script>
+        
+    </head>
+    <body>
+    
+    	<div class="overlay"></div>
+        
+    	<div id="app" role="main" class="main">
+        
+            <div id="search" data-role="page">
+                <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
+                    <div class="location-map">
+                    	<div id="map-container">
+                        </div>
+                    </div>
+                    
+                    <div class="searches">
+                        <form id="place-search" role="search">               
+                    		<input type="text" id="place-query" name="place-query" placeholder="Search for a place" autocomplete="off" autocorrect="on" autocapitalize="off">
+                            <div role="button" data-role="button" data-action="submit-place-search" class="search-button"></div>
+                    	</form>
+                        
+                        <div class="results">
+                        	<h1 class="inner-wrap">Results</h1>
+                            <ul class="results-names">
+                            </ul>
+                            
+                            <ul class="results-details">
+                            </ul>
+                        </div>
+                    </div>
+                </div><!--/container - content-->
+            </div><!--/home-->
+            
+            <!--###-->
+            
+            <div id="favourites" data-role="page">
+            	<div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
+                	<h1 class="inner-wrap">Favourites<i id="refresh-favourites" class="fa fa-refresh"></i></h1>
+                	
+                    <ul class="favourites-list">
+                    </ul>
+                	
+            	</div><!--/container - content-->
+            </div><!--/favourites-->
+            
+            <!--###-->
+            
+            <div id="offers" data-role="page">
+            	<div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
+                	<h1 class="inner-wrap">Offers</h1>
+                    
+                    <!--needs additional markup for swipe roller display-->
+                    <div class="offer-roll">
+                    </div>
+                    
+            	</div><!--/container - content-->
+            </div><!--/offers-->
+            
+            <!--###-->
+            
+            <div id="settings" data-role="page">
+                <div role="contentinfo" data-role="content" data-transition="slide-left-in" class="push content container">
+                
+                    <div class="settings-block">
+                        <h1 class="inner-wrap show-settings" data-show="search-settings">Search<i class="fa fa-angle-down"></i></h1>
+                        <div id="search-settings" class="settings-content" data-transition="slide-left-in">
+                            <form id="search-settings" autocomplete="off">
+                                <label for="search-radius" class="inner-wrap">Search Radius <span>(metres)</span></label>
+                                <input type="text" id="search-radius" name="search-radius" class="inner-wrap" autocorrect="off" autocapitalize="off">
+                                
+                                <label for="travel-mode" class="inner-wrap">Travel Mode <span>(tell us if you have a car)</span></label>
+                                <select id="travel-mode" name="travel-mode">
+                                    <option value="walking">Walking</option>
+                                    <option value="bicycling">Bicycling</option>
+                                    <option value="driving">Driving</option>
+                                </select>
+                                
+                                <label for="unit-system" class="inner-wrap">Unit System <span>(distances and durations)</span></label>
+                                <select id="unit-system" name="unit-system">
+                                    <option value="imperial">Imperial</option>
+                                    <option value="metric">Metric</option>
+                                </select>
+                                <div role="button" data-role="button" data-action="save-settings" class="settings-button inner-wrap">Save<div class="submit-icon"></div></div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-block">
+                    	<h1 class="inner-wrap show-settings" data-show="user-settings">User Account<i class="fa fa-angle-down"></i></h1>
+                        
+                        <div id="user-settings" class="settings-content" data-transition="slide-left-in">
+                            <div id="google-login">
+                                <div role="button" data-role="button" data-action="google-signin" class="google-signin"></div>
+                                <p class="inner-wrap warning"></p>
+                            </div>
+                            
+                            <div id="google-login-success">
+                                <span class="settings-label inner-wrap">You are signed in as:</span>
+                                <p class="inner-wrap signed-in-name"></p>
+                            </div>
+                            
+                            <form id="user-account" method="post" autocomplete="off">
+                                <label for="username" class="inner-wrap">Username</label>
+                                <input type="text" id="username" name="username" placeholder="Enter a username" autocorrect="off" autocapitalize="off" maxlength="22">
+                                
+                                <label for="useremail" class="inner-wrap">Email</label>
+                                <input type="email" id="useremail" name="useremail" placeholder="Enter an email address" autocorrect="off" autocapitalize="off">
+                                
+                                <label for="userpassword" class="inner-wrap">Password</label>
+                                <input type="password" id="userpassword" name="userpassword" placeholder="Enter a password" autocorrect="off" autocapitalize="off">
+                                
+                                <div role="button" data-role="button" data-action="save-account" class="settings-button inner-wrap">Save &amp; Register<div class="submit-icon"></div></div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-block">
+                    	<h1 class="inner-wrap show-settings" data-show="util-settings">Utilities<i class="fa fa-angle-down"></i></h1>
+                        <div id="util-settings" class="settings-content" data-transition="slide-left-in">
+                            <form id="postcode-lookup" autocomplete="off">
+                                <label for="postcode" class="inner-wrap">Postcode Lookup</label>
+                                <input type="text" id="postcode" name="postcode" placeholder="Enter a postcode" autocorrect="off" autocapitalize="off">
+                                <p class="inner-wrap"><span>Result: </span><span class="geocode-result"></span></p>
+                                <div role="button" data-role="button" data-action="submit-postcode-lookup" class="settings-button inner-wrap">Search<div class="submit-icon"></div></div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-block">
+                    	<h1 class="inner-wrap show-settings" data-show="feedback-settings">Send Feedback<i class="fa fa-angle-down"></i></h1>
+                        <div id="feedback-settings" class="settings-content" data-transition="slide-left-in">
+                            <form id="send-feedback" method="post" autocomplete="off">
+                                <label for="name" class="inner-wrap">Name</label>
+                                <input type="text" id="name" name="name" placeholder="Your name" autocorrect="on" autocapitalize="on">
+                                
+                                <label for="email" class="inner-wrap">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="Your email" autocorrect="off" autocapitalize="off">
+                                
+                                <label for="message" class="inner-wrap">Message</label>
+                                <textarea id="message" name="message" placeholder="Your message" autocorrect="on" autocapitalize="on" rows="3"></textarea>
+                                
+                                <div role="button" data-role="button" data-action="send-feedback" class="settings-button inner-wrap">Send<div class="submit-icon"></div></div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-block">
+                    	<h1 class="inner-wrap show-settings" data-show="delete-data">Delete Data &amp; Reset<i class="fa fa-angle-down"></i></h1>
+                        <div id="delete-data" class="settings-content" data-transition="slide-left-in">
+                        	<p class="inner-wrap">You can use this setting to permanently delete all application data and your user account.</p>
+                            <p class="inner-wrap">Are you sure?</p>
+                            <div class="confirm-delete checkbox inner-wrap">
+                            	<input type="checkbox" id="confirm-delete" name="confirm-delete" value="confirm-delete">
+                                <label for="confirm-delete"><span class="ui"></span></label>
+                            </div>
+                            <div role="button" data-role="button" data-action="delete-data" class="delete-button">Delete Data<div class="submit-icon"></div></div>
+                        </div>
+                    </div>
+                </div><!--/container - content-->
+            </div><!--/settings-->
+            
+        </div><!--/app-->
+        
+        <script src="js/libs/jquery-2.1.0.min.js"></script>
+        <!--this won't load if the device is offline which will cause problems and all kinds of hell, so we need to test for the connection-->
+        <!--we are only loading Great Britain (better on mobile) so locations outside will not work, and probably cause errors-->
+        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC6n-3I8KfH6ReeERae16W5M8B1QtzjPGc&amp;sensor=true&amp;libraries=places&amp;region=GB"></script>
+        <script src="js/min/hammer.min.js"></script>
+        <script src="js/min/storage.min.js"></script>
+        <script src="js/min/maps.min.js"></script>
+        <script src="js/main.js"></script>
+		<script>app.initialize();</script>
+    </body>
+</html>

@@ -1,0 +1,114 @@
+#offers {
+	
+		h1:first-of-type {
+			border-bottom: none;
+		}
+		
+		.offer-roll {
+			width: 100%;
+			position: relative;
+			-webkit-backface-visibility: hidden;
+			-ms-backface-visibility: hidden;
+			backface-visibility: hidden;
+			
+				.roller {
+					height: 368px;
+					
+						@include breakpoint(tablet) {
+							height: 548px;
+						}
+				}
+			
+				.offer-container {
+					height: 368px;
+					position: relative;
+					
+						@include breakpoint(tablet) {
+							height: 548px;
+						}
+					
+						.offer-image {
+							width: 100%;
+							height: 180px;
+							background-size: cover;
+							display: block;
+							
+								@include breakpoint(tablet) {
+									height: 360px;
+								}
+						}
+						
+						h2 {
+							height: 40px;
+							line-height: 40px;
+							background: $black;
+							color: $white;
+							font-size: 1.4rem;
+							font-weight: $baseWeight;
+						}
+						
+						p {
+							font-size: 1.8rem;
+							margin: .8rem 0;
+							text-align: center;
+						}
+						
+						.redeem {
+							width: 180px;
+							height: 50px;
+							margin: 0 auto .8rem auto;
+							line-height: 50px;
+							background: darken(#8fd445, 10%);
+							color: $white;
+							text-align: center;
+							
+								&:hover {
+									@include tapped;
+								}
+						}
+						
+						.redeemed {
+							background: #00adef;
+							
+								&:hover {
+									opacity: 1;
+								}
+						}
+						
+						span {
+							width: 50%;
+							float: left;
+							border-top: 1px solid $grey;
+							border-bottom: 1px solid $grey;
+							font-size: .8rem;
+							color: darken($grey, 20%);
+						}
+						
+						.code {
+							padding-left: $sidePadding;
+							
+								&:before {
+									content: "Code: ";
+								}
+						}
+						
+						.expiry {
+							text-align: right;
+							padding-right: $sidePadding;
+							
+								&:before {
+									content: "Expires: ";
+								}
+						}
+				}
+				
+				//Windows Phone 8 fix
+				wp8-horizontal {
+					-ms-touch-action: pan-y;
+				}
+				
+				wp8-vertical {
+					-ms-touch-action: pan-x;
+				}
+		}
+}

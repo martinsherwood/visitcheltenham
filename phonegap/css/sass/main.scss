@@ -1,0 +1,44 @@
+@charset "utf-8";
+
+@import "defaults/_normalize.scss";
+
+@import "defaults/_vars.scss";
+
+@import "defaults/_mixins.scss";
+
+@import "defaults/_typography.scss";
+
+@import "defaults/_forms.scss";
+
+@import "defaults/_animations.scss";
+
+@import "defaults/_helpers.scss";
+
+/*-----------------------------------------------------------------*/
+
+*,
+*:after,
+*:before {
+	@include box-sizing(border-box);
+	@include reset-box;
+}
+
+@import "partials/_base.scss";
+
+@import "partials/_layout.scss";
+
+@import "partials/_appwrapper.scss";
+
+@import "partials/_header.scss";
+
+@import "partials/_modals.scss";
+
+/*-----------------------------------------------------------------*/
+
+@import "partials/_searches.scss";
+
+@import "partials/_favourites.scss";
+
+@import "partials/_offers.scss";
+
+@import "partials/_settings.scss";
