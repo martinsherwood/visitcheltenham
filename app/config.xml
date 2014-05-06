@@ -44,8 +44,6 @@
 	<gap:plugin name="Notification" value="org.apache.cordova.core.Notification" />
 	<gap:plugin name="Vibration" value="org.apache.cordova.core.Vibration" />
 	<gap:plugin name="InAppBrowser" value="org.apache.cordova.core.InAppBrowser" />
-	<gap:plugin name="NetworkStatus" value="org.apache.cordova.core.NetworkManager" />
-	<gap:plugin name="Battery" value="org.apache.cordova.core.BatteryListener" />
 	<gap:plugin name="Geolocation" value="org.apache.cordova.core.GeoBroker" />
 
 </widget>

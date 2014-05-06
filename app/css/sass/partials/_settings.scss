@@ -1,0 +1,165 @@
+#settings {
+	display: block;
+	
+		.settings-block {
+			position: relative;
+			padding-bottom: 14px;
+			
+				h1 i {
+					font-size: 2.6rem;
+					float: right;
+					line-height: 50px;
+				}
+			
+				&:last-of-type {
+					padding-bottom: 0;
+				}
+		}
+		
+		.settings-content {
+			display: none;
+		}
+		
+		.settings-shown {
+			display: block;
+		}
+	
+		label, .settings-label {
+			width: 100%;
+			height: 30px;
+			display: block;
+			line-height: 30px; 
+			color: darken($grey, 30%);
+			
+				span {
+					font-size: 1.0rem;
+				}
+		}
+	
+		input, select, textarea {
+			width: 92%;
+			display: block;
+			margin-bottom: .8rem;
+				
+				&:focus {
+					outline: none;
+					-webkit-box-shadow: none;
+					box-shadow: none;
+				}
+				
+				@include breakpoint(tablet) {
+					width: 99%;
+				}
+		}
+		
+		.settings-button {
+			width: 100%;
+			height: 50px;
+			position: relative;
+			display: inline-block;
+			line-height: 50px;
+			background: $black;
+			color: $white;
+			
+				&:hover {
+					@include tapped;
+				}
+				
+			@include clearfix;
+		}
+		
+		#postcode-lookup p {
+			font-size: 1.1rem;
+			margin-bottom: .8rem;
+		}
+		
+		#google-login {
+			display: block;
+			
+				> p {
+					text-align: left;
+					padding-top: 0.5rem;
+					padding-bottom: 0.5rem;
+					display: none; /*display when working properly*/
+				}
+			
+				.google-signin {
+					width: 150px;
+					height: 45px;
+					display: inline-block;
+					background: url("#{$imagePath}/google-signin.png") no-repeat;
+					background-size: cover;
+					margin: 14px 0 0 14px;
+					@include no-select;
+					cursor: pointer;
+					
+						&:active {
+							@include tapped;
+						}
+				}
+		}
+		
+		#google-login-success p {
+			width: 100%;
+			height: 50px;
+			position: relative;
+			display: block;
+			line-height: 50px;
+			background: $black;
+			color: $white;
+		}
+		
+		.sending {
+			text-align: center;
+		}
+		
+		#delete-data {
+			overflow: hidden; //might cause issues
+			
+				p:first-of-type {
+					margin-bottom: .4rem;
+				}
+			
+				p:nth-child(2) {
+					font-family: $boldFamily;
+					font-weight: $boldWeight;
+				}
+				
+				.confirm-delete {
+					margin: .6rem 0 1.6rem 0;
+					
+						label {
+							width: 50px;
+							height: 30px;
+							color: $white;
+						}
+				}
+		}
+		
+		.delete-button {
+			width: 92%;
+			height: 60px;
+			display: none;
+			background: $black;	
+			color: $white;
+			line-height: 60px;
+			padding-left: $sidePadding;
+			margin: .6rem 14px 1.4rem 14px;
+			
+				.submit-icon {
+					margin: 12px 14px 0 0;
+				}
+			
+				@include breakpoint(tablet) {
+					width: 99%;
+				}
+				
+				&:hover {
+					@include tapped;
+				}
+		}
+		
+		.confirmed {
+			display: block;
+		}
+}
