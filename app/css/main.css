@@ -2081,22 +2081,20 @@ h1 {
   backface-visibility: hidden;
 }
 #offers .offer-roll .roller {
-  height: 368px !important;
+  height: 368px;
 }
 @media screen and (min-width: 37.5em) {
   #offers .offer-roll .roller {
-    height: 548px !important;
+    height: 548px;
   }
 }
 #offers .offer-roll .offer-container {
-  height: 370px;
-  float: left;
+  height: 368px;
   position: relative;
-  overflow: hidden;
 }
 @media screen and (min-width: 37.5em) {
   #offers .offer-roll .offer-container {
-    height: 548px !important;
+    height: 548px;
   }
 }
 #offers .offer-roll .offer-container .offer-image {
@@ -2126,12 +2124,20 @@ h1 {
 #offers .offer-roll .offer-container .redeem {
   width: 180px;
   height: 50px;
-  margin: 0 auto;
+  margin: 0 auto .8rem auto;
   line-height: 50px;
   background: #76bb2b;
   color: #fffffa;
   text-align: center;
-  margin-bottom: .8rem;
+}
+#offers .offer-roll .offer-container .redeem:hover {
+  opacity: .85;
+}
+#offers .offer-roll .offer-container .redeemed {
+  background: #00adef;
+}
+#offers .offer-roll .offer-container .redeemed:hover {
+  opacity: 1;
 }
 #offers .offer-roll .offer-container span {
   width: 50%;

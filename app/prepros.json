@@ -3,20 +3,6 @@
   "cfgVersion": 1,
   "name": "visitcheltenham",
   "files": {
-    "82648407": {
-      "id": "82648407",
-      "pid": "cc820037",
-      "name": "roller.js",
-      "input": "js\\roller.js",
-      "customOutput": false,
-      "type": "Js",
-      "config": {
-        "autoCompile": true,
-        "uglify": true,
-        "mangle": true,
-        "sourcemaps": false
-      }
-    },
     "8583184e": {
       "id": "8583184e",
       "pid": "cc820037",
@@ -118,39 +104,6 @@
         "uglify": true,
         "mangle": true,
         "sourcemaps": false
-      }
-    },
-    "e5f1d497": {
-      "id": "e5f1d497",
-      "pid": "cc820037",
-      "name": "slick.js",
-      "input": "slick\\slick.js",
-      "customOutput": false,
-      "type": "Js",
-      "config": {
-        "autoCompile": true,
-        "uglify": true,
-        "mangle": true,
-        "sourcemaps": false
-      }
-    },
-    "ddd7cd28": {
-      "id": "ddd7cd28",
-      "pid": "cc820037",
-      "name": "slick.scss",
-      "input": "slick\\slick.scss",
-      "customOutput": false,
-      "type": "Scss",
-      "config": {
-        "autoCompile": true,
-        "lineNumbers": false,
-        "unixNewlines": false,
-        "sourcemaps": false,
-        "debug": false,
-        "compass": false,
-        "fullCompass": false,
-        "outputStyle": "expanded",
-        "autoprefixer": false
       }
     }
   },

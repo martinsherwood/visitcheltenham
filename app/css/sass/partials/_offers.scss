@@ -7,27 +7,24 @@
 		.offer-roll {
 			width: 100%;
 			position: relative;
-			
 			-webkit-backface-visibility: hidden;
 			-ms-backface-visibility: hidden;
 			backface-visibility: hidden;
 			
 				.roller {
-					height: 368px !important;
+					height: 368px;
 					
 						@include breakpoint(tablet) {
-							height: 548px !important;
+							height: 548px;
 						}
 				}
 			
 				.offer-container {
-					height: 370px;
-					float: left;
+					height: 368px;
 					position: relative;
-					overflow: hidden;
 					
 						@include breakpoint(tablet) {
-							height: 548px !important;
+							height: 548px;
 						}
 					
 						.offer-image {
@@ -59,12 +56,23 @@
 						.redeem {
 							width: 180px;
 							height: 50px;
-							margin: 0 auto;
+							margin: 0 auto .8rem auto;
 							line-height: 50px;
 							background: darken(#8fd445, 10%);
 							color: $white;
 							text-align: center;
-							margin-bottom: .8rem;
+							
+								&:hover {
+									@include tapped;
+								}
+						}
+						
+						.redeemed {
+							background: #00adef;
+							
+								&:hover {
+									opacity: 1;
+								}
 						}
 						
 						span {
