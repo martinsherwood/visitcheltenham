@@ -38,12 +38,5 @@
 	
 	<!--Access-->
 	<access origin="*" />
-	
-	<!--Plugins-->
-	<!--<gap:plugin name="SplashScreen" value="org.apache.cordova.core.SplashScreen" />
-	<gap:plugin name="Notification" value="org.apache.cordova.core.Notification" />
-	<gap:plugin name="Vibration" value="org.apache.cordova.core.Vibration" />
-	<gap:plugin name="InAppBrowser" value="org.apache.cordova.core.InAppBrowser" />
-	<gap:plugin name="Geolocation" value="org.apache.cordova.core.GeoBroker" />-->
 
 </widget>

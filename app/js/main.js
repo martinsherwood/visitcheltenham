@@ -5,7 +5,7 @@
 var serverURL = "http://www.martinsherwood.co.uk/visitcheltenham/";
 var searchRadius, travelMode, unitSystem, userName, userEmail, userPassword; //password should be encrypted
 var offerCount = 0;
-var name, userID; //name is only used for fetching the user ID of the user from the database
+var name, userID; //name is used for fetching the user ID of the user from the database
 
 var app = {
     initialize: function() {
@@ -14,7 +14,7 @@ var app = {
     bindEvents: function() {
         document.addEventListener("deviceready", this.onDeviceReady, false);
 		document.addEventListener("backbutton", backButton, false);
-		//add more here
+		//add more here if needed
     },
     onDeviceReady: function() {
 		setStorage();
@@ -45,6 +45,7 @@ function setStorage() {
 		});
 	};
 	
+	//customise the name and details of the local database here
 	window.storeConfig = {
 		name        : "visit_cheltenham_app",
 		version     : 1.0,
@@ -54,6 +55,8 @@ function setStorage() {
 	};
 };
 
+/*Gets the search and user settings from the device storage (indexed/websql/localstorage)
+-----------------------------------------------------------------------------------------*/
 function getSettings() {
 	store.getItem("searchSettings").then(function(value) {
 		searchRadius = parseInt(value[0].searchRadius);
@@ -81,6 +84,9 @@ function getSettings() {
 	});
 };
 
+/*Functions to get the User ID from the database, which is used for the adding of
+/*favourites and comments on places
+-----------------------------------------------------------------------------------------*/
 function getID() {
 	store.getItem("userAccount").then(function(value) {
 		name = value[0].userName;
@@ -124,9 +130,6 @@ $(function(getUserID) {
 	console.log("User ID: " + userID);
 });
 
-
-/*-----------------------------------------------------------------------------------------*/
-
 //we add the header like this incase we need it different pages and sections
 var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header container inner-wrap\">" +
                 	"<div role=\"button\" data-role=\"button\" class=\"menu-stack push\"></div>" +
@@ -142,7 +145,6 @@ var header =	"<header role=\"banner\" data-role=\"header\" class=\"app-header co
                 "</header>";
 							
 $("body").prepend(header); //or wherever we want on different pages
-
 
 /*Pull out menu, using 3dtransforms (remade from the absolute positioned using left)
 -----------------------------------------------------------------------------------------*/
@@ -213,7 +215,6 @@ $(function(navigationalHandles) {
 	});
 });
 
-
 /*Main location and map based services
 -----------------------------------------------------------------------------------------*/
 (function() { //begin main map scope
@@ -233,11 +234,11 @@ $(function(navigationalHandles) {
 	//set geofences
 	var regentsArcadeFence = [
 		//front
-		[51.900494, -2.073908], //O2 shop
-		[51.899857, -2.073057], //beechwood
+		[51.900494, -2.073908],
+		[51.899857, -2.073057],
 		//back
-		[51.897895, -2.076278], //alma house
-		[51.898283, -2.076987], //bar fever
+		[51.897895, -2.076278],
+		[51.898283, -2.076987],
 	];
 	
 	var starbucksFence = [
@@ -266,7 +267,7 @@ $(function(navigationalHandles) {
 				}
 			});
 		} else {
-			noGeo();
+			noGeo(); //errors here if geolocation isn't available
 		}	
 	});
 	
@@ -327,7 +328,7 @@ $(function(navigationalHandles) {
 				$("#place-query").focus();
 				$("#place-query").attr("placeholder", "You didn't enter any terms") && $("#place-query").addClass("plc-warning");
 				setTimeout(function() {
-					$("#place-query").attr("placeholder", "Search for places") && $("#place-query").removeClass("plc-warning");;
+					$("#place-query").attr("placeholder", "Search for places") && $("#place-query").removeClass("plc-warning");
 				}, 2800);
 				return false;
 			} else {
@@ -351,6 +352,7 @@ $(function(navigationalHandles) {
 								var place = results[i];
 								//console.log(i);
 								
+								
 								var image = { //set to better sizes and positions (icons from search results)
 									url: place.icon,
 									size: new google.maps.Size(71, 71),
@@ -368,7 +370,7 @@ $(function(navigationalHandles) {
 										"<div class=\"opt\"><div data-placename=\"" + place.name + "\" data-address=\"" + place.formatted_address + "\" id=\"add-favourite\" class=\"add-favourite-button\"></div></div>" +
 									"</div></li>");
 								
-								/*The next section works out the distances and estimated durations to each place from the search results*/
+								/*The next section works out the distances and estimated durations to each place from the search results, uses the settings set by the user*/
 								
 								origin = currentLocation;
 								var destination = place.geometry.location;
@@ -435,7 +437,7 @@ $(function(navigationalHandles) {
 								bounds.extend(place.geometry.location); //extend the bounds to show all search results on map
 							}
 							
-							//experimenting with getting more results after the initial 20
+							//experimenting with getting more results after the initial 20, the if statement fires the console.log in most cases so it is possible to get more than the initial 20
 							/*if (pagination.hasNextPage) {
 								//console.log("more results exist");
 								$("#loadmore").hammer().on("tap", function(e) {
@@ -491,20 +493,20 @@ $(function(navigationalHandles) {
 			detailsList.hammer().on("tap", "li", function(e) {
 				e.stopPropagation(); e.preventDefault();
 				var change = $(this);
-				var dist = $(this).data("distance")
-				var dura = $(this).data("duration")
+				var dist = $(this).data("distance");
+				var dura = $(this).data("duration");
 				//if distance is shown, show duration else show distance and vice-versa, we start on distance
 				if (change.text() == dist) {
-					change.text(dura);
+					change.text(dura); //duration
 				} else {
-					change.text(dist);
+					change.text(dist); //distance
 				};
 			});
 			
 			//bias the search results towards places that are within the bounds of the current maps viewport
 			google.maps.event.addListener(map, "bounds_changed", function() {
 				var bounds = map.getBounds();
-				$("#place-query").setBounds(bounds);
+				$("#place-query").setBounds(bounds); //set the bounds based on the area searched
 			});
 		});
 		
@@ -520,6 +522,7 @@ $(function(navigationalHandles) {
 						
 						removeMarkers(); //remove markers from the map
 						
+						//removes the circles if they are present
 						if (locationCircle && locationMark) {
 							locationCircle.setMap(null);
 							locationMark.setMap(null);
@@ -529,7 +532,7 @@ $(function(navigationalHandles) {
 						map.addMarker({
 							lat: position.lat,
 							lng: position.lng,
-							fences: [regentsArcadePoly],
+							fences: [regentsArcadePoly], //or starbucks poly
 							icon: "img/location-marker-blue.png",
 							animation: google.maps.Animation.DROP,
 							//inside and outside geofence callbacks - not fully working
@@ -549,9 +552,6 @@ $(function(navigationalHandles) {
 						geoError();
 						console.log("Geolocation failed: " + error.message);
 					},
-					/*always: function() {
-						//more here?
-					},*/
 				});
 			} else {//if no geolocation is supported, replace the content
 				noGeo();
@@ -559,7 +559,7 @@ $(function(navigationalHandles) {
 			};
 		};
 		
-		//function to show error message if a problem occurs
+		//function to show error message if a problem occurs when getting the location of the user
 		function geoError() {
 			$(".location-map").append("<p class=\"no-geo message warning\">Sorry, this feature isn't available right now.</p>");
 			setTimeout(function() {
@@ -577,7 +577,7 @@ $(function(navigationalHandles) {
 			map.removeMarkers();
 		};
 		
-		//function to remove previous search results
+		//function to remove previous search results from the lists and map
 		function clearResults() {
 			nameList.html(""); 
 			detailsList.html("");
@@ -592,7 +592,7 @@ $(function(navigationalHandles) {
 			};
 		};
 		
-		//function to geocode the current location of the user
+		//function to geocode the current location of the user, this is used to geocode to readable address format from lat and lng
 		function geocodeCurrent() {
 			GMaps.geocode({
 				address: currentLocation,
@@ -609,7 +609,7 @@ $(function(navigationalHandles) {
 		};
 	});
 	
-	//options for search results
+	//options for search results, slides out when tapped or swiped
 	$(function(doMore) {
 		var placeName, placeAddress, directionsTo;
 		var directionsOverlay = "<div id=\"directions-box\" class=\"modal-window\">" +
@@ -624,7 +624,7 @@ $(function(navigationalHandles) {
 			$(this).children("div").toggleClass("shown"); //options div
 		});
 		
-		//a check needs to be in place to prevent the same place being added twice, here or in php
+		//a check needs / should be to be in place to prevent the same place being added twice, here or in php
 		$(".results-names").hammer().on("tap", "#add-favourite", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			placeName = $(this).data("placename");
@@ -633,10 +633,10 @@ $(function(navigationalHandles) {
 			$.ajax({
 				context: this,
 				type: "POST",
-				data: {userid: userID, placename: placeName, placeaddress: placeAddress},	
+				data: {userid: userID, placename: placeName, placeaddress: placeAddress},
 				url: serverURL + "addfavourite.php",
 				beforeSend: function() {
-					console.log("adding to favourites");
+					console.log("adding to favourites"); //a better display should be here really, but the icon changes which is enough for now
 				},
 				success: function() {
 					$(this).attr("id", "remove-favourite");
@@ -651,7 +651,7 @@ $(function(navigationalHandles) {
 			//getting the list of favourites and comparing to the data value didn't work, would be difficult as google regularly make updates to the place pages
 		});
 		
-		//remove a favourite
+		//remove a favourite from the database
 		$(".results-names").hammer().on("tap", "#remove-favourite", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			placeName = $(this).data("placename");
@@ -675,6 +675,7 @@ $(function(navigationalHandles) {
 			});
 		});
 		
+		//get directions, using user defined settings (like the search)
 		$(".results-names").hammer().on("tap", "#get-directions", function(e) {
 			e.stopPropagation(); e.preventDefault();
 			$("#search").removeClass("current");
@@ -688,8 +689,8 @@ $(function(navigationalHandles) {
 			dirDisp.setPanel(panel);
 			
 			dirServ.route({
-				origin: currentLocation,
-				destination: directionsTo,
+				origin: currentLocation, //users location
+				destination: directionsTo, //place address tapped
 				travelMode: travelMode,
 				unitSystem: unitSystem
 			}, function(result, status) {
@@ -699,13 +700,12 @@ $(function(navigationalHandles) {
 			
 			$("#close-directions").hammer().on("tap", function(e) {
 				e.stopPropagation(); e.preventDefault();
-				$("#directions-box").remove();
-				$("#search").addClass("current");
+				$("#directions-box").remove(); //remove the box entirely
+				$("#search").addClass("current"); //go back to search page (slightdown side is that it doesn't remember scrolled position)
 			});
 		});
-	});//do more
+	});//do more function
 })();//end map scope
-
 
 /*Favourited places list page
 -----------------------------------------------------------------------------------------*/
@@ -874,12 +874,14 @@ $(function(favouritedPlaces) {
 		});
 	});
 	
+	//uses the default email client/app on a users device and prefills some fields
 	favouritesList.hammer().on("tap", "#share-place", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		place = $(this).data("place");
 		window.location.href = "mailto:?subject=Check this place out!&body=Hey, I found this really good place called, " + place + "."; //should open the devices default mail client
 	});
 	
+	//deletes and favourite from the database and remove from the list
 	favouritesList.hammer().on("tap", "#delete-favourite", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		place = $(this).data("place");
@@ -900,23 +902,23 @@ $(function(favouritedPlaces) {
 	
 	$("[data-get=\"favourites\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
-		clearFavs();
-		getFavourites();
+		clearFavs(); //remove old results
+		getFavourites(); //call the get function
 	});
 	
 	function clearFavs() {
-		favouritesList.html("");
-		count = 1;
+		favouritesList.html(""); //clear the list
+		count = 1; //reset the count
 	};
 });
-
 
 /*Offers and redemption
 -----------------------------------------------------------------------------------------*/
 $(function(offersFeatures) {
 	
-	var offerImagesURL = "http://www.martinsherwood.co.uk/visitcheltenham/offerimages/";
+	var offerImagesURL = "http://www.martinsherwood.co.uk/visitcheltenham/offerimages/"; //images are stored here
 	
+	//get the offer information from the database (formatted to json)
 	function getOffers() {
 		return $.ajax({
 			url: serverURL + "getoffers.php",
@@ -936,18 +938,20 @@ $(function(offersFeatures) {
 	};
 
 	function handleData(data) {
-		objects = JSON.parse(data);
+		objects = JSON.parse(data); //parse the json offers data
 		
+		//for each record in the data gotten from the database
 		$.each(objects, function(i, item) {
 			offerCount++;
 			
+			//to help prevent layout breaking in the pull out menu I limit the display to 99 (the full amount is still fetched and displayed, be it 1 offer or 9999 offers, just the count is affected)
 			if (offerCount > 99) {
 				offerCount = 99;
 			} else if (offerCount < 0 || offerCount == 0) {
 				offerCount = 0;
 			};
 			
-			console.log(item);
+			//console.log(item); //testing
 			
 			$(".offer-roll").append("<div class=\"offer-container\">" +
 										"<div class=\"offer-image\" style=\"background:url(" + offerImagesURL + item.imagename  + "); background-size: cover\"></div>" +
@@ -965,7 +969,7 @@ $(function(offersFeatures) {
 		$("#offer-count").html(offerCount); //update count in nav
 	};
 	
-	getOffers().done(handleData);
+	getOffers().done(handleData); //handle the data (a fail handler should be here as well, incase a problem happens)
 	
 	//This function would initiate a swiping slideshow type roll for the offers display - not finished so commented out
 	/*$.getScript("js/min/offersroll.min.js").done(function(script, textStatus) {
@@ -990,11 +994,9 @@ $(function(offersFeatures) {
 	
 	$(".offer-roll").hammer().on("tap", ".redeem", function(e) {
 		e.stopPropagation(); e.preventDefault();
-		var code = $(this).data("code");
+		var code = $(this).data("code"); //get the code
 		$(this).text(code) && $(this).addClass("redeemed"); //replace content with the offer/voucher code
 	});
-	
-	
 });
 
 
@@ -1004,8 +1006,8 @@ $(function(appSettings) {
 	$(".show-settings").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		var show = $(this).data("show");
-		$("#" + show).toggleClass("settings-shown");
-		$("i", this).toggleClass("fa-flip-vertical");
+		$("#" + show).toggleClass("settings-shown"); //show the settings
+		$("i", this).toggleClass("fa-flip-vertical"); //invert the icon
 	});
 	
 	//we need to get the settings again here, as earlier we made them into int from the stored strings
@@ -1019,7 +1021,7 @@ $(function(appSettings) {
 		
 		$("[data-action=\"save-settings\"]").hammer().on("tap", function(e) {
 			e.stopPropagation(); e.preventDefault();
-			$("#search-settings").submit();
+			$("#search-settings").submit(); //call the submit function
 		});
 		
 		$("#search-settings").submit(function(e) {
@@ -1028,13 +1030,14 @@ $(function(appSettings) {
 			searchRadius = $("#search-radius").val(),
 			travelMode   = $("#travel-mode").val(),
 			unitSystem   = $("#unit-system").val()
-				
+			
+			//build the string to submit into storage
 			var searchSettings = [{searchRadius: searchRadius}, {travelMode: travelMode}, {unitSystem: unitSystem}];
 			
 			store.setItem("searchSettings", searchSettings).then(function(value) {
 				$("#search-settings").append("<p class=\"message success prominent timed\">Settings have been saved.</p>");
 				setTimeout(function() {
-					$(".timed").remove();
+					$(".timed").remove(); //remove on timer
 					getSettings();
 				}, 3500);
 			});
@@ -1213,10 +1216,10 @@ $(function(appSettings) {
 			userEmail	 = $("#useremail").val()
 			userPassword = $("#userpassword").val()
 			
-			var userAccount = [{userName: userName}, {userEmail: userEmail}, {userPassword: userPassword}]; //password needs encyrpting
-			var userRegistration = $(this).serialize(); //used for db
+			var userAccount = [{userName: userName}, {userEmail: userEmail}, {userPassword: userPassword}]; //password needs encyrpting locally or not saving at all
+			var userRegistration = $(this).serialize(); //used for db, the password is hashed server side (more secure)
 			
-			//check for spaces = userName.indexOf(" ") != -1) || userName.indexOf(" ") != -1 || userName.indexOf("-") != -1
+			//check for spaces, blank input and special chars
 			if (userName == "" || userEmail == "" || userPassword == "") {
 				$("#user-account").append("<p class=\"message warning prominent timed\">All fields are required.</p>");
 				setTimeout(function() {
@@ -1229,7 +1232,7 @@ $(function(appSettings) {
 					$(".timed").remove();
 				}, 3500);
 				return false;
-			} else if (userID != 0) { //if the userID is set (from the database) then they have already made an account
+			} else if (userID != 0) { //if the userID is set (from the database) then they have already made an account so stop here
 				console.log("creation failed");
 				$("#user-account").append("<p class=\"message warning prominent timed\">You have already made an account.</p>");
 				setTimeout(function() {
@@ -1282,6 +1285,7 @@ $(function(appSettings) {
 				}, 2800);
 				return false;
 			} else {
+				//simple function to geocode a given postcode into a readable address format, e.g. PE12 -> Spalding, UK
 				GMaps.geocode({
 					address: $("#postcode").val().trim(),
 					callback: function(results, status) {
@@ -1340,6 +1344,8 @@ $(function(appSettings) {
 	$(function(deleteData) {
 		$("#confirm-delete").change(function() {
 			var confirmDelete = $(this);
+			
+			//only display the delete button if checkbox is chcked
 			if (confirmDelete.prop("checked")) { //yes
 				$(".delete-button").css("display", "block");
 			} else { //no
@@ -1349,12 +1355,15 @@ $(function(appSettings) {
 			$("[data-action=\"delete-data\"]").hammer().on("tap", function(e) {
 				e.stopPropagation(); e.preventDefault();
 				
+				//another check for confirmation here (if the checkbox is checked then its OK to proceed)
 				if ($("#confirm-delete").prop("checked") === true) {
 					console.log("delete data button hit");
 					
+					//remove local settings
 					store.removeItem("searchSettings");
 					store.removeItem("userAccount");
 					
+					//go to server and delete user account - also deletes their favourites and any comments they made
 					$.ajax({
 						type: "POST",
 						data: {id: userID},
@@ -1390,19 +1399,6 @@ $(function(appSettings) {
 	$("[data-user=\"userid\"]").hammer().on("tap", function(e) {
 		e.stopPropagation(); e.preventDefault();
 		getID();
-		/*$.ajax({
-			type: "POST",
-			data: {username: name},
-			url: serverURL + "getuser.php",
-			async: false, //important
-			success: function(id, status) {
-				userID = id; //if no name is sent, then it returns 0 to validate new users
-			},
-			error: function() {
-				console.log("Failed to get user id, probably there is no match for the given username in the database.");
-			}
-		});
-		console.log("User ID: " + userID);*/
 	});
 });
 
